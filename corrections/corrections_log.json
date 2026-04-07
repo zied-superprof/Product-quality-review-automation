@@ -1,0 +1,79 @@
+{
+  "corrections": [
+    {
+      "date": "2026-04-03",
+      "notification_id": "relance_3",
+      "language": "kk",
+      "country": "KZ",
+      "category": "encoding",
+      "original_text": "",
+      "corrected_text": "[translation required]",
+      "description": "Kazakhstan translation is completely empty — title and body are blank. No translation has been provided.",
+      "extracted_rule": "Empty translations must be flagged as errors and sent back to the translation team for completion."
+    },
+    {
+      "date": "2026-04-03",
+      "notification_id": "relance_3",
+      "language": "th",
+      "country": "TH",
+      "category": "encoding",
+      "original_text": "",
+      "corrected_text": "[translation required]",
+      "description": "Thailand translation is completely empty — title and body are blank. No translation has been provided.",
+      "extracted_rule": "Empty translations must be flagged as errors and sent back to the translation team for completion."
+    },
+    {
+      "date": "2026-04-03",
+      "notification_id": "relance_3",
+      "language": "lt",
+      "country": "LT",
+      "category": "grammar",
+      "original_text": "Jūsų @TPL_MATIERE@ mokytojas jūsų laukia!",
+      "corrected_text": "[verify with native Lithuanian speaker]",
+      "description": "Lithuanian subject name (@TPL_MATIERE@) may require declension in the genitive or vocative case depending on grammatical context. The subject name variable is rendered as nominative, which may not be grammatically correct in all sentence positions. Needs review by a native Lithuanian speaker.",
+      "extracted_rule": "In Lithuanian, nouns and proper nouns (including subject names rendered by @TPL_MATIERE@) decline by case. Review all Lithuanian notifications to ensure the grammatical case is correct for the variable's position in the sentence."
+    }
+  ],
+  "rules_summary": [
+    {
+      "rule": "Empty translations (blank title and/or body) must be flagged as errors and escalated to the translation team",
+      "applicable_languages": ["all"],
+      "category": "encoding",
+      "occurrence_count": 2,
+      "first_seen": "2026-04-03",
+      "last_seen": "2026-04-03",
+      "examples": ["Kazakhstan (kk) — relance_3: title and body completely blank", "Thailand (th) — relance_3: title and body completely blank"]
+    },
+    {
+      "rule": "In Lithuanian, template variables that render noun phrases (e.g. @TPL_MATIERE@) may need to appear in the correct grammatical case. The nominative form may be wrong depending on the sentence structure.",
+      "applicable_languages": ["lt"],
+      "category": "grammar",
+      "occurrence_count": 1,
+      "first_seen": "2026-04-03",
+      "last_seen": "2026-04-03",
+      "examples": ["relance_3 (lt): @TPL_MATIERE@ used in nominative — check if genitive is required in context"]
+    }
+  ],
+  "_schema": {
+    "correction": {
+      "date": "ISO 8601 date",
+      "notification_id": "Notification identifier",
+      "language": "ISO language code",
+      "country": "ISO country code",
+      "category": "grammar | tone | label | cultural | emoji | encoding",
+      "original_text": "The translation before correction",
+      "corrected_text": "The corrected translation",
+      "description": "What was wrong and why",
+      "extracted_rule": "Generalized rule for future reviews"
+    },
+    "rule": {
+      "rule": "Human-readable rule text",
+      "applicable_languages": ["ISO codes or 'all'"],
+      "category": "grammar | tone | label | cultural | emoji | encoding",
+      "occurrence_count": "Number of times this pattern was corrected",
+      "first_seen": "ISO 8601 date",
+      "last_seen": "ISO 8601 date",
+      "examples": ["Brief examples of the pattern"]
+    }
+  }
+}

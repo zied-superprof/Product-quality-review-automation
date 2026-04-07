@@ -1,0 +1,222 @@
+{
+  "_note": "Variable patterns extracted from Variables.csv AND actual notification templates. Templates use multiple syntax types.",
+  "template_syntax": {
+    "value_variables": {
+      "regex": "@TPL_[A-Z0-9_]+@",
+      "description": "Value insertion: @TPL_NAME@ gets replaced with the actual value",
+      "examples": ["@TPL_ELEVE_PRENOM@", "@TPL_PROF_PRENOM@", "@TPL_PASS_ELEVE_PRIX@", "@TPL_ANNONCE_URL@", "@TPL_PROF_PHOTO@", "@TPL_ANNONCE_PHOTO@", "@TPL_URL_PASS_ELEVE@", "@TPL_URL_CGU@", "@TPL_CONFIG_MAIL_CONTACT@", "@TPL_CONFIG_PRIX_PASS_ELEVE@", "@TPL_MEMBRE_PROMO_PE_NB_JOURS@", "@TPL_MER_URL_RECHERCHE@", "@TPL_URL_CONTACT@", "@TPL_PASS_ELEVE_NB_JOURS@", "@TPL_PASS_ELEVE_PRIX_DEVISE@", "@TPL_MEMBRE_PRENOM@"]
+    },
+    "conditional_if": {
+      "regex": "<TPL_IF_[A-Z0-9_]+>",
+      "closing_regex": "</TPL_IF_[A-Z0-9_]+>",
+      "description": "Conditional block: content shown only if condition is true",
+      "examples": ["<TPL_IF_PASS_ELEVE_IS_RENEW>...renewal text...</TPL_IF_PASS_ELEVE_IS_RENEW>", "<TPL_IF_MEMBRE_FEMININ>e</TPL_IF_MEMBRE_FEMININ>", "<TPL_IF_MEMBRE_PROMO_PE_NB_JOURS>@TPL_MEMBRE_PROMO_PE_NB_JOURS@ jours</TPL_IF_MEMBRE_PROMO_PE_NB_JOURS>", "<TPL_IF_CONFIG_PASS_ELEVE_FORMULE_3>1 mois</TPL_IF_CONFIG_PASS_ELEVE_FORMULE_3>", "<TPL_IF_CONFIG_PASS_ELEVE_FORMULE_4>annuel</TPL_IF_CONFIG_PASS_ELEVE_FORMULE_4>", "<TPL_IF_PASS_ELEVE_FORMULE_1>...one-time text...</TPL_IF_PASS_ELEVE_FORMULE_1>", "<TPL_IF_PROF_FEMININ>στην</TPL_IF_PROF_FEMININ>"]
+    },
+    "conditional_else": {
+      "regex": "<TPL_ELSE_[A-Z0-9_]+>",
+      "closing_regex": "</TPL_ELSE_[A-Z0-9_]+>",
+      "description": "Else block: content shown when the IF condition is false",
+      "examples": ["<TPL_ELSE_MEMBRE_FEMININ></TPL_ELSE_MEMBRE_FEMININ>", "<TPL_ELSE_MEMBRE_PROMO_PE_NB_JOURS>1 mois</TPL_ELSE_MEMBRE_PROMO_PE_NB_JOURS>", "<TPL_ELSE_PROF_FEMININ>στον</TPL_ELSE_PROF_FEMININ>"]
+    },
+    "custom_markup": {
+      "link": {"open": "[LIEN]", "close": "[/LIEN]", "format": "[LIEN][URL_QUI_CONNECTE|@TPL_URL@]|display text[/LIEN]"},
+      "title": {"open": "[TITRE]", "close": "[/TITRE]"},
+      "button": {"open": "[BOUTON]", "close": "[/BOUTON]", "format": "[BOUTON][URL_QUI_CONNECTE|@TPL_URL@]|button text[/BOUTON]"},
+      "url_connector": "URL_QUI_CONNECTE"
+    },
+    "html_tags_used": ["<b>", "<mark>", "<li>", "<i>", "<u>", "<A HREF=\"...\">"]
+  },
+  "variable_patterns": [
+    {
+      "name": "tpl_at_wrapped",
+      "regex": "@TPL_[A-Z0-9_]+@",
+      "description": "Value variable in notification templates — the primary format used in actual notifications",
+      "examples": ["@TPL_ELEVE_PRENOM@", "@TPL_PROF_PRENOM@", "@TPL_PASS_ELEVE_PRIX@"]
+    },
+    {
+      "name": "tpl_conditional_if",
+      "regex": "<TPL_IF_[A-Z0-9_]+>.*?</TPL_IF_[A-Z0-9_]+>",
+      "description": "Conditional IF block — must have matching opening and closing tags",
+      "examples": ["<TPL_IF_PASS_ELEVE_IS_RENEW>renewal content</TPL_IF_PASS_ELEVE_IS_RENEW>"]
+    },
+    {
+      "name": "tpl_conditional_else",
+      "regex": "<TPL_ELSE_[A-Z0-9_]+>.*?</TPL_ELSE_[A-Z0-9_]+>",
+      "description": "Conditional ELSE block — must have matching opening and closing tags",
+      "examples": ["<TPL_ELSE_MEMBRE_FEMININ></TPL_ELSE_MEMBRE_FEMININ>"]
+    }
+  ],
+  "variable_categories": {
+    "general": {
+      "description": "General variables available across all templates",
+      "variables": [
+        {"name": "@TPL_SPACE@", "value_example": " ", "notes": "Inserts a space"},
+        {"name": "@TPL_5_ETOILES@", "value_example": "5 full stars", "notes": "Star rating display"},
+        {"name": "TPL_CDN", "value_example": "https://c.superprof.com/p", "notes": "CDN base URL"},
+        {"name": "TPL_NDD", "value_example": "https://www.superprof.fr", "notes": "Market domain URL — changes per country"},
+        {"name": "TPL_TAG_IMG", "value_example": "202601261130", "notes": "Image cache tag"},
+        {"name": "TPL_NB_AVIS_GLOBAL", "value_example": "1732250", "notes": "Total reviews count (raw number)"},
+        {"name": "TPL_NB_AVIS_GLOBAL_FORMATE", "value_example": "1 732 250", "notes": "Total reviews count (formatted with spaces)"},
+        {"name": "TPL_NB_AVIS_GLOBAL_TRONC_MILLIONS", "value_example": "1,7", "notes": "Total reviews in millions (truncated)"},
+        {"name": "TPL_AVIS_SP_GLOBAL", "value_example": "4.7072", "notes": "Global rating (raw)"},
+        {"name": "TPL_AVIS_SP_GLOBAL_FORMATE", "value_example": "4,7", "notes": "Global rating (formatted)"}
+      ]
+    },
+    "category": {
+      "description": "Variables for a category (e.g., Informatique, Scolaire)",
+      "variables": [
+        {"name": "TPL_IF_CATEGORIE", "notes": "Boolean: 1 if category context exists"},
+        {"name": "TPL_CATEGORIE", "notes": "Category name"},
+        {"name": "TPL_CATEGORIE_NOM", "notes": "Category name (alias)"},
+        {"name": "TPL_CATEGORIE_ID", "notes": "Category ID"},
+        {"name": "TPL_CATEGORIE_MINUS", "notes": "Category name lowercase"},
+        {"name": "TPL_CATEGORIE_MINUS_SMART", "notes": "Category name lowercase (smart)"},
+        {"name": "TPL_CATEGORIE_D_DE", "notes": "Article before category: 'd'' or 'de'"},
+        {"name": "TPL_CATEGORIE_DEMARCHES", "notes": "Associated demarche IDs"},
+        {"name": "TPL_CATEGORIE_URL", "notes": "Category page URL"}
+      ]
+    },
+    "subject": {
+      "description": "Variables for a subject/matiere (e.g., Histoire, Maths). Most common in notifications.",
+      "variables": [
+        {"name": "TPL_IF_MATIERE", "notes": "Boolean: 1 if subject context exists"},
+        {"name": "TPL_MATIERE", "notes": "Subject name (e.g., Histoire)"},
+        {"name": "TPL_MATIERE_ID", "notes": "Subject ID"},
+        {"name": "TPL_MATIERE_MINUS", "notes": "Subject name lowercase"},
+        {"name": "TPL_MATIERE_FIRST_MAJUS", "notes": "Subject name with first letter capitalized"},
+        {"name": "TPL_MATIERE_MINUS_SMART", "notes": "Subject name lowercase (smart)"},
+        {"name": "TPL_MATIERE_FIRST_MAJUS_SMART", "notes": "Subject name capitalized (smart)"}
+      ]
+    },
+    "article_contractions": {
+      "description": "Language-specific article variables that change based on the next word. Critical for quality review.",
+      "variables": [
+        {"name": "TPL_D_DE", "notes": "Article 'd'' or 'de' — uppercase. In FR: d' before vowel, de before consonant"},
+        {"name": "TPL_D_DE_MINUS", "notes": "Same as TPL_D_DE but lowercase"},
+        {"name": "TPL_D_DE_MATIERE", "notes": "Article before subject name — uppercase"},
+        {"name": "TPL_D_DE_MATIERE_MINUS", "notes": "Article before subject name — lowercase"},
+        {"name": "TPL_A_AN", "notes": "English 'a' or 'an' — uppercase"},
+        {"name": "TPL_A_AN_MINUS", "notes": "English 'a' or 'an' — lowercase"},
+        {"name": "TPL_A_AN_MATIERE", "notes": "English 'a' or 'an' before subject — uppercase"},
+        {"name": "TPL_A_AN_MATIERE_MINUS", "notes": "English 'a' or 'an' before subject — lowercase"},
+        {"name": "TPL_LE_LA_LES", "notes": "French definite article (le/la/l'/les)"},
+        {"name": "TPL_LE_LA_LES_MAJUS", "notes": "Same but capitalized"},
+        {"name": "TPL_DES_DE_COURS", "notes": "Article before 'cours' (des/de)"},
+        {"name": "TPL_DU_DE_DEPARTEMENT", "notes": "Article before department name"},
+        {"name": "TPL_DU_DE_REGION", "notes": "Article before region name"},
+        {"name": "TPL_D_DE_VILLE", "notes": "Article before city name"},
+        {"name": "TPL_D_DE_NIVEAU", "notes": "Article before level name — uppercase"},
+        {"name": "TPL_D_DE_NIVEAU_MINUS", "notes": "Article before level name — lowercase"},
+        {"name": "TPL_LE_LA_LES_DEPARTEMENT", "notes": "Definite article before department"},
+        {"name": "TPL_LE_LA_LES_REGION", "notes": "Definite article before region"}
+      ]
+    },
+    "compound_phrases": {
+      "description": "Pre-built phrases combining article + noun. These are fully translated per language.",
+      "variables": [
+        {"name": "TPL_MATIERE_DE_MATIERE", "value_example_fr": "d'histoire", "notes": "Article + subject name"},
+        {"name": "TPL_COURS_DE_MATIERE", "value_example_fr": "cours d'histoire", "notes": "'cours de' + subject"},
+        {"name": "TPL_PROF_DE_MATIERE", "value_example_fr": "Prof d'histoire", "notes": "'Prof de' + subject (capitalized)"},
+        {"name": "TPL_PROFESSEUR_DE_MATIERE", "value_example_fr": "Professeur d'histoire", "notes": "'Professeur de' + subject (capitalized)"},
+        {"name": "TPL_PROF_DE_MATIERE_FIRST_MINUS", "value_example_fr": "prof d'histoire", "notes": "'prof de' + subject (lowercase)"},
+        {"name": "TPL_PROFESSEUR_DE_MATIERE_FIRST_MINUS", "value_example_fr": "professeur d'histoire", "notes": "'professeur de' + subject (lowercase)"}
+      ]
+    },
+    "city": {
+      "description": "Variables for a city/ville",
+      "variables": [
+        {"name": "TPL_IF_VILLE", "notes": "Boolean: 1 if city context exists"},
+        {"name": "TPL_VILLE", "notes": "City name"},
+        {"name": "TPL_VILLE_AUTRE_NOM", "notes": "City alternate name"},
+        {"name": "TPL_VILLE_NETTOYE", "notes": "City name cleaned"},
+        {"name": "TPL_VILLE_ID", "notes": "City ID"},
+        {"name": "TPL_VILLE_CP", "notes": "Postal code"},
+        {"name": "TPL_VILLE_A_VILLE", "notes": "Preposition + city: 'à Paris 10e'"}
+      ]
+    },
+    "department": {
+      "description": "Variables for a department/département",
+      "variables": [
+        {"name": "TPL_IF_DEPARTEMENT", "notes": "Boolean flag"},
+        {"name": "TPL_DEPARTEMENT", "notes": "Department name"},
+        {"name": "TPL_DEPARTEMENT_ID", "notes": "Department ID"},
+        {"name": "TPL_DEPARTEMENT_URL", "notes": "Department page URL"},
+        {"name": "TPL_DEPARTEMENT_TAG_URL", "notes": "URL slug"},
+        {"name": "TPL_DEPARTEMENT_DANS_LE_DEPARTEMENT", "notes": "Full phrase: 'dans le département du Paris'"}
+      ]
+    },
+    "region": {
+      "description": "Variables for a region",
+      "variables": [
+        {"name": "TPL_IF_REGION", "notes": "Boolean flag"},
+        {"name": "TPL_REGION", "notes": "Region name"},
+        {"name": "TPL_REGION_ID", "notes": "Region ID"},
+        {"name": "TPL_REGION_URL", "notes": "Region page URL"},
+        {"name": "TPL_REGION_TAG_URL", "notes": "URL slug"}
+      ]
+    },
+    "level": {
+      "description": "Variables for a level/niveau (e.g., Primary, Collège)",
+      "variables": [
+        {"name": "TPL_NIVEAU", "notes": "Level name"},
+        {"name": "TPL_NIVEAU_ID", "notes": "Level ID"},
+        {"name": "TPL_NIVEAU_MINUS", "notes": "Level name lowercase"},
+        {"name": "TPL_NIVEAU_FIRST_MAJUS", "notes": "Level name capitalized"},
+        {"name": "TPL_NIVEAU_MINUS_SMART", "notes": "Lowercase smart"},
+        {"name": "TPL_NIVEAU_FIRST_MAJUS_SMART", "notes": "Capitalized smart"},
+        {"name": "TPL_NIVEAU_URL", "notes": "Level page URL"},
+        {"name": "TPL_DEMARCHE", "notes": "Associated demarche name"},
+        {"name": "TPL_DEMARCHE_ID", "notes": "Demarche ID"}
+      ]
+    },
+    "landing": {
+      "description": "Variables for landing pages",
+      "variables": [
+        {"name": "TPL_NB_PROFS", "notes": "Number of teachers (raw)"},
+        {"name": "TPL_NB_PROFS_FORMATE", "notes": "Number of teachers (formatted)"},
+        {"name": "TPL_URL_LANDING_MATIERE", "notes": "Landing page URL for subject"},
+        {"name": "TPL_URL_LANDING_MATIERE_ONLINE", "notes": "Online landing page URL for subject"}
+      ]
+    }
+  },
+  "subject_variable_usage_rules": {
+    "_note": "Rules for which subject variable to use per language/market. These govern what is correct, not what is an error to flag.",
+    "TPL_MATIERE_DE_MATIERE": {
+      "description": "Article + subject name compound (e.g. 'd'histoire', 'de matemáticas'). Valid for any language that uses grammatical declension or article+noun constructions configured in the BO subject settings.",
+      "use_for": ["fr", "es", "pt", "it", "ar", "pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et"],
+      "do_not_use_for": ["en", "de", "nl", "sv", "no", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "th", "vi", "id", "ms", "he"],
+      "important": "NOT limited to French. Valid for any language where the BO configures an article+subject form. Only flag as an error if the language is in do_not_use_for OR if the variable appears in the wrong structural position (e.g. inside TPL_LOOP_ANNONCES instead of TPL_ANNONCE_AFFICHE_QUI_CONNECTE)."
+    },
+    "TPL_MATIERE_FIRST_MAJUS_SMART": {
+      "description": "Subject name with first letter capitalized, 'smart' variant handles edge cases. Use for languages where subject names begin with a capital letter and no article is needed.",
+      "use_for": ["en", "de", "nl", "sv", "no", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "id", "ms", "he"],
+      "note": "Preferred over @TPL_MATIERE_MINUS@ and @TPL_MATIERE_NOM@ for these languages."
+    },
+    "TPL_MATIERE_MINUS_SMART": {
+      "description": "Subject name fully lowercase, 'smart' variant. Use for languages where subject names are not capitalized mid-sentence.",
+      "use_for": ["pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et"],
+      "note": "Preferred over @TPL_MATIERE_MINUS@ and @TPL_MATIERE_NOM@ for these languages. Use when the language does NOT use an article compound (@TPL_MATIERE_DE_MATIERE@) or when the subject name is needed standalone in lowercase."
+    }
+  },
+  "validation_rules": {
+    "must_preserve_exactly": [
+      "All TPL_* variables in the French source must appear in the translation",
+      "All @TPL_*@ variables must appear with their @ delimiters intact",
+      "Variable names must NOT be translated (TPL_MATIERE must stay TPL_MATIERE, not TPL_SUBJECT)",
+      "URL variables (TPL_CDN, TPL_NDD, TPL_*_URL) must be preserved as-is"
+    ],
+    "language_specific_checks": [
+      "Article contraction variables (TPL_D_DE, TPL_LE_LA_LES, TPL_A_AN) are language-specific — each language has its own values",
+      "Compound phrases (TPL_COURS_DE_MATIERE, TPL_PROF_DE_MATIERE, etc.) are fully translated per language",
+      "TPL_A_AN and TPL_A_AN_MATIERE are primarily for English — may be empty in other languages",
+      "TPL_NDD changes per market (superprof.fr, superprof.es, superprof.de, etc.)"
+    ],
+    "common_errors": [
+      "Translator accidentally translates a variable name",
+      "Missing variable — dropped during translation",
+      "Extra space before/after a variable",
+      "Breaking a compound variable (e.g., writing 'cours de TPL_MATIERE' instead of using TPL_COURS_DE_MATIERE)",
+      "Using the wrong article variable for the language"
+    ]
+  }
+}

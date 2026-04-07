@@ -1,0 +1,44 @@
+{
+  "brand_voice": {
+    "description": "Superprof communicates in a friendly but formal way. The tone should feel warm, encouraging, and professional — never cold or robotic.",
+    "core_principles": [
+      "Friendly and approachable",
+      "Formal address (vous/Sie/usted/Lei etc.) where the language has this distinction",
+      "Encouraging and positive",
+      "Clear and direct — no overly complex sentences",
+      "Consistent emoji usage — match the French source exactly"
+    ]
+  },
+  "formality_rules": {
+    "formal_vous_languages": {
+      "description": "Languages where formal 'you' (like French 'vous') must be used",
+      "languages": ["fr", "pt", "pl", "cs", "sk", "bg", "tr", "uk", "ja", "ko", "zh", "zh-TW", "ar", "th", "vi", "ms", "hi", "bn", "ca", "eu", "af"],
+      "examples": {
+        "fr": "vous (never tu)",
+        "pt": "o senhor/a senhora (PT-PT) or voce (PT-BR)",
+        "pl": "Pan/Pani"
+      }
+    },
+    "informal_standard_languages": {
+      "description": "Languages where informal address is standard and acceptable for Superprof",
+      "languages": ["sv", "no", "da", "fi", "he", "de", "it", "nl", "ru", "ro", "sr", "bs", "hr", "sl", "el", "hu", "id", "es"],
+      "notes": "These languages use informal address as the Superprof brand standard for these markets. Confirmed 2026-04-03.",
+      "market_notes": {
+        "es_AR": "Argentina uses Rioplatense Spanish with 'vos' (not 'tú' or 'usted') — confirmed brand standard 2026-04-03"
+      }
+    },
+    "neutral_languages": {
+      "description": "Languages where formality is context-dependent or the distinction is minimal",
+      "languages": ["en", "ga", "sw"],
+      "notes": "English has no formal 'you'. For these languages, maintain a polite and professional register."
+    }
+  },
+  "common_issues": [
+    "Using informal 'you' in a language listed under formal_vous_languages (check the list — many languages like de/it/nl/es/ru are now informal_standard and should NOT be flagged)",
+    "Overly literal translations that sound unnatural in the target language",
+    "Missing or extra emoji compared to French source",
+    "Inconsistent capitalization or punctuation",
+    "Machine-translation artifacts (overly literal phrasing, awkward word order)",
+    "Mixing formal and informal register within the same notification"
+  ]
+}
