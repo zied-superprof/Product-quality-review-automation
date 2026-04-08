@@ -46,6 +46,24 @@ Restructure `corrections_log.json` with a machine-readable schema and surface th
 - **D-15:** Rules loaded silently — no per-language announcement. Applied as context without user-visible output.
 - **D-16:** Load all rules upfront at Step 3 (one file read), capped at top-5 per language loaded into context. If rules_summary.json exceeds 150 total rules, log a one-line warning: `"rules_summary.json has grown large (N rules) — consider pruning low-confidence entries."`
 
+### Pre-write conflict detection (FBK-02 addition)
+
+- **D-17:** Before writing any new rule or correction, Claude reads `review-translations.md` and the relevant config files to check for contradictions
+- **D-18:** If no conflict: write silently, confirm in one line as normal
+- **D-19:** If conflict detected: do NOT write. Show a conflict block and ask the user to decide:
+  ```
+  ⚠️ Conflict detected before writing:
+
+  New rule:      "[extracted rule]"
+  Conflicts with: [file] [section] — "[existing process]"
+
+  Which takes precedence?
+  1. Write the new rule anyway
+  2. Discard the new rule
+  3. Update the existing process instead
+  ```
+- **D-20:** Only pause when a conflict is actually detected — no confirmation prompt on the happy path
+
 ### Claude's Discretion
 
 - Exact recency_weight calculation (days since `last_seen` on the rule entry)
