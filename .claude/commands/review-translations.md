@@ -50,83 +50,51 @@ If there are relevant learned rules, mention: "Applying [N] learned rules from p
 
 ## Step 4: AI quality review
 
-### 4a — Triage: split markets into two tiers
+### 4a — Review French reference
+
+Before reviewing any translation, check the French reference (France cell) for:
+1. **Word-level typos** — misspelled words, missing accents, doubled letters, wrong homophones
+2. **Variable name typos** — transposed or missing characters in `@TPL_*@` variable names (e.g. `@TPL_PREF_PRENOM@` instead of `@TPL_PROF_PRENOM@`), or malformed conditional tag names
+3. **Minor wording/grammar issues** — grammatical errors in the French source itself
+
+If any issues are found, output them as a JSON array using the same issue format (with `"market": "France"` and `"lang": "fr"`). These will appear in the report under the French reference section.
+
+If the French reference is clean, proceed silently.
+
+### 4b — Triage
 
 Using the structural validator output from Step 2, split all markets into:
 
-- **Tier 1 — Flagged**: markets with any structural error or warning → full review (Sonnet)
-- **Tier 2 — Clean**: markets with zero structural findings → spot-check only (Haiku)
+- **Flagged**: markets with any structural error or warning → full AI review below
+- **Clean**: markets with zero structural findings → auto-pass, no AI review needed
 
-Report: "Tier 1 (full review): [N] markets. Tier 2 (spot-check): [M] markets."
+Report: "Flagged (full review): [N] markets. Clean (auto-pass): [M] markets."
 
-### 4b — Tier 2 spot-check (Haiku 4.5, parallel subagents)
+If `--languages` or `--notification` filters are set, treat all filtered markets as flagged.
 
-Read `config/review_rules_compact.md` and the relevant rules from `corrections/corrections_log.json` once. You will embed them in each subagent prompt.
+### 4c — Full review of flagged markets (inline, sequential)
 
-Split the clean markets into batches of up to 22. Launch **all batches simultaneously** — send a single message with one `Agent` tool call per batch (model: haiku). Do not wait for one batch to finish before launching the next.
+Read `config/review_rules_compact.md` and the relevant rules from `corrections/corrections_log.json` once.
 
-Each subagent prompt must follow this template exactly:
+Work through each flagged market **inline in this conversation** — no subagents, no batching. For each market, evaluate the 7 criteria below and **append all issues to `ai_findings`** (a running flat list held in memory). Do NOT output JSON arrays to the conversation. Instead, output one progress line per market:
 
-```
-You are reviewing Superprof notification translations. Check each market for:
-1. Emoji consistency — same emoji as French source, same positions
-2. Encoding issues — mojibake, broken characters, blank content
-3. Past corrections — does this repeat a rule from the corrections history below?
+"Reviewed [Country] ([lang]) — [N] issues found."
 
-## Rules
-[paste full contents of config/review_rules_compact.md]
-
-## Corrections history
-[paste relevant rules from corrections_log.json rules_summary]
-
-## Markets to review
-[For each market: market name, language code, French title+body, translation title+body]
-
-## Output format
-Return ONLY a JSON array of issues found. Return an empty array [] if no issues. No prose, no explanation.
-Format: [{"market":"...","lang":"...","severity":"error|warning|suggestion","category":"emoji|encoding|label|grammar|tone|format","issue":"...","suggested_fix":"..."}]
-```
-
-After all Haiku subagents return: collect every non-empty result. Markets flagged by any subagent are promoted to Tier 1. Markets with empty arrays remain clean.
-
-### 4c — Tier 1 full review (Sonnet 4.6, parallel subagents)
-
-The Tier 1 pool = original structural flagged markets + any markets promoted from Tier 2 spot-check.
-
-Split the Tier 1 pool into batches of up to 20. Launch **all batches simultaneously** — send a single message with one `Agent` tool call per batch (model: sonnet). Do not run them sequentially.
-
-Each subagent prompt must follow this template exactly:
-
-```
-You are doing a full quality review of Superprof notification translations.
-French is always the reference. For each market, evaluate all criteria below.
-
-## Rules
-[paste full contents of config/review_rules_compact.md]
-
-## Corrections history
-[paste relevant rules from corrections_log.json rules_summary]
-
-## Markets to review
-[For each market: market name, language code, French title+body, translation title+body, structural validator findings (if any)]
-
-## Criteria to check
+**Criteria to check per market:**
 1. Grammar — correct in the target language?
-2. Tone — matches Superprof voice? Apply formality rules from Rules section exactly.
+2. Tone — matches Superprof voice? Apply formality rules from `config/review_rules_compact.md` exactly.
 3. Natural expression — sounds natural to a native speaker, not overly literal?
-4. Label correctness — all @TPL_*@ variables preserved? Apply subject variable rules from Rules section exactly.
+4. Label correctness — all @TPL_*@ variables preserved? Apply subject variable rules exactly.
 5. Emoji consistency — same emoji as French source, same positions?
 6. Cultural appropriateness — anything inappropriate or confusing in the target market?
 7. Past corrections — does this repeat a rule from corrections history?
 
-## Output format
-Return ONLY a JSON array of issues found. Return an empty array [] if no issues. No prose, no explanation.
-Format: [{"market":"...","lang":"...","severity":"error|warning|suggestion","category":"grammar|tone|label|cultural|emoji|encoding|format","issue":"...","original_fr":"...","current_translation":"...","suggested_fix":"..."}]
+**Issue schema** (each object appended to `ai_findings`):
+```json
+[{"market":"...","lang":"...","severity":"error|warning|suggestion","category":"grammar|tone|label|cultural|emoji|encoding|format","issue":"...","original_fr":"...","current_translation":"...","suggested_fix":"..."}]
 ```
 
-After all Sonnet subagents return: merge all issues arrays into a single flat list. This is the AI findings set for Step 5.
-
-If `--languages` or `--notification` filters are set, skip triage entirely and run only Tier 1 (Sonnet) on the filtered markets.
+After all markets are reviewed, output a summary line: "AI review complete: [N] markets reviewed, [M] total issues found." The `ai_findings` list is the AI findings set for Step 5.
 
 ## Step 5: Merge results
 
@@ -162,6 +130,15 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 **Title**: [verbatim French title — all variables, emoji, markup exactly as in CSV]
 **Body**: [verbatim French body — all variables, emoji, markup exactly as in CSV]
 
+<!-- FRENCH REFERENCE ISSUES (only include if Step 4a found issues — omit entire block if clean) -->
+### ⚠️ French reference issues
+> These issues are in the France source text itself and will affect all markets until corrected.
+
+**[#N]** — [Category]
+- **Issue**: [what's wrong]
+- **Current**: [exact text with error]
+- **Suggested fix**: [corrected text]
+
 ---
 
 <!-- GROUPED SECTION (use when 2+ markets have exactly the same correction) -->
@@ -180,13 +157,13 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 **Body**: [verbatim body — all variables, emoji, markup exactly as in CSV]
 
 ### Proposed text
+> **MANDATORY — Empty translations**: If the current text is completely empty (blank title AND blank body), you MUST generate a full AI translation from the French source. Do NOT write "pending" or defer to the translation team. Use the target language and market context. Mark every generated field:
+> **Title**: [AI-generated title] `[AI-proposed — human review required]`
+> **Body**: [AI-generated body] `[AI-proposed — human review required]`
+
 **Title**: [corrected title]
 **Body**: [corrected body — variables and markup preserved, only text corrected. Add `[verify]` for uncertain fixes.]
 *(identical fix applies to all markets in this group)*
-
-> If the current text is empty (no translation exists), generate a translation from the French source using the target language and market context. Mark each generated field with `[AI-proposed — human review required]`:
-> **Title**: [AI-generated title] `[AI-proposed — human review required]`
-> **Body**: [AI-generated body] `[AI-proposed — human review required]`
 
 ---
 
@@ -211,23 +188,31 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 **Body**: [verbatim body]
 
 ### Proposed text
-**Title**: [corrected title]
-**Body**: [corrected body — variables and markup preserved, only text corrected. Add `[verify]` for uncertain fixes.]
-
-> If the current text is empty (no translation exists), generate a translation from the French source using the target language and market context. Mark each generated field with `[AI-proposed — human review required]`:
+> **MANDATORY — Empty translations**: If the current text is completely empty (blank title AND blank body), you MUST generate a full AI translation from the French source. Do NOT write "pending" or defer to the translation team. Use the target language and market context. Mark every generated field:
 > **Title**: [AI-generated title] `[AI-proposed — human review required]`
 > **Body**: [AI-generated body] `[AI-proposed — human review required]`
 >
-> If only structural errors with no text corrections possible:
+> If only structural errors with no text corrections possible (translation exists but has broken variables):
 > `Proposed text: pending — structural variables must be restored before a clean version can be drafted`
 >
 > If no issues (good quality): include Current text only — no Proposed text.
+
+**Title**: [corrected title]
+**Body**: [corrected body — variables and markup preserved, only text corrected. Add `[verify]` for uncertain fixes.]
 
 ---
 
 <!-- CLEAN MARKETS -->
 ## Markets with no issues
 [Comma-separated list]
+
+<!-- UNDEFINED VARIABLES SUMMARY (only include if structural validator returned variable_undefined findings) -->
+## Undefined variables
+> These variables appear in translations but are not documented in `config/Variables.csv`. They may be new, undocumented, or deprecated. No action needed in translations — add them to Variables.csv if confirmed valid.
+
+| Variable | Markets |
+|----------|---------|
+| `@TPL_VARIABLE_NAME@` | Country1, Country2, ... (N markets) |
 ```
 
 Tell the user: "Report generated at `reports/review-by-country-[date].md`."
