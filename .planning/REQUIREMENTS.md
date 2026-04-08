@@ -13,9 +13,9 @@
 
 ### Reference Document Reliability
 
-- [ ] **REF-01**: The review skill explicitly logs which reference files were loaded and their version/row count at the start of each review, so the user can verify the right files are being used
-- [ ] **REF-02**: Variable validation against `Variables.csv` produces an explicit pass/fail per market (not a silent miss) — unknown variables are always flagged, not silently ignored when the file is absent
-- [ ] **REF-03**: Formality rules from `tone_guidelines.json` are applied to every market's AI review — the report flags when a market deviates from its configured formality standard
+- [x] **REF-01**: The review skill explicitly logs which reference files were loaded and their version/row count at the start of each review, so the user can verify the right files are being used
+- [x] **REF-02**: Variable validation against `Variables.csv` produces an explicit pass/fail per market (not a silent miss) — unknown variables are always flagged, not silently ignored when the file is absent
+- [x] **REF-03**: Formality rules from `tone_guidelines.json` are applied to every market's AI review — the report flags when a market deviates from its configured formality standard
 
 ### Report Format
 
@@ -67,9 +67,9 @@
 | TOK-01 | Phase 1 | Complete |
 | TOK-02 | Phase 1 | Complete |
 | TOK-03 | Phase 1 | Complete |
-| REF-01 | Phase 2 | Pending |
-| REF-02 | Phase 2 | Pending |
-| REF-03 | Phase 2 | Pending |
+| REF-01 | Phase 2 | Complete |
+| REF-02 | Phase 2 | Complete |
+| REF-03 | Phase 2 | Complete |
 | RPT-01 | Phase 2 | Pending |
 | RPT-02 | Phase 2 | Pending |
 | RPT-03 | Phase 2 | Pending |

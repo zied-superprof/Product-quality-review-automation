@@ -43,7 +43,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Reference document reliability — load logging (REF-01), Variables.csv hard enforcement (REF-02), formality deviation flagging (REF-03)
+- [x] 02-01: Reference document reliability — load logging (REF-01), Variables.csv hard enforcement (REF-02), formality deviation flagging (REF-03)
 - [ ] 02-02: Report format — configurable output flag (RPT-01), consistent section structure (RPT-02), HTML as default output (RPT-03)
 
 ---
@@ -85,7 +85,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Token Optimization | 2/2 | Complete   | 2026-04-08 |
-| 2. Reference Reliability + Report Format | 0/2 | Not started | - |
+| 2. Reference Reliability + Report Format | 1/2 | In Progress | - |
 | 3. Feedback Loop Strengthening | 0/2 | Not started | - |
 | 4. Team Handoff | 0/1 | Not started | - |
 
@@ -98,9 +98,9 @@ Plans:
 | TOK-01 | Phase 1 | Complete |
 | TOK-02 | Phase 1 | Complete |
 | TOK-03 | Phase 1 | Complete |
-| REF-01 | Phase 2 | Pending |
-| REF-02 | Phase 2 | Pending |
-| REF-03 | Phase 2 | Pending |
+| REF-01 | Phase 2 | Complete |
+| REF-02 | Phase 2 | Complete |
+| REF-03 | Phase 2 | Complete |
 | RPT-01 | Phase 2 | Pending |
 | RPT-02 | Phase 2 | Pending |
 | RPT-03 | Phase 2 | Pending |
