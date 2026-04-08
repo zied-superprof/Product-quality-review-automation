@@ -171,11 +171,11 @@ def extract_custom_tags(text: str) -> dict:
     return {'opens': opens, 'closes': closes}
 
 
-def load_valid_variables(config_dir: str) -> dict[str, str]:
-    """Load Variables.csv and return {variable_name: description}."""
+def load_valid_variables(config_dir: str) -> dict[str, str] | None:
+    """Load Variables.csv and return {variable_name: description}, or None if file missing."""
     path = Path(config_dir) / 'Variables.csv'
     if not path.exists():
-        return {}
+        return None
     valid: dict[str, str] = {}
     with open(path, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
@@ -183,6 +183,7 @@ def load_valid_variables(config_dir: str) -> dict[str, str]:
         for row in reader:
             if row and row[0].startswith('@TPL_'):
                 valid[row[0]] = row[1] if len(row) > 1 else ''
+    print(f"Variables.csv: {len(valid)} variables loaded", file=sys.stderr)
     return valid
 
 
@@ -222,8 +223,6 @@ def check_variables(ref_entry: dict, entry: dict) -> list[dict]:
 
 def check_variables_catalogue(entry: dict, valid_variables: dict[str, str]) -> list[dict]:
     """Flag @TPL_*@ variables in the translation that don't exist in Variables.csv."""
-    if not valid_variables:
-        return []
     issues = []
     text = entry['titre'] + ' ' + entry['corps']
     trans_vars = set(extract_value_variables(text))
@@ -581,6 +580,9 @@ def validate_entry(ref_entry: dict, entry: dict, valid_variables: dict[str, str]
 def run_validation(filepath: str, config_dir: str = 'config') -> dict:
     """Parse the CSV and run all structural checks."""
     valid_variables = load_valid_variables(config_dir)
+    if valid_variables is None:
+        print("ABORT: Variables.csv not found in config/. Cannot validate variables.", file=sys.stderr)
+        sys.exit(1)
     entries = parse_per_notification_csv(filepath)
 
     if not entries:
