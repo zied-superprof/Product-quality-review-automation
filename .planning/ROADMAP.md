@@ -8,7 +8,7 @@ This milestone hardens an existing, working system: the two-tier translation rev
 ## Phases
 
 - [x] **Phase 1: Token Optimization** - Eliminate context-window waste in Step 4c and add a compact triage mode to the structural validator
-- [ ] **Phase 2: Reference Reliability + Report Format** - Harden config file usage, enforce variable catalog checks, and ship configurable HTML-default reports
+- [x] **Phase 2: Reference Reliability + Report Format** - Harden config file usage, enforce variable catalog checks, and ship configurable HTML-default reports (completed 2026-04-08)
 - [ ] **Phase 3: Feedback Loop Strengthening** - Restructure corrections_log.json with a machine-readable schema and surface relevant past rules per-language at review time
 - [ ] **Phase 4: Team Handoff** - Write README, declare optional dependencies, and make generate_pdf.py runnable without source edits
 
@@ -44,7 +44,7 @@ Plans:
 
 Plans:
 - [x] 02-01: Reference document reliability — load logging (REF-01), Variables.csv hard enforcement (REF-02), formality deviation flagging (REF-03)
-- [ ] 02-02: Report format — configurable output flag (RPT-01), consistent section structure (RPT-02), HTML as default output (RPT-03)
+- [x] 02-02: Report format — configurable output flag (RPT-01), consistent section structure (RPT-02), HTML as default output (RPT-03)
 
 ---
 
@@ -85,7 +85,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Token Optimization | 2/2 | Complete   | 2026-04-08 |
-| 2. Reference Reliability + Report Format | 1/2 | In Progress | - |
+| 2. Reference Reliability + Report Format | 2/2 | Complete   | 2026-04-08 |
 | 3. Feedback Loop Strengthening | 0/2 | Not started | - |
 | 4. Team Handoff | 0/1 | Not started | - |
 

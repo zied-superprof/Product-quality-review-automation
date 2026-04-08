@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 02-reference-reliability-report-format-02-01-PLAN.md
-last_updated: "2026-04-08T19:01:26Z"
+status: unknown
+stopped_at: Completed 02-reference-reliability-report-format-02-02-PLAN.md
+last_updated: "2026-04-08T19:17:26.401Z"
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 3
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 4
   percent: 43
 ---
 
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 02 — reference-reliability-report-format
+**Current focus:** Phase 03 — feedback-loop-strengthening (Phase 02 complete)
 
 ## Milestone
 
@@ -31,11 +31,11 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
 | 1 | Token Optimization | 2 | ✓ Complete |
-| 2 | Reference Reliability + Report Format | 2 | ◑ In Progress (1/2) |
+| 2 | Reference Reliability + Report Format | 2 | ✓ Complete |
 | 3 | Feedback Loop Strengthening | 2 | ○ Pending |
 | 4 | Team Handoff | 1 | ○ Pending |
 
-Progress: ████░░░░░░ 43%
+Progress: ██████████ 100%
 
 ## Key Files
 
@@ -58,12 +58,15 @@ Progress: ████░░░░░░ 43%
 - REF-01: `load_valid_variables` returns None (not empty dict) to force explicit abort in caller — prevents silent bypass surviving future refactors
 - REF-02: Load logging goes to stderr to avoid polluting JSON stdout output
 - REF-03: Step 4c criterion 2 references tone_guidelines.json directly so formality rules are config-driven, not hardcoded in the prompt
+- [Phase 02-reference-reliability-report-format]: --format defaults to html so non-technical teammates can open reports in any browser without extra steps
+- [Phase 02-reference-reliability-report-format]: RPT-01/RPT-02/RPT-03: Sections 1,2,5 always present; sections 3,4,6 conditional on findings — predictable report structure without noise
+- [Phase 02-reference-reliability-report-format]: Notification ID resolution order: --notification arg > CSV column > filename sanitized — explicit user intent takes precedence
 
 ## Last Session
 
-- **Stopped at:** Completed 02-reference-reliability-report-format-02-01-PLAN.md
-- **Timestamp:** 2026-04-08T19:01:26Z
+- **Stopped at:** Completed 02-reference-reliability-report-format-02-02-PLAN.md
+- **Timestamp:** 2026-04-08T19:15:48Z
 
 ---
 *Initialized: 2026-04-08*
-*Last updated: 2026-04-08 — Phase 02 Plan 01 complete*
+*Last updated: 2026-04-08 — Phase 02 Plan 02 complete; Phase 02 complete*
