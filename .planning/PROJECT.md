@@ -21,13 +21,12 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ Undefined variables summary section in reports — existing
 - ✓ AI-generated translations mandated for empty entries — existing
 - ✓ PDF generation capability (fragile, manual path editing required) — existing
+- ✓ Token optimization: Step 4c silent accumulation + `--summary` flag for structural_validator.py — Validated in Phase 01
+- ✓ Reference document reliability: structural_validator.py hard-fails on missing Variables.csv; Step 1 health check confirms all 3 config files loaded; Step 4c formality logic explicitly references tone_guidelines.json — Validated in Phase 02
+- ✓ Report format: `--format html|md|pdf` flag, notification-ID filenames, HTML output with inline CSS, fixed section order — Validated in Phase 02
 
 ### Active
 
-- [ ] Token optimization: Step 4c silent accumulation — findings written directly to report without conversation output
-- [ ] Token optimization: `--summary` flag for structural_validator.py — compact triage output (market names + counts only, not full JSON arrays)
-- [ ] Report format evaluation: assess token cost and usability impact of switching from `.md` to PDF or structured HTML for non-technical reviewers
-- [ ] Reference document reliability: verify and harden how label_patterns.json, tone_guidelines.json, and Variables.csv actually drive review decisions (not just loaded)
 - [ ] Feedback loop strengthening: structure corrections_log.json and the Step 7 workflow so accumulated rules are genuinely reusable — building toward translation generation, not just review history
 - [ ] Team handoff: README and setup documentation enabling a non-Claude-Code teammate to run reviews independently
 
@@ -82,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after initialization*
+*Last updated: 2026-04-08 after Phase 02 (reference reliability + report format) complete*
