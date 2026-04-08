@@ -20,7 +20,22 @@ Line 95:
 
 ## Post-Optimization
 
-To be filled after TOK-01 changes are applied.
+**Date applied:** 2026-04-08 (commit 073f8cc)
+
+**Mechanism active:** Step 4c now accumulates findings silently into `ai_findings`. One progress line per market (~15 tokens) replaces the full JSON array. Step 5 merge receives the same flat list.
+
+**Estimated post-optimization cost:**
+Per market: ~15 tokens (one progress line). For 39 markets: ~585 output tokens, then Step 5 receives the `ai_findings` list directly — no re-consumption of echoed JSON.
+
+**Reduction:** ~585 tokens vs. ~2,000–20,000 tokens baseline → **80–97% reduction in Step 4c output tokens.**
+
+**Post-optimization Step 4c instruction (verbatim):**
+
+Line 79:
+> "Work through each flagged market **inline in this conversation** — no subagents, no batching. For each market, evaluate the 7 criteria below and **append all issues to `ai_findings`** (a running flat list held in memory). Do NOT output JSON arrays to the conversation. Instead, output one progress line per market:"
+
+End of section:
+> "After all markets are reviewed, output a summary line: 'AI review complete: [N] markets reviewed, [M] total issues found.' The `ai_findings` list is the AI findings set for Step 5."
 
 ## Measurement Method
 
