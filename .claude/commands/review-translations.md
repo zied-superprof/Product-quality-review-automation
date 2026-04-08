@@ -33,6 +33,20 @@ If the variable format hasn't been seen before, update `config/label_patterns.js
 
 Report to the user: "Found [X] notifications across [Y] languages. CSV type: [type]. Variable format: [format]."
 
+**Reference file health check** — Before proceeding to Step 2, verify all three config files load successfully:
+1. Read `config/Variables.csv` — count rows starting with `@TPL_` (these are the valid variables).
+2. Read `config/tone_guidelines.json` — count distinct language codes across `formal_vous_languages.languages`, `informal_standard_languages.languages`, and `neutral_languages.languages` (deduplicated).
+3. Read `config/label_patterns.json` — confirm the file parses as valid JSON.
+
+Print a single status line:
+`Reference files: Variables.csv ([N] vars) ✓ | tone_guidelines.json ([M] languages) ✓ | label_patterns.json ✓`
+
+Where [N] is the count of `@TPL_*@` rows in Variables.csv, and [M] is the total distinct language codes across all three formality lists in tone_guidelines.json.
+
+**If any file fails to load or is missing, abort immediately** with:
+`ABORT: [filename] not found or failed to parse. Cannot proceed with review.`
+Do NOT continue to Step 2.
+
 ## Step 2: Run structural validation
 
 Execute the Python structural validator:
@@ -82,7 +96,12 @@ Work through each flagged market **inline in this conversation** — no subagent
 
 **Criteria to check per market:**
 1. Grammar — correct in the target language?
-2. Tone — matches Superprof voice? Apply formality rules from `config/review_rules_compact.md` exactly.
+2. Tone and formality — matches Superprof voice? Load `config/tone_guidelines.json`. For this market's language code:
+   - If language is in `formality_rules.formal_vous_languages.languages`: market MUST use formal address (vous/Sie/usted/Lei/etc.). If informal address detected, emit a Warning finding: `{"severity": "warning", "category": "tone", "issue": "Formality deviation: [market] uses informal address but tone_guidelines.json specifies formal (formal_vous_languages)"}`
+   - If language is in `formality_rules.informal_standard_languages.languages`: informal address is the Superprof brand standard for this market. Do NOT flag informal usage as an error or warning.
+   - If language is in `formality_rules.neutral_languages.languages` (en, ga, sw): polite register, no formal/informal distinction to check.
+   - If language is not found in any list: do not flag formality — the language has no configured standard.
+   Also check general Superprof tone (friendly, encouraging) per `config/review_rules_compact.md`.
 3. Natural expression — sounds natural to a native speaker, not overly literal?
 4. Label correctness — all @TPL_*@ variables preserved? Apply subject variable rules exactly.
 5. Emoji consistency — same emoji as French source, same positions?
