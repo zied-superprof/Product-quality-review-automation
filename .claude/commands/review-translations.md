@@ -13,6 +13,7 @@ The user's message after the command may contain:
 - `--languages XX,YY` — optional, only review these language codes
 - `--notification ID` — optional, only review this notification
 - `--structural-only` — optional, skip AI review and only run structural checks
+- `--format html|md|pdf` — optional, controls report output. Default: `html` (writes both .md and .html). `md` writes .md only. `pdf` writes .md + .html + .pdf (requires weasyprint). If an unrecognized value is passed, print: `Unknown format "[value]". Valid options: html, md, pdf` and abort.
 
 **Resolving the file path** (try in order):
 1. If the user passed a path and it exists — use it directly.
@@ -46,6 +47,14 @@ Where [N] is the count of `@TPL_*@` rows in Variables.csv, and [M] is the total 
 **If any file fails to load or is missing, abort immediately** with:
 `ABORT: [filename] not found or failed to parse. Cannot proceed with review.`
 Do NOT continue to Step 2.
+
+**Notification ID extraction** — Extract the notification identifier for use in the report filename:
+1. If `--notification` was passed, use that value as the notification ID.
+2. Otherwise, look for a column in the CSV header that contains "notification" (case-insensitive). If found, use the value from the first data row.
+3. If no notification column exists, derive the ID from the CSV filename: strip the `.csv` extension, strip any path prefix.
+4. Sanitize the ID for filenames: lowercase, replace spaces and slashes with hyphens, strip characters that are not alphanumeric or hyphens.
+
+Store the sanitized notification ID for use in Step 6 filename generation.
 
 ## Step 2: Run structural validation
 
@@ -126,7 +135,61 @@ Combine structural validator findings with AI review findings. Deduplicate (don'
 
 Generate one Markdown report file in `reports/`:
 
-### `reports/review-by-country-YYYY-MM-DD.md`
+### Report filename and output
+
+**Filename**: `reports/review-[notification-id]-YYYY-MM-DD.md` (and `.html` / `.pdf` as applicable)
+
+Where `[notification-id]` is the sanitized ID from Step 1, and `YYYY-MM-DD` is today's date.
+
+**Output behavior by --format flag:**
+- `html` (default): Write the Markdown report to `reports/review-[id]-[date].md`, then convert to HTML and write to `reports/review-[id]-[date].html`. Tell the user: "Report generated at `reports/review-[id]-[date].html` (Markdown source: `.md`)"
+- `md`: Write only the Markdown report to `reports/review-[id]-[date].md`. Tell the user: "Report generated at `reports/review-[id]-[date].md`"
+- `pdf`: Write .md, convert to .html, then convert to .pdf using weasyprint. If weasyprint is not installed, print: "PDF generation requires weasyprint. Install with: pip install weasyprint" and fall back to html behavior. Tell the user about all generated files.
+
+**MD-to-HTML conversion step** (runs for `html` and `pdf` formats):
+After writing the .md file, run an inline Python snippet:
+```python
+import markdown
+from pathlib import Path
+
+md_content = Path("[md_path]").read_text(encoding="utf-8")
+body = markdown.markdown(md_content, extensions=["tables", "fenced_code"])
+
+css = """
+  body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 11pt; line-height: 1.65; color: #1a1a2e; max-width: 800px; margin: 0 auto; padding: 32px 40px; }
+  h1 { font-size: 20pt; font-weight: 700; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 8px; margin-top: 0; }
+  h2 { font-size: 13pt; font-weight: 700; color: #ffffff; background: #0f3460; padding: 6px 12px; margin-top: 24px; border-radius: 3px; }
+  h3 { font-size: 11pt; font-weight: 600; color: #0f3460; margin-top: 16px; border-left: 4px solid #e94560; padding-left: 8px; }
+  h4 { font-size: 10pt; font-weight: 600; color: #333; font-style: italic; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 12px 0; }
+  th { background: #0f3460; color: white; padding: 5px 8px; text-align: left; font-weight: 600; }
+  td { padding: 4px 8px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8f9fc; }
+  blockquote { border-left: 3px solid #e94560; margin: 10px 0; padding: 5px 12px; background: #fff5f5; color: #555; font-style: italic; }
+  code { background: #f0f0f0; padding: 1px 4px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 9pt; }
+  pre { background: #f6f8fa; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 9pt; }
+  strong { color: #0f3460; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 16px 0; }
+  ol, ul { padding-left: 20px; }
+  li { margin-bottom: 4px; }
+  @media print { body { max-width: 100%; padding: 0; } h2 { -webkit-print-color-adjust: exact; print-color-adjust: exact; } th { -webkit-print-color-adjust: exact; print-color-adjust: exact; } tr:nth-child(even) td { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+"""
+
+html = f"<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>Translation Quality Review</title>\n<style>{css}</style>\n</head>\n<body>\n{body}\n</body>\n</html>"
+Path("[html_path]").write_text(html, encoding="utf-8")
+```
+Replace `[md_path]` and `[html_path]` with the actual report paths.
+
+**Section order is FIXED — every report must use these sections in this exact order, regardless of findings:**
+
+1. **Summary table** — always present, shows all markets with their error/warning/suggestion counts (even if all zeros)
+2. **French reference** — ALWAYS present, even when the reference is clean. Shows verbatim French title and body. If Step 4a found issues, the "French reference issues" sub-section appears below; if clean, only the verbatim text is shown.
+3. **Grouped sections** — markets with identical corrections grouped together. If no groups exist, omit this section entirely (do not show an empty group header).
+4. **Single-market sections** — markets with unique corrections. If none, omit.
+5. **Markets with no issues** — always present. List all clean markets together as a comma-separated group under a single `## Markets with no issues` header. If every market has issues, show: `## Markets with no issues\nNo issues found.`
+6. **Undefined variables** — shown ONLY when the structural validator returned `variable_undefined` findings (per D-07). If all variables are recognized, omit this section entirely.
+
+**Empty section rule (per D-17):** Sections 1, 2, and 5 are always present. If section 5 has no clean markets, display `No issues found.` under the header. Sections 3, 4, and 6 are conditional — they appear only when relevant findings exist; they are not shown with "No issues found." when empty.
 
 #### Grouping rule
 Before writing the report, identify corrections that are **exactly identical** across multiple markets (same issue, same fix, same variables). Group those markets into a single section. If markets share an issue type but differ in details (e.g. some also have an accent typo, one has an extra spelling error), split into sub-groups — do not over-merge.
@@ -149,7 +212,7 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 **Title**: [verbatim French title — all variables, emoji, markup exactly as in CSV]
 **Body**: [verbatim French body — all variables, emoji, markup exactly as in CSV]
 
-<!-- FRENCH REFERENCE ISSUES (only include if Step 4a found issues — omit entire block if clean) -->
+<!-- FRENCH REFERENCE ISSUES: verbatim title and body above are ALWAYS shown. The issues sub-section below is conditional — include only if Step 4a found issues, omit if clean. -->
 ### ⚠️ French reference issues
 > These issues are in the France source text itself and will affect all markets until corrected.
 
@@ -221,9 +284,9 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 
 ---
 
-<!-- CLEAN MARKETS -->
+<!-- CLEAN MARKETS: always present. If no clean markets exist, show "No issues found." -->
 ## Markets with no issues
-[Comma-separated list]
+[Comma-separated list of clean markets, or "No issues found." if all markets had findings]
 
 <!-- UNDEFINED VARIABLES SUMMARY (only include if structural validator returned variable_undefined findings) -->
 ## Undefined variables
@@ -234,7 +297,7 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 | `@TPL_VARIABLE_NAME@` | Country1, Country2, ... (N markets) |
 ```
 
-Tell the user: "Report generated at `reports/review-by-country-[date].md`."
+Tell the user about the generated files per the output behavior described above (html default: both .md and .html; md: .md only; pdf: .md + .html + .pdf or fallback message).
 
 ## Step 7: Feedback loop
 
