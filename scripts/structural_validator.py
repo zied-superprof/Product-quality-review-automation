@@ -13,6 +13,7 @@ Stdlib only — no pip installs required.
 """
 
 import argparse
+import csv
 import json
 import re
 import sys
@@ -81,69 +82,21 @@ RE_MOJIBAKE = re.compile(
 
 def parse_per_notification_csv(filepath: str) -> list[dict]:
     """
-    Parse a Sheet113-style CSV where each country is a text block:
-      - Line starting with country name (possibly wrapped in quotes)
+    Parse a per-notification CSV where each cell is a country block:
+      - First line of cell: country name
       - Line with "Titre: ..."
       - Line(s) with "corps..." (the email body, can be multiline)
 
+    The CSV may have multiple rows and multiple columns — each cell is one market.
     Returns a list of dicts: {country, titre, corps}
     """
-    with open(filepath, 'r', encoding='utf-8') as f:
-        raw = f.read()
+    with open(filepath, newline='', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        cells = [cell for row in reader for cell in row if cell.strip()]
 
     entries = []
-    # Split by the pattern: closing quote + comma + opening quote of next country
-    # OR by country name at start of line
-    # The CSV has entries like: "Country\nTitre: ...\ncorps...", "NextCountry\n..."
-    # Strategy: find all country blocks by splitting on the pattern
-
-    # Remove leading/trailing whitespace
-    raw = raw.strip()
-
-    # Split into country blocks
-    # Each block starts with a country name (possibly preceded by a quote)
-    # and contains Titre: and corps lines
-    blocks = []
-    current_block = []
-
-    for line in raw.split('\n'):
-        stripped = line.strip()
-
-        # Detect country name line: starts with quote+uppercase or just uppercase,
-        # and the line is short (just a country name)
-        # Country names: "France, "Espagne, "Japon, etc. or just France, Espagne
-        is_country_start = False
-
-        # Remove leading quote if present
-        test_line = stripped.lstrip('"').rstrip('"').rstrip(',').strip()
-
-        # A country line is typically just the country name (short, no TPL_ tags, no HTML)
-        if (test_line and
-            len(test_line) < 50 and
-            'TPL_' not in test_line and
-            '<b>' not in test_line and
-            '[TITRE]' not in test_line and
-            'Titre:' not in test_line and
-            'corps' not in test_line[:5] and
-            not test_line.startswith('<') and
-            not test_line.startswith('[') and
-            not test_line.startswith('http')):
-            # Check if it looks like a country name (mostly letters, spaces, hyphens)
-            clean = re.sub(r'[A-Za-zÀ-ÿ\s\-\'\(\).]', '', test_line)
-            if len(clean) <= 2:  # Allow 1-2 non-letter chars
-                is_country_start = True
-
-        if is_country_start and current_block:
-            blocks.append('\n'.join(current_block))
-            current_block = [line]
-        else:
-            current_block.append(line)
-
-    if current_block:
-        blocks.append('\n'.join(current_block))
-
-    for block in blocks:
-        entry = parse_country_block(block)
+    for cell in cells:
+        entry = parse_country_block(cell)
         if entry:
             entries.append(entry)
 
@@ -218,6 +171,21 @@ def extract_custom_tags(text: str) -> dict:
     return {'opens': opens, 'closes': closes}
 
 
+def load_valid_variables(config_dir: str) -> dict[str, str]:
+    """Load Variables.csv and return {variable_name: description}."""
+    path = Path(config_dir) / 'Variables.csv'
+    if not path.exists():
+        return {}
+    valid: dict[str, str] = {}
+    with open(path, newline='', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        next(reader)  # skip header
+        for row in reader:
+            if row and row[0].startswith('@TPL_'):
+                valid[row[0]] = row[1] if len(row) > 1 else ''
+    return valid
+
+
 def check_variables(ref_entry: dict, entry: dict) -> list[dict]:
     """Check that all @TPL_*@ variables from the French reference exist in the translation."""
     issues = []
@@ -249,6 +217,25 @@ def check_variables(ref_entry: dict, entry: dict) -> list[dict]:
             'variable': var,
         })
 
+    return issues
+
+
+def check_variables_catalogue(entry: dict, valid_variables: dict[str, str]) -> list[dict]:
+    """Flag @TPL_*@ variables in the translation that don't exist in Variables.csv."""
+    if not valid_variables:
+        return []
+    issues = []
+    text = entry['titre'] + ' ' + entry['corps']
+    trans_vars = set(extract_value_variables(text))
+    for var in sorted(trans_vars):
+        if var not in valid_variables:
+            issues.append({
+                'check': 'variable_undefined',
+                'severity': 'warning',
+                'category': 'label',
+                'message': f'Variable {var} not found in Variables.csv — may be a typo or deprecated variable',
+                'variable': var,
+            })
     return issues
 
 
@@ -479,8 +466,9 @@ def check_empty_placeholder(ref_entry: dict, entry: dict) -> list[dict]:
 
     # Placeholder patterns
     placeholder_patterns = ['TODO', 'TRANSLATE', 'XXX', 'FIXME', 'lorem ipsum', 'TBD']
+    combined = trans_corps + ' ' + trans_titre
     for pattern in placeholder_patterns:
-        if pattern.lower() in (trans_corps + ' ' + trans_titre).lower():
+        if pattern in combined:
             issues.append({
                 'check': 'placeholder_text',
                 'severity': 'error',
@@ -569,11 +557,12 @@ def check_html_balance(entry: dict) -> list[dict]:
 # Main Validation Pipeline
 # ---------------------------------------------------------------------------
 
-def validate_entry(ref_entry: dict, entry: dict) -> list[dict]:
+def validate_entry(ref_entry: dict, entry: dict, valid_variables: dict[str, str] | None = None) -> list[dict]:
     """Run all structural checks on a single country entry against the French reference."""
     all_issues = []
 
     all_issues.extend(check_variables(ref_entry, entry))
+    all_issues.extend(check_variables_catalogue(entry, valid_variables or {}))
     all_issues.extend(check_conditionals(ref_entry, entry))
     all_issues.extend(check_emojis(ref_entry, entry))
     all_issues.extend(check_custom_markup(ref_entry, entry))
@@ -589,8 +578,9 @@ def validate_entry(ref_entry: dict, entry: dict) -> list[dict]:
     return all_issues
 
 
-def run_validation(filepath: str) -> dict:
+def run_validation(filepath: str, config_dir: str = 'config') -> dict:
     """Parse the CSV and run all structural checks."""
+    valid_variables = load_valid_variables(config_dir)
     entries = parse_per_notification_csv(filepath)
 
     if not entries:
@@ -611,7 +601,7 @@ def run_validation(filepath: str) -> dict:
     for entry in other_entries:
         country = entry['country']
         countries_reviewed.append(country)
-        issues = validate_entry(ref_entry, entry)
+        issues = validate_entry(ref_entry, entry, valid_variables)
         all_issues.extend(issues)
 
     # Summary
@@ -654,7 +644,10 @@ def main():
     )
     parser.add_argument('--input', '-i', required=True, help='Path to CSV file')
     parser.add_argument('--output', '-o', help='Path for JSON output (default: stdout)')
+    parser.add_argument('--config-dir', default='config', help='Path to config directory containing Variables.csv (default: config)')
     parser.add_argument('--pretty', action='store_true', help='Pretty-print JSON output')
+    parser.add_argument('--summary', action='store_true',
+        help='Print compact market/count table to stdout instead of full JSON')
 
     args = parser.parse_args()
 
@@ -663,7 +656,7 @@ def main():
         print(f'Error: File not found: {filepath}', file=sys.stderr)
         sys.exit(1)
 
-    results = run_validation(str(filepath))
+    results = run_validation(str(filepath), config_dir=args.config_dir)
 
     json_output = json.dumps(results, ensure_ascii=False, indent=2 if args.pretty else None)
 
@@ -671,7 +664,7 @@ def main():
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json_output, encoding='utf-8')
-        # Print summary to stderr
+        # Print summary to stderr (existing behavior, unchanged)
         s = results['summary']
         print(
             f"Structural validation complete: {s['errors']} errors, "
@@ -679,7 +672,20 @@ def main():
             f"{s['countries_reviewed']} countries reviewed",
             file=sys.stderr
         )
-    else:
+
+    if args.summary:
+        # Compact table to stdout — replaces full JSON when used without --output
+        by_country = results['summary'].get('by_country', {})
+        header = f"{'Market':<30} {'Errors':>6} {'Warnings':>8} {'Info':>5}"
+        print(header)
+        print('-' * len(header))
+        for country, counts in sorted(by_country.items()):
+            print(f"{country:<30} {counts.get('errors', 0):>6} {counts.get('warnings', 0):>8} {counts.get('infos', 0):>5}")
+        s = results['summary']
+        print('-' * len(header))
+        print(f"{'TOTAL':<30} {s['errors']:>6} {s['warnings']:>8} {s['info']:>5}")
+    elif not args.output:
+        # Default: full JSON to stdout (unchanged behavior)
         print(json_output)
 
 
