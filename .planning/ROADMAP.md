@@ -7,7 +7,7 @@ This milestone hardens an existing, working system: the two-tier translation rev
 
 ## Phases
 
-- [ ] **Phase 1: Token Optimization** - Eliminate context-window waste in Step 4c and add a compact triage mode to the structural validator
+- [x] **Phase 1: Token Optimization** - Eliminate context-window waste in Step 4c and add a compact triage mode to the structural validator
 - [ ] **Phase 2: Reference Reliability + Report Format** - Harden config file usage, enforce variable catalog checks, and ship configurable HTML-default reports
 - [ ] **Phase 3: Feedback Loop Strengthening** - Restructure corrections_log.json with a machine-readable schema and surface relevant past rules per-language at review time
 - [ ] **Phase 4: Team Handoff** - Write README, declare optional dependencies, and make generate_pdf.py runnable without source edits
@@ -25,8 +25,8 @@ This milestone hardens an existing, working system: the two-tier translation rev
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Implement silent accumulation in Step 4c of review-translations.md (TOK-01) and establish baseline token metric (TOK-03)
-- [ ] 01-02: Add `--summary` flag to structural_validator.py (TOK-02)
+- [x] 01-01: Implement silent accumulation in Step 4c of review-translations.md (TOK-01) and establish baseline token metric (TOK-03)
+- [x] 01-02: Add `--summary` flag to structural_validator.py (TOK-02)
 
 ---
 
@@ -84,7 +84,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Token Optimization | 0/2 | Not started | - |
+| 1. Token Optimization | 2/2 | Complete | 2026-04-08 |
 | 2. Reference Reliability + Report Format | 0/2 | Not started | - |
 | 3. Feedback Loop Strengthening | 0/2 | Not started | - |
 | 4. Team Handoff | 0/1 | Not started | - |
@@ -95,9 +95,9 @@ Plans:
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOK-01 | Phase 1 | Pending |
-| TOK-02 | Phase 1 | Pending |
-| TOK-03 | Phase 1 | Pending |
+| TOK-01 | Phase 1 | Complete |
+| TOK-02 | Phase 1 | Complete |
+| TOK-03 | Phase 1 | Complete |
 | REF-01 | Phase 2 | Pending |
 | REF-02 | Phase 2 | Pending |
 | REF-03 | Phase 2 | Pending |

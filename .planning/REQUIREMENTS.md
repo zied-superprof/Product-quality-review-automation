@@ -7,9 +7,9 @@
 
 ### Token Optimization
 
-- [ ] **TOK-01**: Step 4c in `review-translations.md` uses silent accumulation — AI review findings are written directly to the report file without being output to the conversation context window
-- [ ] **TOK-02**: `structural_validator.py` accepts a `--summary` flag that outputs only market names and issue counts (not full JSON arrays), reducing context load during triage
-- [ ] **TOK-03**: Token usage before and after optimization is measurable — a baseline metric exists to validate the improvement
+- [x] **TOK-01**: Step 4c in `review-translations.md` uses silent accumulation — AI review findings are written directly to the report file without being output to the conversation context window
+- [x] **TOK-02**: `structural_validator.py` accepts a `--summary` flag that outputs only market names and issue counts (not full JSON arrays), reducing context load during triage
+- [x] **TOK-03**: Token usage before and after optimization is measurable — a baseline metric exists to validate the improvement
 
 ### Reference Document Reliability
 
@@ -64,9 +64,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOK-01 | Phase 1 | Pending |
-| TOK-02 | Phase 1 | Pending |
-| TOK-03 | Phase 1 | Pending |
+| TOK-01 | Phase 1 | Complete |
+| TOK-02 | Phase 1 | Complete |
+| TOK-03 | Phase 1 | Complete |
 | REF-01 | Phase 2 | Pending |
 | REF-02 | Phase 2 | Pending |
 | REF-03 | Phase 2 | Pending |
