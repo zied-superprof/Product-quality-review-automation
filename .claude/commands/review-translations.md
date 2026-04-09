@@ -13,7 +13,7 @@ The user's message after the command may contain:
 - `--languages XX,YY` — optional, only review these language codes
 - `--notification ID` — optional, only review this notification
 - `--structural-only` — optional, skip AI review and only run structural checks
-- `--format html|md|pdf` — optional, controls report output. Default: `html` (writes both .md and .html). `md` writes .md only. `pdf` writes .md + .html + .pdf (requires weasyprint). If an unrecognized value is passed, print: `Unknown format "[value]". Valid options: html, md, pdf` and abort.
+- `--format md|pdf` — optional, controls report output. Default: `md` (writes .md only). `pdf` writes .md + .pdf (requires weasyprint). If an unrecognized value is passed, print: `Unknown format "[value]". Valid options: md, pdf` and abort.
 
 **Resolving the file path** (try in order):
 1. If the user passed a path and it exists — use it directly.
@@ -158,16 +158,15 @@ Generate one Markdown report file in `reports/`:
 
 ### Report filename and output
 
-**Filename**: `reports/review-[notification-id]-YYYY-MM-DD.md` (and `.html` / `.pdf` as applicable)
+**Filename**: `reports/review-[notification-id]-YYYY-MM-DD.md` (and `.pdf` if `--format pdf`)
 
 Where `[notification-id]` is the sanitized ID from Step 1, and `YYYY-MM-DD` is today's date.
 
 **Output behavior by --format flag:**
-- `html` (default): Write the Markdown report to `reports/review-[id]-[date].md`, then convert to HTML and write to `reports/review-[id]-[date].html`. Tell the user: "Report generated at `reports/review-[id]-[date].html` (Markdown source: `.md`)"
-- `md`: Write only the Markdown report to `reports/review-[id]-[date].md`. Tell the user: "Report generated at `reports/review-[id]-[date].md`"
-- `pdf`: Write .md, convert to .html, then convert to .pdf using weasyprint. If weasyprint is not installed, print: "PDF generation requires weasyprint. Install with: pip install weasyprint" and fall back to html behavior. Tell the user about all generated files.
+- `md` (default): Write the Markdown report to `reports/review-[id]-[date].md`. Tell the user: "Report generated at `reports/review-[id]-[date].md`"
+- `pdf`: Write .md, convert to .html internally (not announced), then convert to .pdf using weasyprint. If weasyprint is not installed, print: "PDF generation requires weasyprint. Install with: pip install weasyprint" and fall back to md behavior. Tell the user: "Report generated at `reports/review-[id]-[date].pdf` (Markdown source: `.md`)"
 
-**MD-to-HTML conversion step** (runs for `html` and `pdf` formats):
+**MD-to-HTML conversion step** (runs only for `pdf` format — HTML is an internal intermediate, not announced as output):
 After writing the .md file, run an inline Python snippet:
 ```python
 import markdown
@@ -318,7 +317,7 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 | `@TPL_VARIABLE_NAME@` | Country1, Country2, ... (N markets) |
 ```
 
-Tell the user about the generated files per the output behavior described above (html default: both .md and .html; md: .md only; pdf: .md + .html + .pdf or fallback message).
+Tell the user about the generated files per the output behavior described above (md default: .md only; pdf: .md + .pdf or fallback message).
 
 ## Step 7: Feedback loop
 
