@@ -4,12 +4,12 @@ milestone: v1.0
 milestone_name: Optimization & Hardening
 status: unknown
 stopped_at: "Completed 05-02: Notion publish block added to review-translations skill"
-last_updated: "2026-04-09T21:23:33Z"
+last_updated: "2026-04-09T21:27:24.391Z"
 progress:
-  total_phases: 6
+  total_phases: 4
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 9
+  total_plans: 8
+  completed_plans: 8
   percent: 75
 ---
 
