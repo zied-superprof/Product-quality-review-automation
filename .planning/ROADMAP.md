@@ -120,7 +120,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Remove HTML output format from --format flag and Step 6 (NTIO-04)
+- [x] 05-01-PLAN.md — Remove HTML output format from --format flag and Step 6 (NTIO-04)
 - [ ] 05-02-PLAN.md — Add Notion publish block to Step 6 with content adaptation (NTIO-01, NTIO-02, NTIO-03)
 
 ---
@@ -141,7 +141,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 5. Notion Publishing | 0/2 | Not started | - |
+| 5. Notion Publishing | 1/2 | In Progress|  |
 | 6. Batch Feedback Routing | 0/TBD | Not started | - |
 
 ---

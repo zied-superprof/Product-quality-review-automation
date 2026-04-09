@@ -45,7 +45,7 @@
 - [ ] **NTIO-01**: Report is automatically published to Notion upon completion — no extra command or user confirmation required
 - [ ] **NTIO-02**: The Notion page mirrors the .md report structure — all markets, same section order, same content
 - [ ] **NTIO-03**: Notion page title includes the notification ID and review date for easy identification in the workspace
-- [ ] **NTIO-04**: HTML output format is removed; .md file is retained on disk as local backup
+- [x] **NTIO-04**: HTML output format is removed; .md file is retained on disk as local backup
 
 ### Batch Feedback Routing
 
@@ -102,7 +102,7 @@
 | NTIO-01 | Phase 5 | Pending |
 | NTIO-02 | Phase 5 | Pending |
 | NTIO-03 | Phase 5 | Pending |
-| NTIO-04 | Phase 5 | Pending |
+| NTIO-04 | Phase 5 | Complete |
 | FBK-05 | Phase 6 | Pending |
 | FBK-06 | Phase 6 | Pending |
 | FBK-07 | Phase 6 | Pending |

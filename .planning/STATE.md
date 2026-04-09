@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Notion Publishing & Batch Feedback Routing
-status: roadmap ready
-stopped_at: ~
-last_updated: "2026-04-09T00:00:00.000Z"
+milestone: v1.0
+milestone_name: Optimization & Hardening
+status: unknown
+stopped_at: "Completed 05-01: HTML format removed from review-translations skill"
+last_updated: "2026-04-09T21:20:36.223Z"
 progress:
-  total_phases: 2
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_phases: 4
+  completed_phases: 3
+  total_plans: 8
+  completed_plans: 7
   percent: 0
 ---
 
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Milestone v1.1 — roadmap defined, planning Phase 5 next
+**Current focus:** Phase 05 — notion-publishing
 
 ## Milestone
 
@@ -66,10 +66,11 @@ Progress: 0% ░░░░░░░░░░
 - [v1.1 milestone]: Notion MCP already configured and working (tested 2026-04-09) — publish via MCP inside review-translations.md skill, no separate script needed
 - [v1.1 milestone]: HTML output removed entirely (NTIO-04); .md stays as local backup — Notion page is now the shareable output
 - [v1.1 milestone]: Batch feedback routing extends Step 7 — user pastes N comments, system routes each to corrections_log.json / label_patterns.json / tone_guidelines.json / Variables.csv with conflict detection
+- [Phase 05-notion-publishing]: D-07: html removed as --format option; md is new default; D-08: pdf path keeps html as internal weasyprint intermediate (not announced)
 
 ## Last Session
 
-- **Stopped at:** Milestone v1.1 roadmap created — Phase 5 and Phase 6 defined, ready for plan-phase
+- **Stopped at:** Completed 05-01: HTML format removed from review-translations skill
 - **Timestamp:** 2026-04-09
 
 ---
