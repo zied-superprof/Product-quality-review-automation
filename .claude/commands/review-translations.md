@@ -317,7 +317,73 @@ Every flagged item (Error, Warning, Suggestion) gets a sequential `**[#N]**` tag
 | `@TPL_VARIABLE_NAME@` | Country1, Country2, ... (N markets) |
 ```
 
-Tell the user about the generated files per the output behavior described above (md default: .md only; pdf: .md + .pdf or fallback message).
+### Notion publish
+
+After writing the .md report to disk, prepare and publish the report to Notion.
+
+**Step 6a — Construct the page title:**
+
+```
+Translation Review — [notification_id] — [YYYY-MM-DD]
+```
+
+Where `[notification_id]` is the sanitized ID from Step 1 (e.g. `relance_3`) and `[YYYY-MM-DD]` is today's date.
+
+**Step 6b — Adapt .md content for Notion-flavored Markdown:**
+
+Take the .md report content that was just written to disk and apply these transformations to produce the `notion_content` string:
+
+1. **Table conversion**: Convert ALL Markdown pipe-syntax tables to HTML `<table>` format. This includes:
+   - The Summary table (Section 1)
+   - The Undefined variables table (Section 6, if present)
+
+   Conversion rule: For each pipe-syntax table, produce:
+   ```html
+   <table>
+   <tr><th>Header1</th><th>Header2</th>...</tr>
+   <tr><td>Cell1</td><td>Cell2</td>...</tr>
+   ...
+   </table>
+   ```
+   Remove the pipe-syntax separator row (`|---|---|`). Each `|`-delimited data row becomes a `<tr>` with `<td>` cells. The header row uses `<th>` cells.
+
+2. **Template variable escaping**: Ensure every `@TPL_*@` variable in the report is wrapped in backtick code spans (`` `@TPL_VARIABLE_NAME@` ``). Most will already be in code spans or code blocks from the .md report. Scan for any bare `@TPL_` occurrences NOT already inside backticks or fenced code blocks and wrap them.
+
+3. **HTML-like template tags**: Ensure square-bracket tags like `[TITRE]`, `[/TITRE]`, `[LIEN]`, `[/LIEN]`, `[BOUTON]`, `[/BOUTON]` in translation body text are wrapped in backtick code spans to prevent Notion from misinterpreting them.
+
+4. **Translation body blocks**: When "Current text" or "Proposed text" sections contain full translation bodies with template tags and variables, wrap the entire body value in a fenced code block (triple backticks) rather than inline code spans, since bodies can be multi-line.
+
+**Step 6c — Publish to Notion:**
+
+Call `mcp__claude_ai_Notion__notion-create-pages` with:
+- `title`: the page title from Step 6a
+- `parent_page_id`: `33dd6418695a8097998fcf373ed18bf5`
+- The adapted markdown content from Step 6b as the page body content parameter
+
+**Parameter name uncertainty**: The body content parameter may be named `page_content`, `content`, or `markdown`. Try the call with the content string. If the tool returns an error suggesting a different parameter name, retry with the alternate name. The soft-fail behavior (Step 6d) handles persistent failures gracefully.
+
+**Step 6d — Handle result:**
+
+- **On success**: Capture the returned page URL from the tool response. If the response contains a page `id` but no direct URL, construct the URL as `https://www.notion.so/[page_id_without_hyphens]`. Store the URL for the output announcement.
+- **On failure**: Capture the error message. Do NOT abort the session. Store the error for the output announcement. The review is still complete — the .md file exists on disk.
+
+**Output announcement:**
+
+After the Notion publish attempt, announce results to the user:
+
+- **Notion success + md format (default):**
+  "Report generated at `reports/review-[id]-[date].md`
+  Published to Notion: [page URL]"
+
+- **Notion success + pdf format:**
+  "Report generated at `reports/review-[id]-[date].pdf` (Markdown source: `.md`)
+  Published to Notion: [page URL]"
+
+- **Notion failure (any format):**
+  "Report generated at `reports/review-[id]-[date].md`
+  ⚠️ Notion publish failed: [error message]. Report saved locally."
+
+After the announcement, proceed to Step 7 regardless of Notion success or failure.
 
 ## Step 7: Feedback loop
 
