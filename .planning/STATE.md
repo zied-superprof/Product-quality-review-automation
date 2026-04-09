@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Optimization & Hardening
 status: unknown
-stopped_at: "Completed 05-01: HTML format removed from review-translations skill"
-last_updated: "2026-04-09T21:20:36.223Z"
+stopped_at: "Completed 05-02: Notion publish block added to review-translations skill"
+last_updated: "2026-04-09T21:23:33Z"
 progress:
-  total_phases: 4
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 7
-  percent: 0
+  total_phases: 6
+  completed_phases: 4
+  total_plans: 10
+  completed_plans: 9
+  percent: 75
 ---
 
 # Project State
@@ -30,10 +30,10 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
-| 5 | Notion Publishing | TBD | Not started |
-| 6 | Batch Feedback Routing | TBD | Not started |
+| 5 | Notion Publishing | 2/2 | Complete |
+| 6 | Batch Feedback Routing | 0/TBD | Not started |
 
-Progress: 0% ░░░░░░░░░░
+Progress: 75% ███████░░░
 
 ## Key Files
 
@@ -67,10 +67,11 @@ Progress: 0% ░░░░░░░░░░
 - [v1.1 milestone]: HTML output removed entirely (NTIO-04); .md stays as local backup — Notion page is now the shareable output
 - [v1.1 milestone]: Batch feedback routing extends Step 7 — user pastes N comments, system routes each to corrections_log.json / label_patterns.json / tone_guidelines.json / Variables.csv with conflict detection
 - [Phase 05-notion-publishing]: D-07: html removed as --format option; md is new default; D-08: pdf path keeps html as internal weasyprint intermediate (not announced)
+- [Phase 05-02-notion-publishing]: D-01 through D-12 applied: Notion publish via mcp__claude_ai_Notion__notion-create-pages, parent page 33dd6418695a8097998fcf373ed18bf5, title format "Translation Review — [id] — [YYYY-MM-DD]", soft-fail (D-10/D-11/D-12), output announces .md + Notion URL or failure warning
 
 ## Last Session
 
-- **Stopped at:** Completed 05-01: HTML format removed from review-translations skill
+- **Stopped at:** Completed 05-02: Notion publish block added to review-translations skill
 - **Timestamp:** 2026-04-09
 
 ---

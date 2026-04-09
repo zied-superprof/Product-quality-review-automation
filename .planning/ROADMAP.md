@@ -103,7 +103,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 
 ## Phases (v1.1)
 
-- [ ] **Phase 5: Notion Publishing** - Auto-publish completed reports to Notion via MCP and remove HTML output; .md stays as local backup
+- [x] **Phase 5: Notion Publishing** - Auto-publish completed reports to Notion via MCP and remove HTML output; .md stays as local backup (completed 2026-04-09)
 - [ ] **Phase 6: Batch Feedback Routing** - Accept a batch of reviewer comments, suggest routing action per comment, apply confirmed actions immediately
 
 ## Phase Details (v1.1)
@@ -121,7 +121,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 
 Plans:
 - [x] 05-01-PLAN.md — Remove HTML output format from --format flag and Step 6 (NTIO-04)
-- [ ] 05-02-PLAN.md — Add Notion publish block to Step 6 with content adaptation (NTIO-01, NTIO-02, NTIO-03)
+- [x] 05-02-PLAN.md — Add Notion publish block to Step 6 with content adaptation (NTIO-01, NTIO-02, NTIO-03)
 
 ---
 
@@ -141,7 +141,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 5. Notion Publishing | 1/2 | In Progress|  |
+| 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
 | 6. Batch Feedback Routing | 0/TBD | Not started | - |
 
 ---
