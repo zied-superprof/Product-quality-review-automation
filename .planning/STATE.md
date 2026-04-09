@@ -1,41 +1,39 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: unknown
-stopped_at: Completed 03-feedback-loop-strengthening-03-02-PLAN.md
-last_updated: "2026-04-09T07:38:53.356Z"
+milestone: v1.1
+milestone_name: Notion Publishing & Batch Feedback Routing
+status: defining requirements
+stopped_at: ~
+last_updated: "2026-04-09T00:00:00.000Z"
 progress:
-  total_phases: 4
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_phases: 2
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-08)
+See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 03 — feedback-loop-strengthening
+**Current focus:** Milestone v1.1 — defining requirements
 
 ## Milestone
 
-**Optimization & Hardening** (v1)
+**Notion Publishing & Batch Feedback Routing** (v1.1)
 
 ## Phase Progress
 
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
-| 1 | Token Optimization | 2 | ✓ Complete |
-| 2 | Reference Reliability + Report Format | 2 | ✓ Complete |
-| 3 | Feedback Loop Strengthening | 2 | ○ Pending |
-| 4 | Team Handoff | 1 | ○ Pending |
+| 5 | Notion Publishing | 0 | ○ Not started |
+| 6 | Batch Feedback Routing | 0 | ○ Not started |
 
-Progress: ██████████ 100%
+Progress: ░░░░░░░░░░ 0%
 
 ## Key Files
 
@@ -68,9 +66,9 @@ Progress: ██████████ 100%
 
 ## Last Session
 
-- **Stopped at:** Completed 03-feedback-loop-strengthening-03-02-PLAN.md
-- **Timestamp:** 2026-04-08T19:15:48Z
+- **Stopped at:** Milestone v1.1 initialized — requirements defined, roadmap pending
+- **Timestamp:** 2026-04-09
 
 ---
 *Initialized: 2026-04-08*
-*Last updated: 2026-04-08 — Phase 02 Plan 02 complete; Phase 02 complete*
+*Last updated: 2026-04-09 — Milestone v1.1 started (Notion Publishing & Batch Feedback Routing)*

@@ -1,8 +1,19 @@
 # Translation Quality Review Automation
 
+## Current Milestone: v1.1 — Notion Publishing & Batch Feedback Routing
+
+**Goal:** Connect the review output to the team's Notion workspace and replace the one-at-a-time feedback loop with a batch routing system that suggests where each correction belongs.
+
+**Target features:**
+- Automatic Notion publishing on report completion (no manual step)
+- HTML output removed; .md stays as local backup
+- Batch feedback submission with system-suggested routing (rule / config file update / conflict)
+
+---
+
 ## What This Is
 
-An automated quality review tool for Superprof notification translations. French notifications are translated to 39+ languages by human translators; this tool validates those translations structurally and linguistically, then generates correction reports. The current focus is optimizing the system for speed, reliability, and team usability — and building the feedback loop toward eventual AI translation generation.
+An automated quality review tool for Superprof notification translations. French notifications are translated to 39+ languages by human translators; this tool validates those translations structurally and linguistically, then generates correction reports. Reports are automatically published to Notion for the team to review and apply corrections. The feedback loop routes batches of reviewer comments back into the corrections log and config files.
 
 ## Core Value
 
@@ -27,15 +38,18 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 ### Active
 
-- [ ] Feedback loop strengthening: structure corrections_log.json and the Step 7 workflow so accumulated rules are genuinely reusable — building toward translation generation, not just review history
-- [ ] Team handoff: README and setup documentation enabling a non-Claude-Code teammate to run reviews independently
+- [ ] Notion publishing: report automatically published to Notion on completion, replacing HTML as shareable output
+- [ ] Batch feedback routing: submit a batch of reviewer comments; system suggests routing action per comment (new rule / config update / conflict); user confirms
+- [ ] HTML output removed; .md kept as local backup
 
 ### Out of Scope
 
 - Translation generation tool — the long-term goal, but a separate future milestone after this one proves the rule accumulation works
-- Web interface — team access via CLI + README is sufficient for now
-- External APIs or database — system stays fully local and file-based
+- Web interface — team access via CLI + Notion is sufficient
 - Automated CSV correction — tool proposes fixes, humans apply them
+- Notion comments → corrections import — feedback still comes back via Juan; future milestone
+- Team handoff / README — Juan runs the tool throughout v1.1; deferred
+- generate_pdf.py CLI args — HTML removed, PDF less relevant; deferred
 
 ## Context
 
@@ -81,4 +95,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 02 (reference reliability + report format) complete*
+*Last updated: 2026-04-09 after milestone v1.1 started (Notion Publishing & Batch Feedback Routing)*
