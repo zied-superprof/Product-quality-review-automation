@@ -117,7 +117,11 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
   2. The Notion page contains all the same content as the .md report — all markets, same section order, same findings — with no information lost in the conversion
   3. The Notion page title contains both the notification ID and the review date, making the page identifiable in the workspace without opening it
   4. Running `/review-translations` no longer produces an HTML file; a .md file is still written to `reports/` as local backup
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Remove HTML output format from --format flag and Step 6 (NTIO-04)
+- [ ] 05-02-PLAN.md — Add Notion publish block to Step 6 with content adaptation (NTIO-01, NTIO-02, NTIO-03)
 
 ---
 
@@ -137,7 +141,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 5. Notion Publishing | 0/TBD | Not started | - |
+| 5. Notion Publishing | 0/2 | Not started | - |
 | 6. Batch Feedback Routing | 0/TBD | Not started | - |
 
 ---
@@ -185,4 +189,5 @@ v1.1 requirements mapped: 7/7
 
 *Roadmap created: 2026-04-08*
 *v1.1 phases added: 2026-04-09*
+*Phase 5 planned: 2026-04-09*
 *Granularity: Coarse*
