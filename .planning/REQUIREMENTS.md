@@ -25,8 +25,8 @@
 
 ### Feedback Loop
 
-- [ ] **FBK-01**: `corrections_log.json` schema is structured with explicit fields: `language`, `notification_type`, `issue_category`, `original`, `corrected`, `rule_extracted`, `confidence`, `date` — making entries machine-readable for future generation use
-- [ ] **FBK-02**: Step 7 feedback workflow extracts structured rules from each correction session and appends them with the above schema (not freeform text)
+- [x] **FBK-01**: `corrections_log.json` schema is structured with explicit fields: `language`, `notification_type`, `issue_category`, `original`, `corrected`, `rule_extracted`, `confidence`, `date` — making entries machine-readable for future generation use
+- [x] **FBK-02**: Step 7 feedback workflow extracts structured rules from each correction session and appends them with the above schema (not freeform text)
 - [ ] **FBK-03**: A `rules_summary.json` export is generated after each feedback session — a flat list of extracted rules by language, ready to be loaded as context for a translation generation tool
 - [ ] **FBK-04**: The review skill loads and surfaces the top 3 most relevant past rules per language at the start of each AI review (not just "all history")
 
@@ -73,8 +73,8 @@
 | RPT-01 | Phase 2 | Complete |
 | RPT-02 | Phase 2 | Complete |
 | RPT-03 | Phase 2 | Complete |
-| FBK-01 | Phase 3 | Pending |
-| FBK-02 | Phase 3 | Pending |
+| FBK-01 | Phase 3 | Complete |
+| FBK-02 | Phase 3 | Complete |
 | FBK-03 | Phase 3 | Pending |
 | FBK-04 | Phase 3 | Pending |
 | HND-01 | Phase 4 | Pending |

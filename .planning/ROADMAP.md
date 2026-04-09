@@ -60,7 +60,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Schema migration — define and enforce corrections_log.json schema (FBK-01), update Step 7 to write structured records (FBK-02)
+- [x] 03-01: Schema migration — define and enforce corrections_log.json schema (FBK-01), update Step 7 to write structured records (FBK-02)
 - [ ] 03-02: Rules export and retrieval — generate rules_summary.json after feedback (FBK-03), surface top-3 rules per language at review time (FBK-04)
 
 ---
@@ -86,7 +86,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Token Optimization | 2/2 | Complete   | 2026-04-08 |
 | 2. Reference Reliability + Report Format | 2/2 | Complete   | 2026-04-08 |
-| 3. Feedback Loop Strengthening | 0/2 | Not started | - |
+| 3. Feedback Loop Strengthening | 1/2 | In Progress|  |
 | 4. Team Handoff | 0/1 | Not started | - |
 
 ---

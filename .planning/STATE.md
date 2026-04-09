@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-reference-reliability-report-format-02-02-PLAN.md
-last_updated: "2026-04-08T19:22:12.554Z"
+stopped_at: Completed 03-feedback-loop-strengthening-03-01-PLAN.md
+last_updated: "2026-04-09T07:32:06.738Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 100
 ---
 
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 03 — feedback-loop-strengthening (Phase 02 complete)
+**Current focus:** Phase 03 — feedback-loop-strengthening
 
 ## Milestone
 
@@ -61,10 +61,13 @@ Progress: ██████████ 100%
 - [Phase 02-reference-reliability-report-format]: --format defaults to html so non-technical teammates can open reports in any browser without extra steps
 - [Phase 02-reference-reliability-report-format]: RPT-01/RPT-02/RPT-03: Sections 1,2,5 always present; sections 3,4,6 conditional on findings — predictable report structure without noise
 - [Phase 02-reference-reliability-report-format]: Notification ID resolution order: --notification arg > CSV column > filename sanitized — explicit user intent takes precedence
+- [Phase 03-feedback-loop-strengthening]: corrections_log.json corrections array is source of truth; rules_summary.json is the derived access layer split per D-09
+- [Phase 03-feedback-loop-strengthening]: One entry per market per feedback item — language is always a single string, never an array (D-07)
+- [Phase 03-feedback-loop-strengthening]: Conflict detection is silent on happy path — only blocks when actual contradiction is found (D-20)
 
 ## Last Session
 
-- **Stopped at:** Completed 02-reference-reliability-report-format-02-02-PLAN.md
+- **Stopped at:** Completed 03-feedback-loop-strengthening-03-01-PLAN.md
 - **Timestamp:** 2026-04-08T19:15:48Z
 
 ---
