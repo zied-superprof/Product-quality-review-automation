@@ -97,7 +97,7 @@ If `--languages` or `--notification` filters are set, treat all filtered markets
 
 ### 4c — Full review of flagged markets (inline, sequential)
 
-Read `config/review_rules_compact.md` and the relevant rules from `corrections/corrections_log.json` once.
+Read `config/review_rules_compact.md` once.
 
 Work through each flagged market **inline in this conversation** — no subagents, no batching. For each market, evaluate the 7 criteria below and **append all issues to `ai_findings`** (a running flat list held in memory). Do NOT output JSON arrays to the conversation. Instead, output one progress line per market:
 
@@ -324,9 +324,99 @@ Here are all the corrections I proposed. Enter the item numbers you want to give
 #N. ...
 ```
 
-When the user replies with numbers + notes:
-- For each item, extract a rule from the feedback (e.g. "don't flag X for language Y", "correct variable for context Z is W")
-- Save the rule to `corrections/corrections_log.json` > `rules_summary`
-- If the rule touches variable usage → also update `config/label_patterns.json` > `subject_variable_usage_rules`
-- If the rule touches tone/formality → also update `config/tone_guidelines.json`
-- Confirm: "Updated [N] rules. Config files updated: [list]."
+When the user replies with numbers + notes, process each feedback item:
+
+### 7a — Pre-write conflict check (per D-17 through D-20)
+
+Before writing any correction or rule, read these files and check for contradictions:
+- `.claude/commands/review-translations.md` — Steps 4c and 3 sections
+- `config/label_patterns.json` — if the rule touches variable usage (check `subject_variable_usage_rules`)
+- `config/tone_guidelines.json` — if the rule touches formality (check `formality_rules`)
+
+**What counts as a conflict:**
+- New rule says "do NOT flag X for language Y" but skill Step 4c says "always flag X" (or vice versa)
+- New rule says "use variable A for language Z" but label_patterns.json `subject_variable_usage_rules` says use variable B
+- New rule contradicts a formality classification in tone_guidelines.json
+
+**What is NOT a conflict:**
+- New rule adds guidance for a case not covered by existing rules (additive rule)
+- New rule refines an existing rule without contradicting it
+
+**If conflict detected** — do NOT write. Show:
+```
+Conflict detected before writing:
+
+New rule:       "[extracted rule text]"
+Conflicts with: [filename] [section] — "[existing rule or behavior text]"
+
+Which takes precedence?
+1. Write the new rule anyway
+2. Discard the new rule
+3. Update the existing process instead
+```
+Wait for user choice before proceeding.
+
+**If no conflict** — proceed silently to write (no confirmation prompt per D-20).
+
+### 7b — Write structured correction entry (per D-07, D-08)
+
+For each feedback item, write ONE entry per market to `corrections/corrections_log.json` > `corrections` array. If a feedback item applies to 5 markets, that is 5 separate entries — each with a single `language` string value (per D-07).
+
+Each entry has exactly these 8 fields:
+```json
+{
+  "language": "[market ISO code — string, not array, e.g. 'ar', 'lt', 'es_AR']",
+  "notification_type": "[BO notification ID from this review session, e.g. 'relance_3']",
+  "issue_category": "[one of: grammar | tone | label | cultural | emoji | encoding | format]",
+  "original": "[the flagged finding text from the report]",
+  "corrected": "[the corrected text, OR dismissal reason if false-positive per D-06]",
+  "rule_extracted": "[generalized rule for future reviews — what should Claude remember]",
+  "confidence": "[high | medium | low — set automatically per D-08]",
+  "date": "[today's date as YYYY-MM-DD]"
+}
+```
+
+**Confidence assignment (D-08):**
+- `high`: user explicitly confirmed the correction, OR it is a clear structural fact (empty translation, wrong variable for language, broken HTML tag)
+- `medium`: correction is valid but context-dependent, involves linguistic nuance, or applies to tone/formality
+- `low`: flagged as speculative, needs native speaker verification, or inferred from ambiguous feedback
+
+### 7c — Update config files if applicable
+
+- If the rule touches variable usage -> also update `config/label_patterns.json` > `subject_variable_usage_rules`
+- If the rule touches tone/formality -> also update `config/tone_guidelines.json`
+
+### 7d — Rebuild rules_summary.json
+
+Read ALL entries in `corrections/corrections_log.json` > `corrections`. Rebuild `corrections/rules_summary.json` from scratch (per D-10 — full rebuild, no append):
+
+For each correction entry:
+1. Check if a rule already exists in the rebuild with same `language` + same `issue_category` + semantically similar `rule_extracted` (per D-11)
+2. If match: increment `occurrence_count`, update `last_seen` to the later date, update `confidence` to the highest level seen (high > medium > low)
+3. If no match: create new rule entry:
+```json
+{
+  "rule": "[the rule_extracted text]",
+  "language": "[language code, or 'all' for universal patterns]",
+  "issue_category": "[category]",
+  "occurrence_count": 1,
+  "confidence": "[confidence level]",
+  "first_seen": "[date from correction]",
+  "last_seen": "[date from correction]"
+}
+```
+
+Write the full file:
+```json
+{
+  "generated": "[today's date YYYY-MM-DD]",
+  "total_rules": [N],
+  "rules": [... all rule entries ...]
+}
+```
+
+Announce: "Rules summary updated: [N] rules across [M] languages -> corrections/rules_summary.json" (per D-12)
+
+### 7e — Confirm session
+
+"Updated [N] rules. Config files updated: [list or 'none']."
