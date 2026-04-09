@@ -109,10 +109,9 @@
 
 **Coverage:**
 - v1 requirements: 16 total (13 complete, 3 deferred)
-- v1.1 requirements: 7 total
-- Mapped to phases: 7
-- Unmapped: 0 ✓
+- v1.1 requirements: 7 total (7 pending, 0 unmapped)
+- Total mapped: 23/23 ✓
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 after initialization*
+*Last updated: 2026-04-09 — v1.1 roadmap phase assignments confirmed (Phase 5: NTIO-01–04, Phase 6: FBK-05–07)*
