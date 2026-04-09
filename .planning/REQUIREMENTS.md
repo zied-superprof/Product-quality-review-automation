@@ -36,6 +36,23 @@
 - [ ] **HND-02**: `requirements.txt` exists for optional PDF/HTML dependencies (`markdown`, `weasyprint`) with installation instructions in README
 - [ ] **HND-03**: The `generate_pdf.py` script accepts `--input` and `--output` CLI arguments so it can be run without editing source code
 
+> ⚠️ HND-01 through HND-03 deferred to a future milestone — Juan runs the tool throughout v1.1; HTML output removed, making PDF less relevant.
+
+## v1.1 Requirements
+
+### Notion Publishing
+
+- [ ] **NTIO-01**: Report is automatically published to Notion upon completion — no extra command or user confirmation required
+- [ ] **NTIO-02**: The Notion page mirrors the .md report structure — all markets, same section order, same content
+- [ ] **NTIO-03**: Notion page title includes the notification ID and review date for easy identification in the workspace
+- [ ] **NTIO-04**: HTML output format is removed; .md file is retained on disk as local backup
+
+### Batch Feedback Routing
+
+- [ ] **FBK-05**: User can submit a batch of feedback comments in one go (not one-by-one)
+- [ ] **FBK-06**: For each comment in the batch, the system analyzes and suggests a routing action — new rule, config file update (label_patterns / tone_guidelines / Variables.csv), or conflict with an existing rule — with a brief rationale
+- [ ] **FBK-07**: User confirms or rejects each suggestion; confirmed actions are applied to the correct file immediately
+
 ## v2 Requirements
 
 ### Translation Generation (Future Milestone)
@@ -54,11 +71,13 @@
 
 | Feature | Reason |
 |---------|--------|
-| Web interface | CLI + README is sufficient for team handoff in this milestone |
-| External API integrations | System stays fully local and file-based |
+| Web interface | CLI + Notion is sufficient |
 | Automated CSV correction | Tool proposes fixes, humans apply them |
 | Translation generation tool | Depends on feedback loop proving out first — future milestone |
-| Test suite | 0% coverage is a concern but test infrastructure is out of scope for this optimization milestone |
+| Test suite | 0% coverage is a concern but test infrastructure is out of scope for this milestone |
+| Notion comments → corrections import | Feedback still comes back via Juan; future milestone |
+| Team handoff / README | Juan runs the tool throughout v1.1; deferred |
+| generate_pdf.py CLI args | HTML removed, PDF less relevant; deferred |
 
 ## Traceability
 
@@ -77,13 +96,21 @@
 | FBK-02 | Phase 3 | Complete |
 | FBK-03 | Phase 3 | Complete |
 | FBK-04 | Phase 3 | Complete |
-| HND-01 | Phase 4 | Pending |
-| HND-02 | Phase 4 | Pending |
-| HND-03 | Phase 4 | Pending |
+| HND-01 | Phase 4 | Deferred |
+| HND-02 | Phase 4 | Deferred |
+| HND-03 | Phase 4 | Deferred |
+| NTIO-01 | Phase 5 | Pending |
+| NTIO-02 | Phase 5 | Pending |
+| NTIO-03 | Phase 5 | Pending |
+| NTIO-04 | Phase 5 | Pending |
+| FBK-05 | Phase 6 | Pending |
+| FBK-06 | Phase 6 | Pending |
+| FBK-07 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 16 total
-- Mapped to phases: 16
+- v1 requirements: 16 total (13 complete, 3 deferred)
+- v1.1 requirements: 7 total
+- Mapped to phases: 7
 - Unmapped: 0 ✓
 
 ---
