@@ -65,11 +65,32 @@ python3 scripts/structural_validator.py --input [CSV_PATH] --type [per-notificat
 
 Read the JSON output and summarize: "Structural validation complete: [X] errors, [Y] warnings, [Z] info items."
 
-## Step 3: Load corrections history
+## Step 3: Load learned rules
 
-Read `corrections/corrections_log.json`. Extract the `rules_summary` section. Filter rules relevant to the languages being reviewed. These become additional review criteria.
+Read `corrections/rules_summary.json`.
 
-If there are relevant learned rules, mention: "Applying [N] learned rules from previous reviews."
+If the file does not exist or is empty, skip this step silently — no rules to apply.
+
+If `total_rules` exceeds 150, log one line: "rules_summary.json has grown large ([N] rules) — consider pruning low-confidence entries."
+
+**Relevance scoring** (per D-13):
+
+For each rule in the `rules` array, compute:
+- `confidence_score`: high = 1.0, medium = 0.75, low = 0.5
+- `recency_weight`: calculate days between today and `last_seen`:
+  - 0-30 days -> 1.0
+  - 31-90 days -> 0.8
+  - 91+ days -> 0.6
+- `relevance_score` = `occurrence_count` x `recency_weight` x `confidence_score`
+
+**Per-language rule selection** (per D-14, D-16):
+
+For each language in the review batch:
+1. Filter rules where `rule.language` == target language code. Score and sort descending by `relevance_score`. Take top-5 (per D-16 cap).
+2. If fewer than 3 language-specific rules: pad with the highest-scoring rules where `rule.language` == `"all"` (scored with the same formula), until 3 total rules reached — or all available if fewer than 3 exist total.
+3. The top-3 from this combined list become additional review criteria in Step 4c criterion 7 ("Past corrections").
+
+**Output** (per D-15): Rules are loaded silently — no per-language announcement. After all languages processed, if any rules were loaded, output one line: "Applying [N] learned rules from previous reviews."
 
 ## Step 4: AI quality review
 
@@ -115,7 +136,7 @@ Work through each flagged market **inline in this conversation** — no subagent
 4. Label correctness — all @TPL_*@ variables preserved? Apply subject variable rules exactly.
 5. Emoji consistency — same emoji as French source, same positions?
 6. Cultural appropriateness — anything inappropriate or confusing in the target market?
-7. Past corrections — does this repeat a rule from corrections history?
+7. Past corrections — apply the top-3 rules loaded in Step 3 for this language. Flag if the translation repeats a known past error.
 
 **Issue schema** (each object appended to `ai_findings`):
 ```json
