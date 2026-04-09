@@ -9,7 +9,7 @@ This milestone hardens an existing, working system: the two-tier translation rev
 
 - [x] **Phase 1: Token Optimization** - Eliminate context-window waste in Step 4c and add a compact triage mode to the structural validator
 - [x] **Phase 2: Reference Reliability + Report Format** - Harden config file usage, enforce variable catalog checks, and ship configurable HTML-default reports (completed 2026-04-08)
-- [ ] **Phase 3: Feedback Loop Strengthening** - Restructure corrections_log.json with a machine-readable schema and surface relevant past rules per-language at review time
+- [x] **Phase 3: Feedback Loop Strengthening** - Restructure corrections_log.json with a machine-readable schema and surface relevant past rules per-language at review time (completed 2026-04-09)
 - [ ] **Phase 4: Team Handoff** - Write README, declare optional dependencies, and make generate_pdf.py runnable without source edits
 
 ## Phase Details
@@ -61,7 +61,7 @@ Plans:
 
 Plans:
 - [x] 03-01: Schema migration — define and enforce corrections_log.json schema (FBK-01), update Step 7 to write structured records (FBK-02)
-- [ ] 03-02: Rules export and retrieval — generate rules_summary.json after feedback (FBK-03), surface top-3 rules per language at review time (FBK-04)
+- [x] 03-02: Rules export and retrieval — generate rules_summary.json after feedback (FBK-03), surface top-3 rules per language at review time (FBK-04)
 
 ---
 
@@ -86,7 +86,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Token Optimization | 2/2 | Complete   | 2026-04-08 |
 | 2. Reference Reliability + Report Format | 2/2 | Complete   | 2026-04-08 |
-| 3. Feedback Loop Strengthening | 1/2 | In Progress|  |
+| 3. Feedback Loop Strengthening | 2/2 | Complete   | 2026-04-09 |
 | 4. Team Handoff | 0/1 | Not started | - |
 
 ---
