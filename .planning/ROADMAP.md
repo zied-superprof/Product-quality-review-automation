@@ -104,7 +104,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 ## Phases (v1.1)
 
 - [x] **Phase 5: Notion Publishing** - Auto-publish completed reports to Notion via MCP and remove HTML output; .md stays as local backup (completed 2026-04-09)
-- [ ] **Phase 6: Batch Feedback Routing** - Accept a batch of reviewer comments, suggest routing action per comment, apply confirmed actions immediately
+- [x] **Phase 6: Batch Feedback Routing** - Accept a batch of reviewer comments, suggest routing action per comment, apply confirmed actions immediately (completed 2026-04-10)
 
 ## Phase Details (v1.1)
 
@@ -137,7 +137,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Batch mode detection, routing classification, and conflict-aware block list display (FBK-05, FBK-06)
-- [ ] 06-02-PLAN.md — Number-based confirmation, one-pass write execution, conflict resolution, and change summary (FBK-07)
+- [x] 06-02-PLAN.md — Number-based confirmation, one-pass write execution, conflict resolution, and change summary (FBK-07)
 
 ---
 
@@ -146,7 +146,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
-| 6. Batch Feedback Routing | 1/2 | In Progress|  |
+| 6. Batch Feedback Routing | 2/2 | Complete   | 2026-04-10 |
 
 ---
 

@@ -51,7 +51,7 @@
 
 - [x] **FBK-05**: User can submit a batch of feedback comments in one go (not one-by-one)
 - [x] **FBK-06**: For each comment in the batch, the system analyzes and suggests a routing action — new rule, config file update (label_patterns / tone_guidelines / Variables.csv), or conflict with an existing rule — with a brief rationale
-- [ ] **FBK-07**: User confirms or rejects each suggestion; confirmed actions are applied to the correct file immediately
+- [x] **FBK-07**: User confirms or rejects each suggestion; confirmed actions are applied to the correct file immediately
 
 ## v2 Requirements
 
@@ -105,7 +105,7 @@
 | NTIO-04 | Phase 5 | Complete |
 | FBK-05 | Phase 6 | Complete |
 | FBK-06 | Phase 6 | Complete |
-| FBK-07 | Phase 6 | Pending |
+| FBK-07 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 16 total (13 complete, 3 deferred)
