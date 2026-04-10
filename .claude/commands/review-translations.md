@@ -416,6 +416,76 @@ When the user provides input at Step 7, detect the format:
 
 If batch mode is detected, proceed to **Step 7a-batch** (below). If single-item mode, proceed to the existing flow (numbered index display and per-item processing).
 
+### 7a-batch — Batch routing analysis
+
+When batch mode is detected, process the input as follows:
+
+#### Parse batch items
+
+Split the user input into individual items by detecting `Language:` boundaries. For each block:
+1. Extract the language code (trim whitespace, accept codes like `es_AR`, `ar`, `de`).
+2. Extract the issue text (everything after `Issue:` until the next `Language:` or end of input).
+3. If a language field contains multiple comma-separated codes (e.g. `Language: ar, he`), split into separate items — one per code — with the same issue text. Announce: "Item #N applies to [K] markets — creating [K] entries."
+4. If a block is missing a `Language:` or `Issue:` field, skip it and warn: "Skipped malformed block: [first 50 chars]..."
+
+#### Route each item
+
+For each parsed item (language, issue_text), determine the routing destination using this decision tree:
+
+1. **Variable mention check**: Does issue_text mention a `@TPL_*@` variable name?
+   - YES: Read `config/Variables.csv` and check if the variable exists (search for the exact `@TPL_*@` string in the first column).
+     - Variable NOT in Variables.csv → destination: `Variables.csv (flag only)`. Output: `⚠️ Variable @TPL_X@ may be missing from Variables.csv. Verify against BO before adding manually.` (per D-11/D-12). This item does NOT appear in the confirmation batch — it is informational only.
+     - Variable IS in Variables.csv AND issue is about which variable to use, correct placement, or per-language variable rules → destination: `label_patterns.json`. Write target: `subject_variable_usage_rules.[VARIABLE_NAME]`.
+     - Variable IS in Variables.csv AND issue is about translation quality around a variable (grammar, phrasing) → destination: `corrections_log.json`.
+   - NO: continue to step 2.
+
+2. **Formality/tone check**: Does issue_text mention formality, register, tone, or an address form (vos, du, tu, vous, Sie, usted, Lei, informal, formal)?
+   - YES → destination: `tone_guidelines.json`. Write target: `formality_rules` (add/move language between `informal_standard_languages.languages`, `formal_vous_languages.languages`, or add to `market_notes`). Also write a corrections_log.json entry if a `rule_extracted` can be derived.
+   - NO: continue to step 3.
+
+3. **Default** → destination: `corrections_log.json`. Write as a standard 8-field entry via 7b.
+
+#### Conflict check per item
+
+For each item that has a writable destination (NOT Variables.csv flag-only items), run the same conflict check as 7a-single:
+- Read `.claude/commands/review-translations.md` Steps 4c and 3
+- If destination is `label_patterns.json`: check `subject_variable_usage_rules` for contradictions with the new rule
+- If destination is `tone_guidelines.json`: check `formality_rules` for contradictions
+- If destination is `corrections_log.json`: check existing entries for same language + same issue_category for semantic contradiction
+
+Mark each item as `conflict: none` or `conflict: ⚠️ Conflicts with [file] [section] — "[existing rule text]"`.
+
+#### Display block list (per D-04)
+
+Present ALL items as a numbered block list:
+
+```
+Batch analysis complete — [N] items parsed:
+
+#1 — [language_code]: [brief issue summary, max 10 words]
+  → Routes to: [corrections_log.json | label_patterns.json | tone_guidelines.json | Variables.csv (flag only)]
+  → Rationale: [one line — what will change and where]
+  → Conflict: [none | ⚠️ Conflicts with [file] [section] — "[existing rule text]"]
+
+#2 — [language_code]: ...
+  ...
+```
+
+After the block list, show the confirmation prompt (the apply logic is implemented in plan 06-02):
+
+```
+Enter the item numbers you want to apply, separated by commas (e.g. 1, 3).
+Items marked ⚠️ must be resolved before they can be included.
+Items not listed will be discarded.
+Variables.csv flag-only items are informational — they cannot be applied.
+```
+
+**Important implementation notes:**
+- The `notification_type` field for batch-sourced corrections is `"batch-feedback"` (not tied to a specific CSV review).
+- Per D-05, items with conflicts are displayed but excluded from the confirmation set — the user cannot type their number until the conflict is resolved.
+- Per D-13, Variables.csv items are flag-only and never appear in the confirmation set.
+- The block list display ends here for plan 01. Plan 02 adds the confirmation parsing and write execution.
+
 After presenting the report, ask:
 
 "Would you like to give feedback on this review?
