@@ -133,7 +133,11 @@ Plans:
   1. The user can paste 2 or more correction comments in a single Step 7 input and receive a separate analysis for each one — no need to re-invoke the skill per comment
   2. For each comment the system outputs: the suggested destination (corrections_log.json, label_patterns.json, tone_guidelines.json, or Variables.csv), a one-line rationale, and a conflict flag if the suggestion contradicts an existing rule
   3. After the user confirms (or rejects per item), all confirmed actions are applied in one pass — the target files are updated and the user sees a summary of what changed
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Batch mode detection, routing classification, and conflict-aware block list display (FBK-05, FBK-06)
+- [ ] 06-02-PLAN.md — Number-based confirmation, one-pass write execution, conflict resolution, and change summary (FBK-07)
 
 ---
 
@@ -142,7 +146,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
-| 6. Batch Feedback Routing | 0/TBD | Not started | - |
+| 6. Batch Feedback Routing | 0/2 | Not started | - |
 
 ---
 
@@ -190,4 +194,5 @@ v1.1 requirements mapped: 7/7
 *Roadmap created: 2026-04-08*
 *v1.1 phases added: 2026-04-09*
 *Phase 5 planned: 2026-04-09*
+*Phase 6 planned: 2026-04-10*
 *Granularity: Coarse*
