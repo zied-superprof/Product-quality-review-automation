@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Optimization & Hardening
 status: unknown
-stopped_at: "Completed 05-02: Notion publish block added to review-translations skill"
-last_updated: "2026-04-09T21:27:24.391Z"
+stopped_at: "Completed 06-01: Batch feedback detection and routing added to Step 7"
+last_updated: "2026-04-10T13:08:10Z"
 progress:
-  total_phases: 4
+  total_phases: 6
   completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
-  percent: 75
+  total_plans: 11
+  completed_plans: 9
+  percent: 82
 ---
 
 # Project State
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 05 — notion-publishing
+**Current focus:** Phase 06 — batch-feedback-routing
 
 ## Milestone
 
@@ -31,9 +31,9 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
 | 5 | Notion Publishing | 2/2 | Complete |
-| 6 | Batch Feedback Routing | 0/TBD | Not started |
+| 6 | Batch Feedback Routing | 1/2 | In progress |
 
-Progress: 75% ███████░░░
+Progress: 82% ████████░░
 
 ## Key Files
 
@@ -68,11 +68,15 @@ Progress: 75% ███████░░░
 - [v1.1 milestone]: Batch feedback routing extends Step 7 — user pastes N comments, system routes each to corrections_log.json / label_patterns.json / tone_guidelines.json / Variables.csv with conflict detection
 - [Phase 05-notion-publishing]: D-07: html removed as --format option; md is new default; D-08: pdf path keeps html as internal weasyprint intermediate (not announced)
 - [Phase 05-02-notion-publishing]: D-01 through D-12 applied: Notion publish via mcp__claude_ai_Notion__notion-create-pages, parent page 33dd6418695a8097998fcf373ed18bf5, title format "Translation Review — [id] — [YYYY-MM-DD]", soft-fail (D-10/D-11/D-12), output announces .md + Notion URL or failure warning
+- [Phase 06-01-batch-feedback-routing]: Batch mode branches at Step 7 entry: Language+Issue format triggers 7a-batch; #N format triggers existing 7a-single flow
+- [Phase 06-01-batch-feedback-routing]: notification_type for batch-sourced corrections_log entries is "batch-feedback" — distinguishes batch rules from session-specific ones
+- [Phase 06-01-batch-feedback-routing]: Variables.csv routing is always flag-only — never written, never in confirmation set (D-13)
+- [Phase 06-01-batch-feedback-routing]: Conflict items shown in block list but excluded from confirmation set — clean items proceed independently (D-05)
 
 ## Last Session
 
-- **Stopped at:** Completed 05-02: Notion publish block added to review-translations skill
-- **Timestamp:** 2026-04-09
+- **Stopped at:** Completed 06-01: Batch feedback detection and routing added to Step 7
+- **Timestamp:** 2026-04-10
 
 ---
 *Initialized: 2026-04-08*

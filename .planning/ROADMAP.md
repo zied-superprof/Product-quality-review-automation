@@ -136,7 +136,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Batch mode detection, routing classification, and conflict-aware block list display (FBK-05, FBK-06)
+- [x] 06-01-PLAN.md — Batch mode detection, routing classification, and conflict-aware block list display (FBK-05, FBK-06)
 - [ ] 06-02-PLAN.md — Number-based confirmation, one-pass write execution, conflict resolution, and change summary (FBK-07)
 
 ---
@@ -146,7 +146,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
-| 6. Batch Feedback Routing | 0/2 | Not started | - |
+| 6. Batch Feedback Routing | 1/2 | In Progress|  |
 
 ---
 
