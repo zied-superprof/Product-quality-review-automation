@@ -36,10 +36,11 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ Reference document reliability: structural_validator.py hard-fails on missing Variables.csv; Step 1 health check confirms all 3 config files loaded; Step 4c formality logic explicitly references tone_guidelines.json — Validated in Phase 02
 - ✓ Report format: `--format html|md|pdf` flag, notification-ID filenames, HTML output with inline CSS, fixed section order — Validated in Phase 02
 - ✓ Notion publishing: report automatically published to Notion on completion; HTML removed as user-facing output, .md kept as local backup — Validated in Phase 05
+- ✓ Batch feedback routing: batch Language+Issue blocks parsed, routed to correct config file, conflicts flagged, user confirms, one-pass writes executed, change summary shown — Validated in Phase 06
 
 ### Active
 
-- [ ] Batch feedback routing: submit a batch of reviewer comments; system suggests routing action per comment (new rule / config update / conflict); user confirms
+_(no active requirements — v1.1 milestone complete)_
 
 ### Out of Scope
 
@@ -94,4 +95,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after Phase 05 complete (Notion Publishing — HTML removed, auto Notion publish added)*
+*Last updated: 2026-04-10 after Phase 06 complete (Batch Feedback Routing — v1.1 milestone complete)*
