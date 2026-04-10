@@ -105,6 +105,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 
 - [x] **Phase 5: Notion Publishing** - Auto-publish completed reports to Notion via MCP and remove HTML output; .md stays as local backup (completed 2026-04-09)
 - [x] **Phase 6: Batch Feedback Routing** - Accept a batch of reviewer comments, suggest routing action per comment, apply confirmed actions immediately (completed 2026-04-10)
+- [ ] **Phase 7: Tech Debt Cleanup** - Wire `--summary` flag into Step 2 call site, fix stale RPT-03 prose, remove stale comment (closes audit gaps)
 
 ## Phase Details (v1.1)
 
@@ -141,12 +142,28 @@ Plans:
 
 ---
 
+### Phase 7: Tech Debt Cleanup
+**Goal**: Close the one integration gap and two documentation items flagged by the v1.1 milestone audit — realizing the token savings TOK-02 was designed to deliver
+**Depends on**: Phase 6
+**Gap Closure:** Closes gaps from v1.1 audit
+**Success Criteria** (what must be TRUE):
+  1. Running a review no longer outputs full JSON arrays at Step 2 — the `--summary` flag is passed and only market names + issue counts appear
+  2. RPT-03 requirement prose accurately reflects the current default (`.md`, not HTML)
+  3. The stale "the apply logic is implemented in plan 06-02" comment is removed from `review-translations.md`
+**Plans**: 1 plan
+
+Plans:
+- [ ] 07-01: Wire `--summary` into Step 2 call site, fix RPT-03 prose, remove stale comment
+
+---
+
 ## Progress (v1.1)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
 | 6. Batch Feedback Routing | 2/2 | Complete   | 2026-04-10 |
+| 7. Tech Debt Cleanup | 0/1 | Pending | - |
 
 ---
 
