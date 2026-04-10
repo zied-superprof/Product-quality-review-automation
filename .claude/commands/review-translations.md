@@ -387,6 +387,35 @@ After the announcement, proceed to Step 7 regardless of Notion success or failur
 
 ## Step 7: Feedback loop
 
+> **Batch mode available**: This step also works in a fresh session without an active report. Paste feedback items in the Language+Issue format below and the system will route them to the correct config files.
+
+### Collection template
+
+Share this template with the employee gathering native speaker feedback:
+
+---
+TRANSLATION FEEDBACK TEMPLATE
+Fill in one block per issue. Copy-paste as many blocks as needed.
+
+Language: [ISO code — e.g. es_AR, ar, de, fr]
+Issue: [Describe what the AI reviewer got wrong. Was it a false positive? Wrong variable? Wrong tone?]
+
+Language:
+Issue:
+---
+
+### Step 7 — Batch mode detection
+
+When the user provides input at Step 7, detect the format:
+
+**Batch mode trigger**: User input contains one or more blocks matching the pattern `Language: [code]` followed by `Issue: [text]` (with optional blank lines between blocks). Even a single Language+Issue block triggers batch mode for consistency.
+
+**Single-item mode trigger**: User input contains `#N` patterns (report item numbers like `#3 this variable is valid`). This is the existing flow — proceed to the numbered index display below.
+
+**Ambiguous input**: If the input matches neither format clearly, ask: "Are you giving feedback on specific report items (#1, #2...) or submitting new feedback in Language+Issue format?"
+
+If batch mode is detected, proceed to **Step 7a-batch** (below). If single-item mode, proceed to the existing flow (numbered index display and per-item processing).
+
 After presenting the report, ask:
 
 "Would you like to give feedback on this review?
@@ -412,7 +441,7 @@ Here are all the corrections I proposed. Enter the item numbers you want to give
 
 When the user replies with numbers + notes, process each feedback item:
 
-### 7a — Pre-write conflict check (per D-17 through D-20)
+### 7a-single — Pre-write conflict check (per D-17 through D-20)
 
 Before writing any correction or rule, read these files and check for contradictions:
 - `.claude/commands/review-translations.md` — Steps 4c and 3 sections
