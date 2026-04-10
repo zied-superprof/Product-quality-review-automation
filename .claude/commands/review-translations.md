@@ -484,7 +484,107 @@ Variables.csv flag-only items are informational — they cannot be applied.
 - The `notification_type` field for batch-sourced corrections is `"batch-feedback"` (not tied to a specific CSV review).
 - Per D-05, items with conflicts are displayed but excluded from the confirmation set — the user cannot type their number until the conflict is resolved.
 - Per D-13, Variables.csv items are flag-only and never appear in the confirmation set.
-- The block list display ends here for plan 01. Plan 02 adds the confirmation parsing and write execution.
+
+### 7b-batch — Confirm and apply
+
+When the user responds to the batch confirmation prompt with item numbers:
+
+#### Parse confirmation
+
+Extract the item numbers from the user's reply. Accept formats: `1, 3, 4` or `1 3 4` or `1,3,4`. Ignore any non-numeric text.
+
+**Validation:**
+- If a number refers to an item marked with ⚠️ conflict, reject it: "Item #[N] has an unresolved conflict. Resolve it first (see below) or omit it."
+- If a number refers to a Variables.csv flag-only item, reject it: "Item #[N] is a Variables.csv flag — it cannot be applied automatically."
+- If a number does not correspond to any item in the block list, ignore it silently.
+- Items not listed in the confirmation are silently discarded — no pending queue (per D-09).
+
+#### Write confirmed items (one pass, per D-10)
+
+Process each confirmed item in order:
+
+For each confirmed item:
+1. **If destination is `corrections_log.json`**: Write a structured entry using the same 7b logic (8-field schema). Use these field values:
+   - `language`: the parsed language code from the batch item
+   - `notification_type`: `"batch-feedback"`
+   - `issue_category`: infer from the issue text (one of: grammar, tone, label, cultural, emoji, encoding, format)
+   - `original`: the issue text as submitted by the user
+   - `corrected`: the resolution or rule derived from the issue (e.g., "FALSE POSITIVE — vos is Rioplatense brand standard for es_AR")
+   - `rule_extracted`: a generalized rule for future reviews
+   - `confidence`: assign per 7b rules (high for explicit confirmations and structural facts, medium for linguistic nuance, low for speculative)
+   - `date`: today's date as YYYY-MM-DD
+
+2. **If destination is `label_patterns.json`**: Update `subject_variable_usage_rules` using the same 7c logic. Depending on the issue:
+   - Add a language code to `use_for` or `do_not_use_for` for the relevant variable
+   - Add a `language_notes` entry for the language
+   Also write a corrections_log.json entry (step 1 above) to record the rule.
+
+3. **If destination is `tone_guidelines.json`**: Update `formality_rules` using the same 7c logic. Depending on the issue:
+   - Add or move a language code between `informal_standard_languages.languages` and `formal_vous_languages.languages`
+   - Add a `market_notes` entry if the issue is market-specific (e.g., es_AR vos pattern)
+   Also write a corrections_log.json entry (step 1 above) to record the rule.
+
+**Multi-market split**: If a batch item was split into multiple markets during parsing (7a-batch), each market gets its own corrections_log.json entry — one entry per market per item, per the established D-07 rule (language is always a single string).
+
+#### Rebuild rules_summary.json (once)
+
+After ALL confirmed items have been written, run the 7d rebuild logic exactly once:
+- Read ALL entries in `corrections/corrections_log.json` > `corrections`
+- Rebuild `corrections/rules_summary.json` from scratch (full rebuild, not append)
+- Follow the same deduplication and scoring logic as the existing 7d section
+
+Do NOT run 7d after each item — run it once at the end (avoiding Pitfall 2 from RESEARCH.md).
+
+#### Output change summary
+
+After all writes and the rebuild, output a summary:
+
+```
+Batch feedback applied:
+- [N] corrections written to corrections_log.json
+- [M] config updates: [list of files updated, e.g. "label_patterns.json (2 rules), tone_guidelines.json (1 rule)"]
+- rules_summary.json rebuilt: [total_rules] rules across [languages] languages
+- [K] items discarded (not confirmed)
+- [J] items flagged as Variables.csv warnings (informational only)
+```
+
+If no items were confirmed (user typed nothing or only invalid numbers), output: "No items confirmed. Batch feedback session ended."
+
+### 7c-batch — Conflict resolution
+
+After the batch apply (7b-batch) completes, if any items were marked with ⚠️ conflicts in the block list:
+
+#### Present conflict details
+
+For each conflicted item, show the full conflict context:
+
+```
+Conflict — Item #[N] ([language]: [brief issue]):
+
+New rule:       "[the rule that would be written]"
+Conflicts with: [filename] [section] — "[existing rule or config value]"
+
+Let's discuss — what should we do with this conflict?
+```
+
+#### Collaborative resolution (per D-06)
+
+Discuss the conflict with the user. There is no fixed menu — the resolution emerges from discussion. Common outcomes include:
+- **Write the new rule anyway** (override the existing config): proceed with 7b/7c write for this item, then rebuild 7d.
+- **Discard this item**: skip it entirely. Acknowledge: "Item #[N] discarded."
+- **Update the existing config instead**: the user may ask to modify the existing rule/config entry rather than add a new one. Make the requested change to the relevant file, then rebuild 7d.
+
+#### After resolution
+
+After each conflict is resolved (or discarded):
+- If a write was made, run 7d rebuild once more (single rebuild for all resolved items, not per item).
+- Update the change summary with the resolution: "Conflict #[N] resolved: [action taken]."
+- If more conflicts remain, present the next one.
+
+When all conflicts are resolved or discarded, output:
+"All conflicts addressed. Batch feedback session complete."
+
+If there were no conflicts at all, skip this section entirely — go straight from 7b-batch summary to session end.
 
 After presenting the report, ask:
 
