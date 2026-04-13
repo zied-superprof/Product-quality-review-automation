@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Optimization & Hardening
-status: unknown
-stopped_at: "Completed 06-02: Batch feedback confirmation, write, and conflict resolution added to Step 7"
-last_updated: "2026-04-10T13:16:44.321Z"
+milestone: v1.1
+milestone_name: Notion Publishing & Batch Feedback Routing
+status: complete
+stopped_at: "Completed 07-01: Tech debt cleanup — --summary wired, RPT-03 updated, stale comment removed"
+last_updated: "2026-04-13T00:00:00.000Z"
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 10
-  completed_plans: 10
+  total_phases: 7
+  completed_phases: 7
+  total_plans: 12
+  completed_plans: 12
   percent: 100
 ---
 
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 06 — batch-feedback-routing
+**Current focus:** Phase 07 — tech-debt-cleanup
 
 ## Milestone
 
@@ -32,6 +32,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 |-------|------|-------|--------|
 | 5 | Notion Publishing | 2/2 | Complete |
 | 6 | Batch Feedback Routing | 2/2 | Complete |
+| 7 | Tech Debt Cleanup | 1/1 | Complete |
 
 Progress: [██████████] 100%
 
@@ -73,11 +74,12 @@ Progress: [██████████] 100%
 - [Phase 06-01-batch-feedback-routing]: Variables.csv routing is always flag-only — never written, never in confirmation set (D-13)
 - [Phase 06-01-batch-feedback-routing]: Conflict items shown in block list but excluded from confirmation set — clean items proceed independently (D-05)
 - [Phase 06-02-batch-feedback-routing]: 7b-batch uses notification_type=batch-feedback; rules_summary rebuilt once after all writes (D-10); collaborative conflict resolution in 7c-batch; no pending queue — unconfirmed items silently discarded (D-09)
+- [Phase 07-01-tech-debt-cleanup]: TOK-02 token savings realized — --summary flag wired into Step 2 call site; RPT-03 requirement prose updated to reflect .md as sole default output format (NTIO-04 superseded HTML default)
 
 ## Last Session
 
-- **Stopped at:** Completed 06-02: Batch feedback confirmation, write, and conflict resolution added to Step 7
-- **Timestamp:** 2026-04-10
+- **Stopped at:** Completed 07-01: Tech debt cleanup — --summary wired into Step 2, RPT-03 prose updated, stale plan-06-02 comment removed
+- **Timestamp:** 2026-04-13
 
 ---
 *Initialized: 2026-04-08*

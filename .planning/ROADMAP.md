@@ -105,7 +105,7 @@ Two natural delivery boundaries: first, connect report output to the team's Noti
 
 - [x] **Phase 5: Notion Publishing** - Auto-publish completed reports to Notion via MCP and remove HTML output; .md stays as local backup (completed 2026-04-09)
 - [x] **Phase 6: Batch Feedback Routing** - Accept a batch of reviewer comments, suggest routing action per comment, apply confirmed actions immediately (completed 2026-04-10)
-- [ ] **Phase 7: Tech Debt Cleanup** - Wire `--summary` flag into Step 2 call site, fix stale RPT-03 prose, remove stale comment (closes audit gaps)
+- [x] **Phase 7: Tech Debt Cleanup** - Wire `--summary` flag into Step 2 call site, fix stale RPT-03 prose, remove stale comment (closes audit gaps) (completed 2026-04-13)
 
 ## Phase Details (v1.1)
 
@@ -153,7 +153,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 07-01: Wire `--summary` into Step 2 call site, fix RPT-03 prose, remove stale comment
+- [x] 07-01: Wire `--summary` into Step 2 call site, fix RPT-03 prose, remove stale comment
 
 ---
 
@@ -163,7 +163,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 5. Notion Publishing | 2/2 | Complete   | 2026-04-09 |
 | 6. Batch Feedback Routing | 2/2 | Complete   | 2026-04-10 |
-| 7. Tech Debt Cleanup | 0/1 | Pending | - |
+| 7. Tech Debt Cleanup | 1/1 | Complete | 2026-04-13 |
 
 ---
 
