@@ -37,10 +37,12 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ Report format: `--format html|md|pdf` flag, notification-ID filenames, HTML output with inline CSS, fixed section order — Validated in Phase 02
 - ✓ Notion publishing: report automatically published to Notion on completion; HTML removed as user-facing output, .md kept as local backup — Validated in Phase 05
 - ✓ Batch feedback routing: batch Language+Issue blocks parsed, routed to correct config file, conflicts flagged, user confirms, one-pass writes executed, change summary shown — Validated in Phase 06
+- ✓ Token optimization realized: `--summary` flag wired into Step 2 call site, structural validator now prints compact output (market names + issue counts only); 80-90% token reduction from TOK-02 now active — Validated in Phase 07
+- ✓ Requirements accuracy: RPT-03 prose updated to reflect .md as sole default format (HTML removed in Phase 5 / NTIO-04) — Validated in Phase 07
 
 ### Active
 
-_(no active requirements — v1.1 milestone complete)_
+_(no active requirements — v1.1 milestone complete, Phase 7 gap closure done)_
 
 ### Out of Scope
 
@@ -95,4 +97,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 06 complete (Batch Feedback Routing — v1.1 milestone complete)*
+*Last updated: 2026-04-13 after Phase 07 complete (Tech Debt Cleanup — v1.1 audit gap closure)*
