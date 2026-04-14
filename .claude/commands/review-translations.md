@@ -60,7 +60,7 @@ Store the sanitized notification ID for use in Step 6 filename generation.
 
 Execute the Python structural validator:
 ```bash
-python3 scripts/structural_validator.py --input [CSV_PATH] --type [per-notification|full-database] --config-dir config/ --output reports/structural_results.json --summary
+python3 scripts/structural_validator.py --input [CSV_PATH] --config-dir config/ --output reports/structural_results.json --summary
 ```
 
 Read the JSON output and summarize: "Structural validation complete: [X] errors, [Y] warnings, [Z] info items."

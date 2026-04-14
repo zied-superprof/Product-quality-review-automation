@@ -196,13 +196,13 @@ v1.0 requirements mapped: 16/16
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NTIO-01 | Phase 5 | Pending |
-| NTIO-02 | Phase 5 | Pending |
-| NTIO-03 | Phase 5 | Pending |
-| NTIO-04 | Phase 5 | Pending |
-| FBK-05 | Phase 6 | Pending |
-| FBK-06 | Phase 6 | Pending |
-| FBK-07 | Phase 6 | Pending |
+| NTIO-01 | Phase 5 | Complete |
+| NTIO-02 | Phase 5 | Complete |
+| NTIO-03 | Phase 5 | Complete |
+| NTIO-04 | Phase 5 | Complete |
+| FBK-05 | Phase 6 | Complete |
+| FBK-06 | Phase 6 | Complete |
+| FBK-07 | Phase 6 | Complete |
 
 v1.1 requirements mapped: 7/7
 
