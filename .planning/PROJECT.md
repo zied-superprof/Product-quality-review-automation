@@ -8,6 +8,16 @@ An automated quality review tool for Superprof notification translations. French
 
 Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
 
+## Current Milestone: v1.2 Audit, Fix & Strategic Overview
+
+**Goal:** Audit the project for gaps and unused elements, implement the highest-priority fixes, and produce a strategic overview that maps the full 3-phase vision and defines when Phase 1 is "done enough" to move forward.
+
+**Target features:**
+- Comprehensive project audit (code, workflow, scope)
+- Team handoff documentation (README, requirements.txt, PDF CLI)
+- Top quality improvements (France ref row search, Unicode emoji detection)
+- Strategic overview document: 3-phase vision with Phase 1 completion criteria
+
 ## Requirements
 
 ### Validated
@@ -74,4 +84,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-14 after v1.1 milestone completion (Notion Publishing & Batch Feedback Routing)*
+*Last updated: 2026-04-14 after v1.2 milestone start (Audit, Fix & Strategic Overview)*
