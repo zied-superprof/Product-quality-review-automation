@@ -1,19 +1,8 @@
 # Translation Quality Review Automation
 
-## Current Milestone: v1.1 — Notion Publishing & Batch Feedback Routing
-
-**Goal:** Connect the review output to the team's Notion workspace and replace the one-at-a-time feedback loop with a batch routing system that suggests where each correction belongs.
-
-**Target features:**
-- Automatic Notion publishing on report completion (no manual step)
-- HTML output removed; .md stays as local backup
-- Batch feedback submission with system-suggested routing (rule / config file update / conflict)
-
----
-
 ## What This Is
 
-An automated quality review tool for Superprof notification translations. French notifications are translated to 39+ languages by human translators; this tool validates those translations structurally and linguistically, then generates correction reports. Reports are automatically published to Notion for the team to review and apply corrections. The feedback loop routes batches of reviewer comments back into the corrections log and config files.
+An automated quality review tool for Superprof notification translations. French notifications are translated to 39+ languages by human translators; this tool validates those translations structurally (Python, stdlib-only) and linguistically (Claude AI), then auto-publishes correction reports to the team's Notion workspace. The feedback loop accepts batches of reviewer comments, routes each to the correct config file or corrections log, and applies confirmed changes in one pass.
 
 ## Core Value
 
@@ -23,78 +12,66 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 ### Validated
 
-- ✓ Two-tier review pipeline: deterministic structural validation (Python) + AI linguistic review (Claude) — existing
-- ✓ French reference validation: all market translations compared against the France cell — existing
-- ✓ Variables.csv catalog integration: unknown variables flagged and summarized in reports — existing
-- ✓ Two-tier model routing: Haiku for clean markets, Sonnet for flagged markets — existing
-- ✓ Learning system: corrections_log.json accumulates rules from user feedback after each review — existing
-- ✓ Report generation: grouped Markdown reports with numbered findings, current text, and proposed fixes — existing
-- ✓ Undefined variables summary section in reports — existing
-- ✓ AI-generated translations mandated for empty entries — existing
-- ✓ PDF generation capability (fragile, manual path editing required) — existing
-- ✓ Token optimization: Step 4c silent accumulation + `--summary` flag for structural_validator.py — Validated in Phase 01
-- ✓ Reference document reliability: structural_validator.py hard-fails on missing Variables.csv; Step 1 health check confirms all 3 config files loaded; Step 4c formality logic explicitly references tone_guidelines.json — Validated in Phase 02
-- ✓ Report format: `--format html|md|pdf` flag, notification-ID filenames, HTML output with inline CSS, fixed section order — Validated in Phase 02
-- ✓ Notion publishing: report automatically published to Notion on completion; HTML removed as user-facing output, .md kept as local backup — Validated in Phase 05
-- ✓ Batch feedback routing: batch Language+Issue blocks parsed, routed to correct config file, conflicts flagged, user confirms, one-pass writes executed, change summary shown — Validated in Phase 06
-- ✓ Token optimization realized: `--summary` flag wired into Step 2 call site, structural validator now prints compact output (market names + issue counts only); 80-90% token reduction from TOK-02 now active — Validated in Phase 07
-- ✓ Requirements accuracy: RPT-03 prose updated to reflect .md as sole default format (HTML removed in Phase 5 / NTIO-04) — Validated in Phase 07
+- ✓ Two-tier review pipeline: deterministic structural validation (Python) + AI linguistic review (Claude) — v1.0
+- ✓ French reference validation: all market translations compared against the France cell — v1.0
+- ✓ Variables.csv catalog integration: unknown variables flagged and summarized in reports — v1.0
+- ✓ Two-tier model routing: Haiku for clean markets, Sonnet for flagged markets — v1.0
+- ✓ Learning system: corrections_log.json accumulates rules from user feedback after each review — v1.0
+- ✓ Report generation: grouped Markdown reports with numbered findings, current text, and proposed fixes — v1.0
+- ✓ Token optimization: Step 4c silent accumulation + `--summary` flag wired into Step 2 call site — v1.1 (Phase 01 + Phase 07)
+- ✓ Reference document reliability: structural_validator.py hard-fails on missing Variables.csv; Step 1 health check confirms all 3 config files loaded; Step 4c formality logic explicitly references tone_guidelines.json — v1.1 (Phase 02)
+- ✓ Report format: `--format md|pdf` flag, notification-ID filenames, fixed section order — v1.1 (Phase 02)
+- ✓ Feedback loop structured: corrections_log.json 8-field schema, Step 7 writes structured records, rules_summary.json rebuilt after each session — v1.1 (Phase 03)
+- ✓ Top-3 rule surfacing: most relevant past rules per language injected at AI review time using relevance scoring — v1.1 (Phase 03)
+- ✓ Notion publishing: report automatically published to Notion on completion; HTML output removed; .md kept as local backup — v1.1 (Phase 05)
+- ✓ Batch feedback routing: batch Language+Issue blocks parsed, routed to correct config file, conflicts flagged, user confirms, one-pass writes executed, change summary shown — v1.1 (Phase 06)
 
 ### Active
 
-_(no active requirements — v1.1 milestone complete, Phase 7 gap closure done)_
+- [ ] **HND-01**: README.md with prerequisites, setup, how to run, how to read reports, how to submit feedback (deferred from v1.1)
+- [ ] **HND-02**: requirements.txt for optional PDF dependencies (`markdown`, `weasyprint`) (deferred from v1.1)
+- [ ] **HND-03**: `generate_pdf.py` accepts `--input`/`--output` CLI arguments (deferred from v1.1)
+- [ ] **QUA-01**: CSV parser finds France reference row by searching, not assuming position 0
+- [ ] **QUA-02**: Emoji detection uses a maintained Unicode library rather than hardcoded ranges
+- [ ] **QUA-03**: Corrections log backed up before each write
+- [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
+- [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
+- [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
 
 ### Out of Scope
 
-- Translation generation tool — the long-term goal, but a separate future milestone after this one proves the rule accumulation works
-- Web interface — team access via CLI + Notion is sufficient
+- Web interface — CLI + Notion is sufficient
 - Automated CSV correction — tool proposes fixes, humans apply them
-- Notion comments → corrections import — feedback still comes back via Juan; future milestone
-- Team handoff / README — Juan runs the tool throughout v1.1; deferred
-- generate_pdf.py CLI args — HTML removed, PDF less relevant; deferred
+- Notion comments → corrections import — feedback comes back via Juan; future milestone
+- Test suite — 0% coverage is a concern but test infrastructure is out of scope
 
 ## Context
 
-- **Stack**: Python 3.14.3 stdlib-only for core validator; optional `markdown`/`weasyprint` for PDF (undeclared dependencies). No requirements.txt exists yet.
-- **Codebase**: 840 lines of Python across 2 scripts (`structural_validator.py` 678 lines, `generate_pdf.py` 162 lines) + 249-line Claude skill definition.
-- **Token bottleneck identified**: Step 4c in `review-translations.md` processes markets inline sequentially, accumulating verbose JSON arrays in context window — this is the primary optimization target.
-- **Known bug**: CSV parser assumes France is always the first entry. If it isn't, validation compares against the wrong reference market.
-- **Config files**: `label_patterns.json` defines template variable syntax and subject variable rules per language. `tone_guidelines.json` defines formality standards per market. `Variables.csv` (788 rows after deduplication) is the canonical variable catalog. All three are read at review start but their influence on AI decisions is not explicitly verifiable.
-- **Test coverage**: 0%. All validation is manual.
-- **Corrections system**: `corrections/corrections_log.json` accumulates corrections with before/after values and extracted rules, consulted at the start of each review to filter relevant past patterns per language.
+- **Stack**: Python 3.14.3 stdlib-only for core validator; optional `markdown`/`weasyprint` for PDF (no requirements.txt yet). No external dependencies for main scripts.
+- **Codebase**: ~1,001 lines Python across 3 scripts (`structural_validator.py` 695 lines, `generate_pdf.py` 162 lines, `test_summary_flag.py` 144 lines) + 707-line Claude skill definition.
+- **Shipped in v1.1**: Notion publishing live; HTML output removed; batch feedback routing; token optimization fully realized; all integration gaps closed.
+- **Known issues**: CSV parser assumes France is always first entry (QUA-01). Step 1 health check references abbreviated tone_guidelines.json path (low severity).
+- **Test coverage**: 0%. All validation is manual + live run.
+- **Deferred**: Team handoff (README, requirements.txt, PDF CLI args) deferred from v1.1; translation generation is the long-term v2 goal.
 
 ## Constraints
 
-- **Tech stack**: Core validator must remain stdlib-only (no pip install for main scripts) — keeps setup simple for team handoff
-- **Data locality**: All inputs, outputs, and config stay local — no cloud sync, no external APIs
+- **Tech stack**: Core validator must remain stdlib-only — keeps setup simple for team handoff
+- **Data locality**: All inputs, outputs, and config stay local — no cloud sync, no external APIs (except Notion MCP for publishing)
 - **Compatibility**: Must run on macOS without any environment setup beyond Python 3.x
-- **Scope**: This milestone is optimization and hardening, not feature expansion
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Silent accumulation for Step 4c | Eliminates token waste from verbose JSON in context; write findings to report file instead | — Pending |
-| Evaluate report format before committing to PDF | Token cost of generating PDF vs .md is unknown; team education cost is also unknown — measure first | — Pending |
-| Keep stdlib-only constraint for core validator | Simplifies team handoff; no pip install step for reviewer | — Pending |
-| Corrections log as bridge to generation | Structure corrections_log.json now so it can feed a translation generation system later — build with that end in mind | — Pending |
-
-## Evolution
-
-This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd:transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd:complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+| Silent accumulation for Step 4c | Eliminates token waste from verbose JSON in context; write findings to report file instead | ✓ Good — 5k–30k tokens saved per run |
+| `--format` defaults to `.md` (not HTML) | HTML removed (NTIO-04); .md is lightweight and Notion-publishable | ✓ Good — clean delivery path |
+| Notion publish via MCP inside skill | MCP already configured; no separate script needed; soft-fail keeps review usable if Notion is down | ✓ Good |
+| Batch feedback extends Step 7 (not a separate skill) | Same session context; natural continuation of review flow | ✓ Good |
+| Variables.csv routing flag-only in batch | CSV changes need careful validation; routing suggestions only, no writes | ✓ Good — prevents accidental catalog corruption |
+| Corrections log as bridge to generation | Structure corrections_log.json now so it can feed a translation generation system later | — Pending (v2 goal) |
+| Keep stdlib-only constraint for core validator | Simplifies team handoff; no pip install step for reviewer | ✓ Good |
+| `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-13 after Phase 07 complete (Tech Debt Cleanup — v1.1 audit gap closure)*
+*Last updated: 2026-04-14 after v1.1 milestone completion (Notion Publishing & Batch Feedback Routing)*

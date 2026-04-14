@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Optimization & Hardening
-status: unknown
-stopped_at: "Completed 07-01: Tech debt cleanup — --summary wired into Step 2, RPT-03 prose updated, stale plan-06-02 comment removed"
-last_updated: "2026-04-13T12:39:12.085Z"
+milestone: v1.1
+milestone_name: Notion Publishing & Batch Feedback Routing
+status: complete
+stopped_at: "v1.1 milestone archived — all 11 plans complete, FINDING-01 closed, git tagged v1.1"
+last_updated: "2026-04-14"
 progress:
-  total_phases: 4
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_phases: 6
+  completed_phases: 6
+  total_plans: 11
+  completed_plans: 11
   percent: 100
 ---
 
@@ -17,19 +17,23 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-09)
+See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 07 — tech-debt-cleanup
+**Current focus:** Planning next milestone (v1.2 — Team Handoff + Quality Improvements)
 
 ## Milestone
 
-**Notion Publishing & Batch Feedback Routing** (v1.1)
+**v1.1 — Notion Publishing & Batch Feedback Routing** — ✅ SHIPPED 2026-04-14
 
 ## Phase Progress
 
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
+| 1 | Token Optimization | 2/2 | Complete |
+| 2 | Reference Reliability + Report Format | 2/2 | Complete |
+| 3 | Feedback Loop Strengthening | 2/2 | Complete |
+| 4 | Team Handoff | 0/1 | Deferred → v1.2 |
 | 5 | Notion Publishing | 2/2 | Complete |
 | 6 | Batch Feedback Routing | 2/2 | Complete |
 | 7 | Tech Debt Cleanup | 1/1 | Complete |
@@ -38,49 +42,23 @@ Progress: [██████████] 100%
 
 ## Key Files
 
-- `.planning/PROJECT.md` — project context and decisions
-- `.planning/REQUIREMENTS.md` — 16 v1 requirements + 7 v1.1 requirements
-- `.planning/ROADMAP.md` — 6-phase breakdown (Phases 1-4 v1.0, Phases 5-6 v1.1)
-- `scripts/structural_validator.py` — structural validation engine (with --summary flag)
-- `.claude/commands/review-translations.md` — main review skill
+- `.planning/PROJECT.md` — project context and decisions (updated 2026-04-14)
+- `.planning/MILESTONES.md` — milestone history
+- `.planning/ROADMAP.md` — collapsed v1.1 + planned v1.2
+- `.planning/RETROSPECTIVE.md` — lessons learned
+- `scripts/structural_validator.py` — structural validation engine (695 lines, --summary flag)
+- `.claude/commands/review-translations.md` — main review skill (707 lines)
 - `config/label_patterns.json` — template variable rules
 - `config/tone_guidelines.json` — formality standards per market
 - `config/Variables.csv` — canonical variable catalog (788 rows)
-- `corrections/corrections_log.json` — accumulated learning system (structured schema)
+- `corrections/corrections_log.json` — accumulated learning system (8-field schema)
 - `corrections/rules_summary.json` — derived per-language rules index
 
-## Decisions
+## Next Steps
 
-- TOK-02: `--summary` flag is additive output control — `--output` and `--summary` can coexist; JSON written to file while compact table prints to stdout
-- TOK-03: Baseline token metric established in `reports/token-baseline.md` before optimization work
-- [Phase 01-token-optimization]: Committed baseline artifact before skill changes to preserve pre-optimization state; ai_findings named explicitly to prevent context drift across 39-market review
-- REF-01: `load_valid_variables` returns None (not empty dict) to force explicit abort in caller — prevents silent bypass surviving future refactors
-- REF-02: Load logging goes to stderr to avoid polluting JSON stdout output
-- REF-03: Step 4c criterion 2 references tone_guidelines.json directly so formality rules are config-driven, not hardcoded in the prompt
-- [Phase 02-reference-reliability-report-format]: --format defaults to html so non-technical teammates can open reports in any browser without extra steps
-- [Phase 02-reference-reliability-report-format]: RPT-01/RPT-02/RPT-03: Sections 1,2,5 always present; sections 3,4,6 conditional on findings — predictable report structure without noise
-- [Phase 02-reference-reliability-report-format]: Notification ID resolution order: --notification arg > CSV column > filename sanitized — explicit user intent takes precedence
-- [Phase 03-feedback-loop-strengthening]: corrections_log.json corrections array is source of truth; rules_summary.json is the derived access layer split per D-09
-- [Phase 03-feedback-loop-strengthening]: One entry per market per feedback item — language is always a single string, never an array (D-07)
-- [Phase 03-feedback-loop-strengthening]: Conflict detection is silent on happy path — only blocks when actual contradiction is found (D-20)
-- [Phase 03-feedback-loop-strengthening]: Step 3 reads rules_summary.json exclusively — corrections_log.json is write-only from Step 3 (FBK-03, FBK-04)
-- [v1.1 milestone]: Notion MCP already configured and working (tested 2026-04-09) — publish via MCP inside review-translations.md skill, no separate script needed
-- [v1.1 milestone]: HTML output removed entirely (NTIO-04); .md stays as local backup — Notion page is now the shareable output
-- [v1.1 milestone]: Batch feedback routing extends Step 7 — user pastes N comments, system routes each to corrections_log.json / label_patterns.json / tone_guidelines.json / Variables.csv with conflict detection
-- [Phase 05-notion-publishing]: D-07: html removed as --format option; md is new default; D-08: pdf path keeps html as internal weasyprint intermediate (not announced)
-- [Phase 05-02-notion-publishing]: D-01 through D-12 applied: Notion publish via mcp__claude_ai_Notion__notion-create-pages, parent page 33dd6418695a8097998fcf373ed18bf5, title format "Translation Review — [id] — [YYYY-MM-DD]", soft-fail (D-10/D-11/D-12), output announces .md + Notion URL or failure warning
-- [Phase 06-01-batch-feedback-routing]: Batch mode branches at Step 7 entry: Language+Issue format triggers 7a-batch; #N format triggers existing 7a-single flow
-- [Phase 06-01-batch-feedback-routing]: notification_type for batch-sourced corrections_log entries is "batch-feedback" — distinguishes batch rules from session-specific ones
-- [Phase 06-01-batch-feedback-routing]: Variables.csv routing is always flag-only — never written, never in confirmation set (D-13)
-- [Phase 06-01-batch-feedback-routing]: Conflict items shown in block list but excluded from confirmation set — clean items proceed independently (D-05)
-- [Phase 06-02-batch-feedback-routing]: 7b-batch uses notification_type=batch-feedback; rules_summary rebuilt once after all writes (D-10); collaborative conflict resolution in 7c-batch; no pending queue — unconfirmed items silently discarded (D-09)
-- [Phase 07-01-tech-debt-cleanup]: TOK-02 token savings realized — --summary flag wired into Step 2 call site; RPT-03 requirement prose updated to reflect .md as sole default output format (NTIO-04 superseded HTML default)
-
-## Last Session
-
-- **Stopped at:** Completed 07-01: Tech debt cleanup — --summary wired into Step 2, RPT-03 prose updated, stale plan-06-02 comment removed
-- **Timestamp:** 2026-04-13
+Start v1.2 with `/gsd:new-milestone` in a fresh context window.
+v1.2 scope: HND-01/02/03 (team handoff) + QUA-01/02/03 (quality improvements)
 
 ---
 *Initialized: 2026-04-08*
-*Last updated: 2026-04-09 — v1.1 roadmap created (Phase 5: Notion Publishing, Phase 6: Batch Feedback Routing)*
+*v1.1 archived: 2026-04-14*
