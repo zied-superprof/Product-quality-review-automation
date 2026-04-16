@@ -38,12 +38,18 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 ### Active
 
-- [ ] **HND-01**: README.md with prerequisites, setup, how to run, how to read reports, how to submit feedback (deferred from v1.1)
-- [ ] **HND-02**: requirements.txt for optional PDF dependencies (`markdown`, `weasyprint`) (deferred from v1.1)
-- [ ] **HND-03**: `generate_pdf.py` accepts `--input`/`--output` CLI arguments (deferred from v1.1)
-- [ ] **QUA-01**: CSV parser finds France reference row by searching, not assuming position 0
-- [ ] **QUA-02**: Emoji detection uses a maintained Unicode library rather than hardcoded ranges
-- [ ] **QUA-03**: Corrections log backed up before each write
+- [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
+- [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
+- [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
+
+### Validated in Phase 9: Fixes
+
+- ✓ **HND-01**: README.md with prerequisites, setup, how to run, how to read reports, how to submit feedback — Phase 9 (FIX-01)
+- ✓ **HND-02**: requirements.txt for optional PDF dependencies (`markdown`, `weasyprint`) — Phase 9 (FIX-02)
+- ✓ **HND-03**: `generate_pdf.py` archived as dead code (Phase 8 audit confirmed it's never called) — Phase 9 (FIX-02)
+- ✓ **QUA-01**: CSV parser finds France reference row by content search, not assuming position 0 — Phase 9 (FIX-03)
+- ✓ **QUA-02**: Emoji detection uses `unicodedata.category()` instead of hardcoded ranges — Phase 9 (FIX-04)
+- ✓ **QUA-03**: Corrections log backed up before each write — Phase 9 (FIX-05)
 - [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
 - [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
 - [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
@@ -60,9 +66,10 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - **Stack**: Python 3.14.3 stdlib-only for core validator; optional `markdown`/`weasyprint` for PDF (no requirements.txt yet). No external dependencies for main scripts.
 - **Codebase**: ~1,001 lines Python across 3 scripts (`structural_validator.py` 695 lines, `generate_pdf.py` 162 lines, `test_summary_flag.py` 144 lines) + 707-line Claude skill definition.
 - **Shipped in v1.1**: Notion publishing live; HTML output removed; batch feedback routing; token optimization fully realized; all integration gaps closed.
-- **Known issues**: CSV parser assumes France is always first entry (QUA-01). Step 1 health check references abbreviated tone_guidelines.json path (low severity).
+- **Phase 9 complete**: France row detection fixed (content-based), emoji detection future-proofed (unicodedata), corrections data cleaned (zh-TW codes, synced counts), backup-before-write added, README complete, stale files archived.
+- **Known issues**: Step 1 health check references abbreviated tone_guidelines.json path (low severity).
 - **Test coverage**: 0%. All validation is manual + live run.
-- **Deferred**: Team handoff (README, requirements.txt, PDF CLI args) deferred from v1.1; translation generation is the long-term v2 goal.
+- **Deferred**: Translation generation is the long-term v2 goal.
 
 ## Constraints
 
@@ -84,4 +91,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-14 after v1.2 milestone start (Audit, Fix & Strategic Overview)*
+*Last updated: 2026-04-16 after Phase 9 (Fixes) completion — all HND/QUA requirements validated*
