@@ -593,9 +593,23 @@ def run_validation(filepath: str, config_dir: str = 'config') -> dict:
             'metadata': {'file': filepath, 'countries': [], 'reference': None},
         }
 
-    # First entry should be France (the reference)
-    ref_entry = entries[0]
-    other_entries = entries[1:]
+    # Find France reference row by content (country name or language code), not position
+    ref_entry = None
+    for entry in entries:
+        country_val = entry.get('country', '').strip().lower()
+        if country_val == 'france' or country_val == 'fr':
+            ref_entry = entry
+            break
+
+    if ref_entry is None:
+        print(
+            "ERROR: No France/fr reference row found in CSV. "
+            "The structural validator requires a French reference row to compare against.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    other_entries = [e for e in entries if e is not ref_entry]
 
     all_issues = []
     countries_reviewed = []
