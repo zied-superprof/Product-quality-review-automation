@@ -27,8 +27,13 @@ The skill will detect the attached file automatically and copy it to `samples/`.
 - `scripts/structural_validator.py` — Python structural checks (stdlib only, no pip)
 - `config/label_patterns.json` — Template variable syntax, validation rules, and `subject_variable_usage_rules` (which subject variable to use per language)
 - `config/tone_guidelines.json` — Brand voice and formality rules per language (includes `informal_standard_languages` list)
+- `config/Variables.csv` — Canonical variable catalog (788 rows)
+- `config/review_rules_compact.md` — Compact review rules for AI reviewer
 - `corrections/corrections_log.json` — Learning system: accumulated corrections and extracted rules
+- `corrections/rules_summary.json` — Derived per-language rules index
+- `requirements.txt` — Optional PDF dependencies (deprecated — PDF generation script archived)
 - `reports/` — Generated review reports
+- `samples/` — Drop CSV files here
 - `.claude/commands/review-translations.md` — The /review-translations skill definition
 - `.claude/settings.local.json` — All bash commands pre-approved (`"Bash"` rule), plus Write access to `reports/`, `corrections/`, `samples/`
 
