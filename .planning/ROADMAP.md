@@ -51,7 +51,7 @@ Plans:
 **Requirements**: FIX-01, FIX-02, FIX-03, FIX-04, FIX-05, FIX-06
 **Success Criteria** (what must be TRUE):
   1. A new team member can follow the README from zero to running a review without asking Juan for help
-  2. Running `python generate_pdf.py --input report.md --output report.pdf` produces a PDF without error
+  2. generate_pdf.py is archived to scripts/archive/ as confirmed dead code, and optional PDF dependencies are documented in requirements.txt
   3. Swapping the France row to any position in the CSV does not break the review run
   4. Adding a brand-new emoji to a translation is flagged without any code changes, using the current Unicode data
   5. After any write to the corrections log, a timestamped backup file exists in the corrections directory

@@ -25,7 +25,7 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 ### Fixes (FIX)
 
 - [ ] **FIX-01**: User can set up the project using a README that covers prerequisites, setup steps, how to run a review, how to read reports, and how to submit feedback
-- [ ] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` accepts `--input` and `--output` CLI arguments
+- [ ] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)
 - [ ] **FIX-03**: CSV parser locates the France reference row by searching for `fr`/`FR` content rather than assuming it is always at position 0
 - [ ] **FIX-04**: Emoji detection uses maintained Unicode data (not hardcoded ranges) so new emoji are caught without code changes
 - [ ] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
@@ -86,8 +86,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 **Coverage:**
 - v1.2 requirements: 13 total
 - Mapped to phases: 13
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-14*
-*Last updated: 2026-04-14 — traceability confirmed after roadmap creation*
+*Last updated: 2026-04-16 — FIX-02 updated to reflect generate_pdf.py archival per Phase 8 audit*
