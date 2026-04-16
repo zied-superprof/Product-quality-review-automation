@@ -1,16 +1,15 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.2
-milestone_name: Audit, Fix & Strategic Overview
-status: roadmap_ready
-stopped_at: "Roadmap defined — Phase 8 ready to plan"
-last_updated: "2026-04-14"
+milestone_name: — Audit, Fix & Strategic Overview
+status: unknown
+last_updated: "2026-04-16T07:40:00Z"
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 2
+  completed_plans: 1
+  percent: 50
 ---
 
 # Project State
@@ -20,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Milestone v1.2 — Audit, Fix & Strategic Overview
+**Current focus:** Phase 08 — project-audit
 
 ## Milestone
 
@@ -28,10 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 
 ## Current Position
 
-- **Phase**: 8 — Project Audit (not started)
-- **Plan**: None yet
-- **Status**: Ready to plan
-- **Next action**: `/gsd:plan-phase 8`
+Phase: 08 (project-audit) — EXECUTING
+Plan: 2 of 2 (Plan 01 complete)
 
 ## Phase Progress
 
@@ -41,7 +38,7 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 | 9 | Fixes | 0/TBD | Not started |
 | 10 | Strategic Overview | 0/TBD | Not started |
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█████░░░░░] 50%
 
 ## Key Files
 
@@ -66,12 +63,20 @@ Progress: [░░░░░░░░░░] 0%
 - Phase 9 (Fixes) depends on Phase 8 (Audit) completing first — FIX-06 scope is confirmed by audit critical findings
 - HND-01/02/03 deferred from v1.1 are absorbed into Phase 9 as FIX-01 and FIX-02
 
+## Decisions (Phase 08)
+
+- [08-01] generate_pdf.py confirmed dead code: hardcoded 2026-04-03 filename, no active caller, skill uses inline CSS copied from it
+- [08-01] zh language code inconsistency: corrections_log.json uses underscores (zh_TW) while all other config uses BCP-47 hyphens (zh-TW), causing silent lookup failures
+- [08-01] languages.json classified as unreferenced: zero references in active code, formality data conflicts with tone_guidelines.json for 12 languages
+
 ## Next Steps
 
 Roadmap approved. Begin execution:
+
 - `/gsd:plan-phase 8` — Project Audit
 
 ---
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
+*Last session: 2026-04-16 — Completed 08-01-PLAN.md*

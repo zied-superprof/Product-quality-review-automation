@@ -16,11 +16,11 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 
 ### Audit (AUD)
 
-- [ ] **AUD-01**: Reviewer can see a documented list of all unused or redundant code, scripts, and config files in the project
+- [x] **AUD-01**: Reviewer can see a documented list of all unused or redundant code, scripts, and config files in the project
 - [ ] **AUD-02**: Reviewer can see identified gaps in the review→correction→improvement workflow cycle (steps missing, brittle, or unscalable)
 - [ ] **AUD-03**: Reviewer can see scope gaps versus the Phase 1 vision — capabilities that were planned but never built or partially built
 - [ ] **AUD-04**: Audit findings are prioritized (critical / medium / low) with actionable next steps
-- [ ] **AUD-05**: Reviewer can see identified contradictions in the project — conflicting rules across config files, mismatches between documented behavior and actual implementation, and inconsistencies in the correction rules
+- [x] **AUD-05**: Reviewer can see identified contradictions in the project — conflicting rules across config files, mismatches between documented behavior and actual implementation, and inconsistencies in the correction rules
 
 ### Fixes (FIX)
 
@@ -69,11 +69,11 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUD-01 | Phase 8 | Pending |
+| AUD-01 | Phase 8 | Complete |
 | AUD-02 | Phase 8 | Pending |
 | AUD-03 | Phase 8 | Pending |
 | AUD-04 | Phase 8 | Pending |
-| AUD-05 | Phase 8 | Pending |
+| AUD-05 | Phase 8 | Complete |
 | FIX-01 | Phase 9 | Pending |
 | FIX-02 | Phase 9 | Pending |
 | FIX-03 | Phase 9 | Pending |

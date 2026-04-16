@@ -42,7 +42,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
   5. Reviewer can see all identified contradictions — config conflicts, rule inconsistencies, and doc vs. implementation mismatches
 **Plans**: 2 plans
 Plans:
-- [ ] 08-01-PLAN.md — Scan for unused/redundant code and detect contradictions
+- [x] 08-01-PLAN.md — Scan for unused/redundant code and detect contradictions
 - [ ] 08-02-PLAN.md — Analyze workflow/scope gaps and assemble final AUDIT.md
 
 ### Phase 9: Fixes
@@ -77,7 +77,7 @@ Plans:
 | 5. Notion Publishing | v1.1 | 2/2 | Complete | 2026-04-09 |
 | 6. Batch Feedback Routing | v1.1 | 2/2 | Complete | 2026-04-10 |
 | 7. Tech Debt Cleanup | v1.1 | 1/1 | Complete | 2026-04-14 |
-| 8. Project Audit | v1.2 | 0/2 | Not started | - |
+| 8. Project Audit | v1.2 | 1/2 | In Progress|  |
 | 9. Fixes | v1.2 | 0/1 | Not started | - |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
 
