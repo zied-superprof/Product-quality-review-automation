@@ -69,6 +69,8 @@ Progress: [████████░░] 80%
 - [09-01] France row matched by country == 'france' or 'fr' (case-insensitive), not position 0
 - [09-01] Emoji detection replaced with unicodedata.category() — auto-updates with Python, no hardcoded ranges
 - [09-01] extract_emojis() kept as public API for backward compatibility, delegates to new extract_emoji()
+- [09-03] generate_pdf.py not referenced by name in README — deprecated PDF workflow noted generically; name in requirements.txt comment only
+- [09-03] CLAUDE.md project structure updated: rules_summary.json, review_rules_compact.md, requirements.txt added; generate_pdf.py removed
 
 ## Decisions (Phase 08)
 
@@ -89,4 +91,4 @@ Roadmap approved. Begin execution:
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
-*Last session: 2026-04-16 — Completed 09-01-PLAN.md (structural validator brittleness fixes)*
+*Last session: 2026-04-16 — Completed 09-03-PLAN.md (README + requirements.txt team handoff docs)*

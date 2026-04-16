@@ -24,8 +24,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 
 ### Fixes (FIX)
 
-- [ ] **FIX-01**: User can set up the project using a README that covers prerequisites, setup steps, how to run a review, how to read reports, and how to submit feedback
-- [ ] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)
+- [x] **FIX-01**: User can set up the project using a README that covers prerequisites, setup steps, how to run a review, how to read reports, and how to submit feedback
+- [x] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)
 - [x] **FIX-03**: CSV parser locates the France reference row by searching for `fr`/`FR` content rather than assuming it is always at position 0
 - [x] **FIX-04**: Emoji detection uses maintained Unicode data (not hardcoded ranges) so new emoji are caught without code changes
 - [ ] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
@@ -74,8 +74,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 | AUD-03 | Phase 8 | Complete |
 | AUD-04 | Phase 8 | Complete |
 | AUD-05 | Phase 8 | Complete |
-| FIX-01 | Phase 9 | Pending |
-| FIX-02 | Phase 9 | Pending |
+| FIX-01 | Phase 9 | Complete |
+| FIX-02 | Phase 9 | Complete |
 | FIX-03 | Phase 9 | Complete |
 | FIX-04 | Phase 9 | Complete |
 | FIX-05 | Phase 9 | Pending |
