@@ -1,0 +1,60 @@
+{
+  "generated": "2026-04-14",
+  "total_rules": 6,
+  "rules": [
+    {
+      "rule": "Hungarian CTA/button text must use imperative form. 'Több tanárt látok' (I see more teachers) is indicative and semantically wrong. Use 'Mutass még több tanárt' (Show me more teachers).",
+      "language": "hu",
+      "issue_category": "grammar",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10"
+    },
+    {
+      "rule": "Lithuanian: @TPL_MATIERE_DE_MATIERE@ before 'mokytojas' is correct (genitive noun construction). Do not flag. The variable is already in the correct form; only the following noun may vary by case.",
+      "language": "lt",
+      "issue_category": "label",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10"
+    },
+    {
+      "rule": "Japanese: @TPL_MATIERE_DE_MATIERE@ is a French genitive construction and is not configured for Japanese. Replace with @TPL_MATIERE_NOM@ (preferred) or @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "language": "ja",
+      "issue_category": "label",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-04-14"
+    },
+    {
+      "rule": "Traditional Chinese (Taiwan): @TPL_MATIERE_DE_MATIERE@ is a French genitive construction not configured for Chinese. Replace with @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "language": "zh-TW",
+      "issue_category": "label",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-04-14"
+    },
+    {
+      "rule": "Traditional Chinese (Hong Kong): @TPL_MATIERE_DE_MATIERE@ is a French genitive construction not configured for Chinese. Replace with @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "language": "zh-HK",
+      "issue_category": "label",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-04-14"
+    },
+    {
+      "rule": "Global: @TPL_MEMBRE_ESPACE_PRENOM@ already contains a leading space (ESPACE = space). Do not add a space before this variable. 'Hola @TPL_MEMBRE_ESPACE_PRENOM@' → 'Hola@TPL_MEMBRE_ESPACE_PRENOM@'. Applies to all markets using this variable.",
+      "language": "all",
+      "issue_category": "format",
+      "occurrence_count": 1,
+      "confidence": "high",
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-04-14"
+    }
+  ]
+}

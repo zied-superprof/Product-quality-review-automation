@@ -175,6 +175,7 @@ from pathlib import Path
 md_content = Path("[md_path]").read_text(encoding="utf-8")
 body = markdown.markdown(md_content, extensions=["tables", "fenced_code"])
 
+# Canonical CSS — this is the single source of truth (generate_pdf.py archived)
 css = """
   body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 11pt; line-height: 1.65; color: #1a1a2e; max-width: 800px; margin: 0 auto; padding: 32px 40px; }
   h1 { font-size: 20pt; font-weight: 700; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 8px; margin-top: 0; }
@@ -355,12 +356,24 @@ Take the .md report content that was just written to disk and apply these transf
 
 **Step 6c — Publish to Notion:**
 
-Call `mcp__claude_ai_Notion__notion-create-pages` with:
-- `title`: the page title from Step 6a
-- `parent_page_id`: `33dd6418695a8097998fcf373ed18bf5`
-- The adapted markdown content from Step 6b as the page body content parameter
+Call `mcp__claude_ai_Notion__notion-create-pages` with **exactly** this parameter structure — do not guess or vary the format:
 
-**Parameter name uncertainty**: The body content parameter may be named `page_content`, `content`, or `markdown`. Try the call with the content string. If the tool returns an error suggesting a different parameter name, retry with the alternate name. The soft-fail behavior (Step 6d) handles persistent failures gracefully.
+```json
+{
+  "parent": { "type": "page_id", "page_id": "33dd6418695a8097998fcf373ed18bf5" },
+  "pages": [
+    {
+      "properties": { "title": "<page title from Step 6a>" },
+      "content": "<adapted markdown content from Step 6b>"
+    }
+  ]
+}
+```
+
+- `parent.type` must be `"page_id"` — never `"workspace"` or any other value
+- `parent.page_id` is always `33dd6418695a8097998fcf373ed18bf5` (the "Reports/ planning" page in Notion)
+- `pages[0].properties.title` is the string from Step 6a
+- `pages[0].content` is the Notion-flavored Markdown string from Step 6b
 
 **Step 6d — Handle result:**
 
@@ -498,6 +511,16 @@ Extract the item numbers from the user's reply. Accept formats: `1, 3, 4` or `1 
 - If a number refers to a Variables.csv flag-only item, reject it: "Item #[N] is a Variables.csv flag — it cannot be applied automatically."
 - If a number does not correspond to any item in the block list, ignore it silently.
 - Items not listed in the confirmation are silently discarded — no pending queue (per D-09).
+
+#### Backup corrections log
+
+Before writing any changes to `corrections/corrections_log.json`, create a timestamped backup:
+
+```bash
+cp corrections/corrections_log.json "corrections/corrections_log.backup.$(date +%Y%m%d-%H%M%S).json"
+```
+
+This backup runs once per feedback session, before the first write. Do NOT backup before each individual item write.
 
 #### Write confirmed items (one pass, per D-10)
 
@@ -645,6 +668,16 @@ Wait for user choice before proceeding.
 
 ### 7b — Write structured correction entry (per D-07, D-08)
 
+#### Backup corrections log
+
+Before writing any changes to `corrections/corrections_log.json`, create a timestamped backup:
+
+```bash
+cp corrections/corrections_log.json "corrections/corrections_log.backup.$(date +%Y%m%d-%H%M%S).json"
+```
+
+This backup runs once per feedback session, before the first write. Do NOT backup before each individual item write.
+
 For each feedback item, write ONE entry per market to `corrections/corrections_log.json` > `corrections` array. If a feedback item applies to 5 markets, that is 5 separate entries — each with a single `language` string value (per D-07).
 
 Each entry has exactly these 8 fields:
@@ -672,6 +705,11 @@ Each entry has exactly these 8 fields:
 - If the rule touches tone/formality -> also update `config/tone_guidelines.json`
 
 ### 7d — Rebuild rules_summary.json
+
+Before rebuilding, backup the current file:
+```bash
+cp corrections/rules_summary.json "corrections/rules_summary.backup.$(date +%Y%m%d-%H%M%S).json"
+```
 
 Read ALL entries in `corrections/corrections_log.json` > `corrections`. Rebuild `corrections/rules_summary.json` from scratch (per D-10 — full rebuild, no append):
 
