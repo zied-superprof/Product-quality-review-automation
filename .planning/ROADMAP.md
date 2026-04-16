@@ -55,7 +55,11 @@ Plans:
   3. Swapping the France row to any position in the CSV does not break the review run
   4. Adding a brand-new emoji to a translation is flagged without any code changes, using the current Unicode data
   5. After any write to the corrections log, a timestamped backup file exists in the corrections directory
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 09-01-PLAN.md — Fix France row detection and emoji detection in structural validator
+- [ ] 09-02-PLAN.md — Fix corrections data, add backup-before-write, archive stale files
+- [ ] 09-03-PLAN.md — Complete README and create requirements.txt
 
 ### Phase 10: Strategic Overview
 **Goal**: The full 3-phase vision is documented with clear scope per phase and observable criteria that signal when Phase 1 is done enough to move forward
@@ -78,11 +82,11 @@ Plans:
 | 6. Batch Feedback Routing | v1.1 | 2/2 | Complete | 2026-04-10 |
 | 7. Tech Debt Cleanup | v1.1 | 1/1 | Complete | 2026-04-14 |
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
-| 9. Fixes | v1.2 | 0/1 | Not started | - |
+| 9. Fixes | v1.2 | 0/3 | Not started | - |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
 
 ---
 
 *Roadmap created: 2026-04-08*
 *v1.1 shipped: 2026-04-14*
-*v1.2 roadmap updated: 2026-04-15*
+*v1.2 roadmap updated: 2026-04-16*
