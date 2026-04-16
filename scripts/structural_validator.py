@@ -51,23 +51,28 @@ RE_URL_CONNECTE = re.compile(r'URL_QUI_CONNECTE')
 # HTML tags
 RE_HTML_TAGS = re.compile(r'</?(?:b|i|u|mark|li|sup|a|A)\b[^>]*>', re.IGNORECASE)
 
-# Emoji detection (Unicode emoji ranges)
-RE_EMOJI = re.compile(
-    "["
-    "\U0001F600-\U0001F64F"  # emoticons
-    "\U0001F300-\U0001F5FF"  # symbols & pictographs
-    "\U0001F680-\U0001F6FF"  # transport & map
-    "\U0001F1E0-\U0001F1FF"  # flags
-    "\U00002702-\U000027B0"  # dingbats
-    "\U0001F900-\U0001F9FF"  # supplemental symbols
-    "\U0001FA00-\U0001FA6F"  # chess symbols
-    "\U0001FA70-\U0001FAFF"  # symbols extended
-    "\U00002600-\U000026FF"  # misc symbols
-    "\U0000200D"             # zero width joiner
-    "\U0000FE0F"             # variation selector
-    "]+",
-    flags=re.UNICODE
-)
+def is_emoji_char(char: str) -> bool:
+    """Detect emoji using Unicode category data (auto-updates with Python version)."""
+    if len(char) != 1:
+        return False
+    cat = unicodedata.category(char)
+    # Symbol, Other covers the vast majority of emoji
+    if cat == 'So':
+        return True
+    # Also catch specific codepoint ranges that unicodedata classifies differently
+    cp = ord(char)
+    # Regional indicator symbols (flags) — category 'So' on most Python versions
+    if 0x1F1E0 <= cp <= 0x1F1FF:
+        return True
+    # Variation selectors and ZWJ used in emoji sequences
+    if cp in (0x200D, 0xFE0F, 0xFE0E):
+        return True
+    return False
+
+
+def extract_emoji(text: str) -> list[str]:
+    """Extract all emoji characters from text using unicodedata."""
+    return [ch for ch in text if is_emoji_char(ch)]
 
 # Mojibake patterns (common UTF-8 misinterpretation sequences)
 RE_MOJIBAKE = re.compile(
@@ -161,7 +166,7 @@ def extract_conditional_names(text: str) -> dict:
 
 def extract_emojis(text: str) -> list[str]:
     """Extract all emoji from text in order."""
-    return RE_EMOJI.findall(text)
+    return extract_emoji(text)
 
 
 def extract_custom_tags(text: str) -> dict:
