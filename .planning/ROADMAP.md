@@ -57,9 +57,9 @@ Plans:
   5. After any write to the corrections log, a timestamped backup file exists in the corrections directory
 **Plans**: 3 plans
 Plans:
-- [ ] 09-01-PLAN.md — Fix France row detection and emoji detection in structural validator
+- [x] 09-01-PLAN.md — Fix France row detection and emoji detection in structural validator
 - [ ] 09-02-PLAN.md — Fix corrections data, add backup-before-write, archive stale files
-- [ ] 09-03-PLAN.md — Complete README and create requirements.txt
+- [x] 09-03-PLAN.md — Complete README and create requirements.txt
 
 ### Phase 10: Strategic Overview
 **Goal**: The full 3-phase vision is documented with clear scope per phase and observable criteria that signal when Phase 1 is done enough to move forward
@@ -82,7 +82,7 @@ Plans:
 | 6. Batch Feedback Routing | v1.1 | 2/2 | Complete | 2026-04-10 |
 | 7. Tech Debt Cleanup | v1.1 | 1/1 | Complete | 2026-04-14 |
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
-| 9. Fixes | v1.2 | 0/3 | Not started | - |
+| 9. Fixes | v1.2 | 2/3 | In Progress|  |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
 
 ---

@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: — Audit, Fix & Strategic Overview
 status: unknown
-last_updated: "2026-04-16T07:51:23.620Z"
+last_updated: "2026-04-16T12:25:21.261Z"
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 5
+  completed_plans: 4
   percent: 100
 ---
 
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 08 — project-audit
+**Current focus:** Phase 09 — fixes
 
 ## Milestone
 
@@ -27,18 +27,18 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 
 ## Current Position
 
-Phase: 9
-Plan: Not started
+Phase: 09 (fixes) — EXECUTING
+Plan: 3 of 3
 
 ## Phase Progress
 
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
 | 8 | Project Audit | 2/2 | Complete |
-| 9 | Fixes | 0/TBD | Not started |
+| 9 | Fixes | 3/3 | Complete |
 | 10 | Strategic Overview | 0/TBD | Not started |
 
-Progress: [██████████] 100%
+Progress: [████████░░] 80%
 
 ## Key Files
 
@@ -57,11 +57,18 @@ Progress: [██████████] 100%
 ## Accumulated Context
 
 - v1.1 shipped 2026-04-14: Notion publishing, batch feedback routing, token optimization, all integration gaps closed
-- CSV parser assumes France is always first entry (known issue → FIX-03)
+- FIX-03 RESOLVED: France row found by content search (country == 'france'/'fr'), not hardcoded position 0
+- FIX-04 RESOLVED: Emoji detection uses unicodedata.category() stdlib, no hardcoded Unicode ranges
 - 0% test coverage — manual validation only; test infrastructure explicitly out of scope
 - Translation generation (GEN-01/02/03) is the long-term v2 goal; deferred until Phase 1 "done enough" (STR-02 defines criteria)
 - Phase 9 (Fixes) depends on Phase 8 (Audit) completing first — FIX-06 scope is confirmed by audit critical findings
 - HND-01/02/03 deferred from v1.1 are absorbed into Phase 9 as FIX-01 and FIX-02
+
+## Decisions (Phase 09)
+
+- [09-01] France row matched by country == 'france' or 'fr' (case-insensitive), not position 0
+- [09-01] Emoji detection replaced with unicodedata.category() — auto-updates with Python, no hardcoded ranges
+- [09-01] extract_emojis() kept as public API for backward compatibility, delegates to new extract_emoji()
 
 ## Decisions (Phase 08)
 
@@ -82,4 +89,4 @@ Roadmap approved. Begin execution:
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
-*Last session: 2026-04-16 — Completed 08-02-PLAN.md (Phase 08 complete)*
+*Last session: 2026-04-16 — Completed 09-01-PLAN.md (structural validator brittleness fixes)*
