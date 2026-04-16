@@ -28,8 +28,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 - [x] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)
 - [x] **FIX-03**: CSV parser locates the France reference row by searching for `fr`/`FR` content rather than assuming it is always at position 0
 - [x] **FIX-04**: Emoji detection uses maintained Unicode data (not hardcoded ranges) so new emoji are caught without code changes
-- [ ] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
-- [ ] **FIX-06**: Highest-priority critical findings from the AUD phase are implemented (scope confirmed after audit)
+- [x] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
+- [x] **FIX-06**: Highest-priority critical findings from the AUD phase are implemented (scope confirmed after audit)
 
 ### Strategic Overview (STR)
 
@@ -78,8 +78,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 | FIX-02 | Phase 9 | Complete |
 | FIX-03 | Phase 9 | Complete |
 | FIX-04 | Phase 9 | Complete |
-| FIX-05 | Phase 9 | Pending |
-| FIX-06 | Phase 9 | Pending |
+| FIX-05 | Phase 9 | Complete |
+| FIX-06 | Phase 9 | Complete |
 | STR-01 | Phase 10 | Pending |
 | STR-02 | Phase 10 | Pending |
 

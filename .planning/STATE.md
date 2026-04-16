@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: — Audit, Fix & Strategic Overview
 status: unknown
-last_updated: "2026-04-16T12:25:21.261Z"
+last_updated: "2026-04-16T12:29:50.400Z"
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 4
-  percent: 100
+  completed_plans: 5
+  percent: 80
 ---
 
 # Project State
@@ -69,6 +69,8 @@ Progress: [████████░░] 80%
 - [09-01] France row matched by country == 'france' or 'fr' (case-insensitive), not position 0
 - [09-01] Emoji detection replaced with unicodedata.category() — auto-updates with Python, no hardcoded ranges
 - [09-01] extract_emojis() kept as public API for backward compatibility, delegates to new extract_emoji()
+- [09-02] Backup added to both 7b and 7b-batch write paths separately — skill is instruction text, each section must be self-contained
+- [09-02] zh_TW/zh_HK codes fixed to zh-TW/zh-HK in corrections_log.json and rules_summary.json for BCP-47 consistency
 - [09-03] generate_pdf.py not referenced by name in README — deprecated PDF workflow noted generically; name in requirements.txt comment only
 - [09-03] CLAUDE.md project structure updated: rules_summary.json, review_rules_compact.md, requirements.txt added; generate_pdf.py removed
 
@@ -91,4 +93,4 @@ Roadmap approved. Begin execution:
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
-*Last session: 2026-04-16 — Completed 09-03-PLAN.md (README + requirements.txt team handoff docs)*
+*Last session: 2026-04-16 — Completed 09-02-PLAN.md (corrections data fixes, backup mechanism, stale file archiving)*
