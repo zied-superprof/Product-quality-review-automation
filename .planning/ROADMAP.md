@@ -24,7 +24,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 
 ### v1.2 — Audit, Fix & Strategic Overview (Phases 8–10)
 
-- [ ] **Phase 8: Project Audit** — Comprehensive audit of code, workflow, scope gaps, and contradictions with prioritized findings
+- [x] **Phase 8: Project Audit** — Comprehensive audit of code, workflow, scope gaps, and contradictions with prioritized findings (completed 2026-04-16)
 - [ ] **Phase 9: Fixes** — Implement deferred handoff items and highest-priority audit findings
 - [ ] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria
 
@@ -43,7 +43,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 **Plans**: 2 plans
 Plans:
 - [x] 08-01-PLAN.md — Scan for unused/redundant code and detect contradictions
-- [ ] 08-02-PLAN.md — Analyze workflow/scope gaps and assemble final AUDIT.md
+- [x] 08-02-PLAN.md — Analyze workflow/scope gaps and assemble final AUDIT.md
 
 ### Phase 9: Fixes
 **Goal**: Users and new team members can set up and run the tool reliably, and the most fragile code paths from the audit are corrected
@@ -77,7 +77,7 @@ Plans:
 | 5. Notion Publishing | v1.1 | 2/2 | Complete | 2026-04-09 |
 | 6. Batch Feedback Routing | v1.1 | 2/2 | Complete | 2026-04-10 |
 | 7. Tech Debt Cleanup | v1.1 | 1/1 | Complete | 2026-04-14 |
-| 8. Project Audit | v1.2 | 1/2 | In Progress|  |
+| 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
 | 9. Fixes | v1.2 | 0/1 | Not started | - |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
 

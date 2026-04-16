@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: — Audit, Fix & Strategic Overview
 status: unknown
-last_updated: "2026-04-16T07:40:00Z"
+last_updated: "2026-04-16T07:47:19.563Z"
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 50
+  completed_plans: 2
+  percent: 100
 ---
 
 # Project State
@@ -27,18 +27,18 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 
 ## Current Position
 
-Phase: 08 (project-audit) — EXECUTING
-Plan: 2 of 2 (Plan 01 complete)
+Phase: 08 (project-audit) — COMPLETE
+Plan: 2 of 2 (both plans complete)
 
 ## Phase Progress
 
 | Phase | Name | Plans | Status |
 |-------|------|-------|--------|
-| 8 | Project Audit | 0/TBD | Not started |
+| 8 | Project Audit | 2/2 | Complete |
 | 9 | Fixes | 0/TBD | Not started |
 | 10 | Strategic Overview | 0/TBD | Not started |
 
-Progress: [█████░░░░░] 50%
+Progress: [██████████] 100%
 
 ## Key Files
 
@@ -68,6 +68,9 @@ Progress: [█████░░░░░] 50%
 - [08-01] generate_pdf.py confirmed dead code: hardcoded 2026-04-03 filename, no active caller, skill uses inline CSS copied from it
 - [08-01] zh language code inconsistency: corrections_log.json uses underscores (zh_TW) while all other config uses BCP-47 hyphens (zh-TW), causing silent lookup failures
 - [08-01] languages.json classified as unreferenced: zero references in active code, formality data conflicts with tone_guidelines.json for 12 languages
+- [08-02] Manual batch confirmation is intentional per D-15 — not flagged as a gap
+- [08-02] France row position-0 assumption in structural_validator.py line 597 is the highest-priority fix (critical finding #19)
+- [08-02] zh_TW/zh_HK underscore codes in corrections_log.json cause active rule lookup failures — critical fix for Phase 9
 
 ## Next Steps
 
@@ -79,4 +82,4 @@ Roadmap approved. Begin execution:
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
-*Last session: 2026-04-16 — Completed 08-01-PLAN.md*
+*Last session: 2026-04-16 — Completed 08-02-PLAN.md (Phase 08 complete)*
