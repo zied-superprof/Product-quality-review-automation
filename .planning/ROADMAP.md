@@ -113,7 +113,45 @@ Plans:
 
 ---
 
+## Backlog
+
+### Phase 999.1: URL-driven translation review (BACKLOG)
+
+**Goal:** [Captured for future planning] End-to-end flow: send a Superprof BO notification admin URL to the agent; Playwright scrapes the page (email/SMS tabs) and extracts translation grid(s) into 1–2 CSVs in `samples/` named after the translation name shown in the page information block; the existing review pipeline runs; the report is published to the Notion Reports DB with the translation name as the page title and the existing "task follow up" column set to the same name; a Slack message is posted to a group channel when the run completes. Coexists with the current CSV-drop flow until the URL-driven path is fully operational.
+
+**Requirements:** TBD
+
+**Confirmed decisions (2026-04-23):**
+1. Source = Superprof BO notification admin
+2. Extraction tool = Playwright (not API)
+3. Email/SMS = separate tabs on the page
+4. Translation name source = page information block
+5. Notion "task follow up" column already exists on Reports DB
+6. Completion notifier = Slack message to a group
+7. CSV-drop flow stays live during rollout
+
+**Open for v1.3 planning (discuss-phase):**
+- Exact Playwright selectors for the page information block + tabs
+- Notion "task follow up" column type and allowed values
+- Which Slack group/channel and message format
+- Auth flow for BO (session cookie, SSO, login script?)
+- Rate limits / retry on Playwright failures
+
+**Suggested phase breakdown:**
+- A: Playwright extraction (URL → structured data)
+- B: Data → named CSV(s) in `samples/`
+- C: Orchestration + Notion task-follow-up column wiring
+- D: Slack completion notifier
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with `/gsd:review-backlog` when ready)
+
+---
+
 *Roadmap created: 2026-04-08*
 *v1.1 shipped: 2026-04-14*
 *v1.2 roadmap updated: 2026-04-16*
 *v1.2 gap closure phases added: 2026-04-23 (per v1.2-MILESTONE-AUDIT.md — IC-01, IC-02)*
+*Backlog 999.1 added: 2026-04-23 — URL-driven translation review (v1.3 candidate)*
