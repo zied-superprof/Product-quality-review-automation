@@ -29,7 +29,7 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 - [x] **FIX-03**: CSV parser locates the France reference row by searching for `fr`/`FR` content rather than assuming it is always at position 0
 - [x] **FIX-04**: Emoji detection uses maintained Unicode data (not hardcoded ranges) so new emoji are caught without code changes
 - [x] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
-- [x] **FIX-06**: Highest-priority critical findings from the AUD phase are implemented (scope confirmed after audit)
+- [ ] **FIX-06**: Highest-priority critical findings from the AUD phase are implemented (scope confirmed after audit) — *reset 2026-04-23: v1.2 milestone audit found scope partially satisfied; AUDIT finding [#8] wrong-loop-variable check was skipped silently. Moved to Phase 11.*
 
 ### Strategic Overview (STR)
 
@@ -79,15 +79,22 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 | FIX-03 | Phase 9 | Complete |
 | FIX-04 | Phase 9 | Complete |
 | FIX-05 | Phase 9 | Complete |
-| FIX-06 | Phase 9 | Complete |
+| FIX-06 | Phase 11 | Pending (reassigned 2026-04-23 — audit found scope partial; [#8] loop-variable check pending) |
 | STR-01 | Phase 10 | Pending |
 | STR-02 | Phase 10 | Pending |
+
+**Gap closure (no direct REQ mapping):**
+
+| Gap | Phase | Source |
+|-----|-------|--------|
+| IC-02 — zh-HK orphaned correction rule | Phase 12 | v1.2-MILESTONE-AUDIT.md |
 
 **Coverage:**
 - v1.2 requirements: 13 total
 - Mapped to phases: 13
 - Unmapped: 0
+- Satisfied: 10 (FIX-06 reset pending gap closure in Phase 11)
 
 ---
 *Requirements defined: 2026-04-14*
-*Last updated: 2026-04-16 — FIX-02 updated to reflect generate_pdf.py archival per Phase 8 audit*
+*Last updated: 2026-04-23 — FIX-06 reset and reassigned to Phase 11 per v1.2 milestone audit (IC-01); Phase 12 added for IC-02 gap closure*

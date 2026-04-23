@@ -22,11 +22,13 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 
 </details>
 
-### v1.2 — Audit, Fix & Strategic Overview (Phases 8–10)
+### v1.2 — Audit, Fix & Strategic Overview (Phases 8–12)
 
 - [x] **Phase 8: Project Audit** — Comprehensive audit of code, workflow, scope gaps, and contradictions with prioritized findings (completed 2026-04-16)
 - [x] **Phase 9: Fixes** — Implement deferred handoff items and highest-priority audit findings (completed 2026-04-16)
 - [ ] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria
+- [ ] **Phase 11: Loop-Variable Structural Check** — Close IC-01 / complete FIX-06 scope (gap closure from v1.2 audit)
+- [ ] **Phase 12: zh-HK Language Code Resolution** — Close IC-02 orphaned correction rule (gap closure from v1.2 audit)
 
 ## Phase Details
 
@@ -70,6 +72,28 @@ Plans:
   2. Reviewer can identify a checklist of observable conditions — not implementation tasks — that must all be true before work on Phase 2 (AI Translation Generation) begins
 **Plans**: TBD
 
+### Phase 11: Loop-Variable Structural Check
+**Goal**: The structural validator catches the wrong-loop-variable error (AUDIT finding [#8]) — the most commonly observed recurring error in CLAUDE.md — without depending on the AI review tier
+**Depends on**: Phase 9 (validator and label_patterns.json are the target files; Phase 9 established the current baseline)
+**Requirements**: FIX-06 (completes the partially-satisfied scope — AUDIT finding [#8] was skipped silently in Phase 9; see v1.2 audit IC-01)
+**Gap Closure**: Closes IC-01 from v1.2-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. `scripts/structural_validator.py` flags template variables used outside their allowed block (e.g. `@TPL_MATIERE_DE_MATIERE@` inside `<TPL_LOOP_ANNONCES>`, `@TPL_ANNONCE_AFFICHE_QUI_CONNECTE@` inside `<TPL_IF_LISTE_AVIS>`)
+  2. `config/label_patterns.json` declares which variables are valid in which structural blocks (loop, if-block, body)
+  3. The recurring Arabic-market error pattern documented in CLAUDE.md is detected by the structural layer, not only by the AI reviewer
+**Plans**: TBD
+
+### Phase 12: zh-HK Language Code Resolution
+**Goal**: The Hong Kong correction learning loop actually fires — either HK gets its own `zh-HK` rule set end-to-end, or HK is consolidated under `zh-TW` and the orphaned rule is removed
+**Depends on**: Phase 9 (Phase 9 Plan 02 added the zh-HK entry that became orphaned; Phase 12 decides its fate)
+**Requirements**: None directly — gap closure for a material integration defect shipped under FIX-06
+**Gap Closure**: Closes IC-02 from v1.2-MILESTONE-AUDIT.md and the "Hong Kong correction learning loop" broken flow
+**Success Criteria** (what must be TRUE):
+  1. The zh-HK rule in `corrections/corrections_log.json` + `corrections/rules_summary.json` is either consistently resolved across all four configs and the validator's country→code map, OR consolidated back into `zh-TW` with the orphaned entry removed
+  2. A CSV run with a Hong Kong row exercises the intended correction path — no silent mapping divergence between the validator and the corrections store
+  3. The chosen direction (split or merge) is recorded in Phase 12's summary so future readers understand why
+**Plans**: TBD — planning step must first decide split vs merge
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -84,9 +108,12 @@ Plans:
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
+| 11. Loop-Variable Structural Check | v1.2 | 0/? | Not started (gap closure) | - |
+| 12. zh-HK Language Code Resolution | v1.2 | 0/? | Not started (gap closure) | - |
 
 ---
 
 *Roadmap created: 2026-04-08*
 *v1.1 shipped: 2026-04-14*
 *v1.2 roadmap updated: 2026-04-16*
+*v1.2 gap closure phases added: 2026-04-23 (per v1.2-MILESTONE-AUDIT.md — IC-01, IC-02)*
