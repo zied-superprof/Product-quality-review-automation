@@ -27,7 +27,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 - [x] **Phase 8: Project Audit** — Comprehensive audit of code, workflow, scope gaps, and contradictions with prioritized findings (completed 2026-04-16)
 - [x] **Phase 9: Fixes** — Implement deferred handoff items and highest-priority audit findings (completed 2026-04-16)
 - [ ] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria
-- [ ] **Phase 11: Loop-Variable Structural Check** — Close IC-01 / complete FIX-06 scope (gap closure from v1.2 audit)
+- [x] **Phase 11: Loop-Variable Structural Check** — Close IC-01 / complete FIX-06 scope (gap closure from v1.2 audit) — completed 2026-04-24
 - [ ] **Phase 12: zh-HK Language Code Resolution** — Close IC-02 orphaned correction rule (gap closure from v1.2 audit)
 
 ## Phase Details
@@ -81,7 +81,9 @@ Plans:
   1. `scripts/structural_validator.py` flags template variables used outside their allowed block (e.g. `@TPL_MATIERE_DE_MATIERE@` inside `<TPL_LOOP_ANNONCES>`, `@TPL_ANNONCE_AFFICHE_QUI_CONNECTE@` inside `<TPL_IF_LISTE_AVIS>`)
   2. `config/label_patterns.json` declares which variables are valid in which structural blocks (loop, if-block, body)
   3. The recurring Arabic-market error pattern documented in CLAUDE.md is detected by the structural layer, not only by the AI reviewer
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [x] 11-01-PLAN.md — Add check_variable_block_placement() + block_scope_overrides config key, detect both Arabic golden cases (completed 2026-04-24)
 
 ### Phase 12: zh-HK Language Code Resolution
 **Goal**: The Hong Kong correction learning loop actually fires — either HK gets its own `zh-HK` rule set end-to-end, or HK is consolidated under `zh-TW` and the orphaned rule is removed
@@ -108,7 +110,7 @@ Plans:
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
-| 11. Loop-Variable Structural Check | v1.2 | 0/? | Not started (gap closure) | - |
+| 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete (gap closure IC-01) | 2026-04-24 |
 | 12. zh-HK Language Code Resolution | v1.2 | 0/? | Not started (gap closure) | - |
 
 ---

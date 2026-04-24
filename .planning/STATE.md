@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: — Audit, Fix & Strategic Overview
 status: unknown
-last_updated: "2026-04-16T12:32:57.520Z"
+last_updated: "2026-04-24T14:53:57Z"
 progress:
-  total_phases: 3
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 80
+  total_phases: 6
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 09 — fixes
+**Current focus:** Phase 11 complete — ready for Phase 10 (Strategic Overview) or Phase 12 (zh-HK resolution)
 
 ## Milestone
 
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
+Phase: 11 (loop-variable-check) — COMPLETE
+Plan: 1 of 1 done — ready to select next phase
 
 ## Phase Progress
 
@@ -37,8 +37,10 @@ Plan: Not started
 | 8 | Project Audit | 2/2 | Complete |
 | 9 | Fixes | 3/3 | Complete |
 | 10 | Strategic Overview | 0/TBD | Not started |
+| 11 | Loop-Variable Structural Check | 1/1 | Complete |
+| 12 | zh-HK Language Code Resolution | 0/? | Not started (gap closure) |
 
-Progress: [████████░░] 80%
+Progress: [██████████] Phase 11 complete (v1.2 gap closure IC-01 resolved)
 
 ## Key Files
 
@@ -64,6 +66,15 @@ Progress: [████████░░] 80%
 - Phase 9 (Fixes) depends on Phase 8 (Audit) completing first — FIX-06 scope is confirmed by audit critical findings
 - HND-01/02/03 deferred from v1.1 are absorbed into Phase 9 as FIX-01 and FIX-02
 
+## Decisions (Phase 11)
+
+- [11-01] French reference is the sole source of truth for block placement; `block_scope_overrides` is only for per-language grammatical exemptions, not global variable allow-lists (D-01)
+- [11-01] Block comparison is a multiset (Counter) on innermost-block names — reordering within the same block does not fire; counts per block must match (D-09)
+- [11-01] Variables present in translation but absent from French reference are ignored by `variable_block_mismatch` — `variable_extra` handles them (D-10)
+- [11-01] Same-block count-mismatch findings (ref=body/trans=body with different counts) are kept as-is — technically correct multiset mismatches despite awkward phrasing; user explicitly chose not to add an early-out during Task 3 verification
+- [11-01] Added Arabie Saoudite, Koweït, Jordanie, Liban, Égypte to `COUNTRY_TO_LANG` under `ar` so `block_scope_overrides['ar']` can actually resolve for those markets
+- [11-01] Live verification surfaced that the block-mismatch error is NOT Arabic-specific — 12 non-Arabic languages produced findings (Estonian, Serbian, Romanian, Turkish, Croatian, Slovenian, Latvian, Vietnamese, Albanian, Nigerian, etc.); check is universal
+
 ## Decisions (Phase 09)
 
 - [09-01] France row matched by country == 'france' or 'fr' (case-insensitive), not position 0
@@ -85,12 +96,13 @@ Progress: [████████░░] 80%
 
 ## Next Steps
 
-Roadmap approved. Begin execution:
+v1.2 gap closure IC-01 resolved. Remaining v1.2 work:
 
-- `/gsd:plan-phase 8` — Project Audit
+- `/gsd:plan-phase 10` — Strategic Overview (capstone document mapping 3-phase vision)
+- `/gsd:plan-phase 12` — zh-HK Language Code Resolution (other gap closure — IC-02)
 
 ---
 *Initialized: 2026-04-08*
 *v1.1 archived: 2026-04-14*
 *v1.2 roadmap ready: 2026-04-14*
-*Last session: 2026-04-16 — Completed 09-02-PLAN.md (corrections data fixes, backup mechanism, stale file archiving)*
+*Last session: 2026-04-24 — Completed 11-01-PLAN.md (variable_block_mismatch structural check, block_scope_overrides config key, 5 Arabic markets added to COUNTRY_TO_LANG)*
