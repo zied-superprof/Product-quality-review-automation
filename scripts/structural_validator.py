@@ -18,7 +18,7 @@ import json
 import re
 import sys
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 
@@ -408,7 +408,6 @@ def check_custom_markup(ref_entry: dict, entry: dict) -> list[dict]:
     trans_tags = extract_custom_tags(trans_text)
 
     # Compare open tag counts
-    from collections import Counter
     ref_open_counts = Counter(ref_tags['opens'])
     trans_open_counts = Counter(trans_tags['opens'])
 
@@ -688,9 +687,14 @@ COUNTRY_TO_LANG: dict[str, str | None] = {
     'Vietnam': 'vi',
     'Indonésie': 'id',
     # Middle East / Arabic-primary
+    'Arabie Saoudite': 'ar',
     'Bahreïn': 'ar',
     'Qatar': 'ar',
     'Oman': 'ar',
+    'Koweït': 'ar',
+    'Jordanie': 'ar',
+    'Liban': 'ar',
+    'Égypte': 'ar',
     'Émirats Arabes Unis': 'ar',
     # Hebrew
     'Israël': 'he',
@@ -745,6 +749,51 @@ def get_language_code(country: str) -> str | None:
     country name.
     """
     return COUNTRY_TO_LANG.get(normalize_country_name(country))
+
+
+# ---------------------------------------------------------------------------
+# Block-context scanner — used by check_variable_block_placement.
+# ---------------------------------------------------------------------------
+
+# Unified regex: any opening tag, closing tag, or @TPL_*@ variable reference.
+# Alternation order matters: match closing tags before opening tags to avoid
+# partial matches on the '<' of '</'.
+RE_BLOCK_OR_VAR = re.compile(
+    r'</TPL_(LOOP|IF|ELSE)_([A-Z0-9_]+)>'
+    r'|<TPL_(LOOP|IF|ELSE)_([A-Z0-9_]+)>'
+    r'|@TPL_([A-Z0-9_]+)@'
+)
+
+
+def scan_block_contexts(text: str) -> dict[str, list[str]]:
+    """
+    Walk ``text`` left-to-right and return a mapping
+    ``{variable_name: [innermost_block_name, ...]}`` where each list entry
+    corresponds to one occurrence of that variable. Block names are the full
+    tag family (e.g. ``'TPL_LOOP_ANNONCES'``, ``'TPL_IF_LISTE_AVIS'``).
+    Variables outside any block get ``'body'``.
+
+    Stack-based, per D-05: context is the innermost enclosing block. Malformed
+    text (unclosed / mismatched tags) is tolerated — pops skip on mismatch,
+    extra closers are ignored.
+    """
+    contexts: dict[str, list[str]] = defaultdict(list)
+    stack: list[str] = []
+    for m in RE_BLOCK_OR_VAR.finditer(text):
+        close_kind, close_name, open_kind, open_name, var_name = m.groups()
+        if var_name is not None:
+            block = stack[-1] if stack else 'body'
+            contexts[var_name].append(block)
+        elif open_kind is not None:
+            stack.append(f'TPL_{open_kind}_{open_name}')
+        elif close_kind is not None:
+            target = f'TPL_{close_kind}_{close_name}'
+            # Tolerate malformed nesting: pop until match or empty.
+            while stack and stack[-1] != target:
+                stack.pop()
+            if stack:
+                stack.pop()
+    return dict(contexts)
 
 
 # ---------------------------------------------------------------------------
@@ -867,6 +916,105 @@ def check_subject_variable_variant(
     return issues
 
 
+# ---------------------------------------------------------------------------
+# Variable block-placement check — catches wrong-loop-variable errors.
+# ---------------------------------------------------------------------------
+
+def _fmt_block(b: str) -> str:
+    """Render a block name for use inside a human-readable message."""
+    return 'the body' if b == 'body' else f'<{b}>'
+
+
+def check_variable_block_placement(
+    ref_entry: dict,
+    entry: dict,
+    block_overrides: dict | None,
+) -> list[dict]:
+    """
+    Deterministic check: every @TPL_*@ variable that appears in BOTH the
+    French reference and the translation must appear in the same innermost
+    block context (or a context listed in block_scope_overrides for that
+    language).
+
+    Per D-06: severity='error', single check name 'variable_block_mismatch'.
+    Per D-07: detail includes ref_block and trans_block.
+    Per D-09: compared as multisets — reordering within the same block is fine,
+              but count per block must match.
+    Per D-10: variables present in translation but NOT in French reference
+              are ignored (variable_extra handles them separately).
+    """
+    issues: list[dict] = []
+    ref_text = (ref_entry.get('titre', '') or '') + '\n' + (ref_entry.get('corps', '') or '')
+    trans_text = (entry.get('titre', '') or '') + '\n' + (entry.get('corps', '') or '')
+
+    ref_contexts = scan_block_contexts(ref_text)
+    trans_contexts = scan_block_contexts(trans_text)
+
+    lang = get_language_code(entry.get('country', ''))
+    lang_overrides: dict = {}
+    if block_overrides and lang:
+        lang_overrides = block_overrides.get(lang, {}) or {}
+
+    for var_name, ref_blocks in ref_contexts.items():
+        if var_name not in trans_contexts:
+            # Not present in translation — covered by variable_missing (D-10).
+            continue
+        trans_blocks = trans_contexts[var_name]
+        # Multiset comparison (D-09): same counts per block => OK.
+        ref_counter = Counter(ref_blocks)
+        trans_counter = Counter(trans_blocks)
+        if ref_counter == trans_counter:
+            continue
+
+        # Apply per-language override: if every trans_block is in the
+        # allowed_blocks list for this variable+language, do not flag.
+        allowed: set[str] = set()
+        override = lang_overrides.get(var_name)
+        if override and isinstance(override, dict):
+            allowed = set(override.get('allowed_blocks', []))
+        if allowed and all(b in allowed for b in trans_blocks):
+            continue
+
+        # Emit one finding per mismatch — pair the first differing block.
+        # Find the first trans_block that doesn't fit the ref_counter.
+        working = ref_counter.copy()
+        offending_trans_block: str | None = None
+        for b in trans_blocks:
+            if working.get(b, 0) > 0:
+                working[b] -= 1
+            else:
+                offending_trans_block = b
+                break
+        # Derive a representative ref_block for the message (most common).
+        ref_block_repr = ref_counter.most_common(1)[0][0] if ref_counter else 'body'
+        trans_block_repr = offending_trans_block or (
+            trans_counter.most_common(1)[0][0] if trans_counter else 'body'
+        )
+
+        issues.append({
+            'check': 'variable_block_mismatch',
+            'severity': 'error',
+            'category': 'label',
+            'message': (
+                f'@TPL_{var_name}@ is placed inside {_fmt_block(trans_block_repr)} in the '
+                f'translation but the French reference places it inside '
+                f'{_fmt_block(ref_block_repr)}. Move the variable back to '
+                f'{_fmt_block(ref_block_repr)} or, if this is a grammatical exemption '
+                f'for this language, add the variable to block_scope_overrides in '
+                f'label_patterns.json.'
+            ),
+            'variable': var_name,
+            'detail': {
+                'ref_block': ref_block_repr,
+                'trans_block': trans_block_repr,
+                'ref_blocks_all': ref_blocks,
+                'trans_blocks_all': trans_blocks,
+            },
+        })
+
+    return issues
+
+
 def check_html_balance(entry: dict) -> list[dict]:
     """Check that HTML tags are properly balanced in the translation."""
     issues = []
@@ -897,6 +1045,7 @@ def validate_entry(
     entry: dict,
     valid_variables: dict[str, str] | None = None,
     subject_rules: dict | None = None,
+    block_overrides: dict | None = None,
 ) -> list[dict]:
     """Run all structural checks on a single country entry against the French reference."""
     all_issues = []
@@ -911,6 +1060,7 @@ def validate_entry(
     all_issues.extend(check_length_anomaly(ref_entry, entry))
     all_issues.extend(check_html_balance(entry))
     all_issues.extend(check_subject_variable_variant(ref_entry, entry, subject_rules))
+    all_issues.extend(check_variable_block_placement(ref_entry, entry, block_overrides))
 
     # Tag each issue with the country
     for issue in all_issues:
@@ -926,6 +1076,7 @@ def run_validation(filepath: str, config_dir: str = 'config') -> dict:
         print("ABORT: Variables.csv not found in config/. Cannot validate variables.", file=sys.stderr)
         sys.exit(1)
     subject_rules = load_subject_variable_rules(config_dir)
+    block_overrides = load_block_scope_overrides(config_dir)
     entries = parse_per_notification_csv(filepath)
 
     if not entries:
@@ -960,7 +1111,13 @@ def run_validation(filepath: str, config_dir: str = 'config') -> dict:
     for entry in other_entries:
         country = entry['country']
         countries_reviewed.append(country)
-        issues = validate_entry(ref_entry, entry, valid_variables, subject_rules)
+        issues = validate_entry(
+            ref_entry,
+            entry,
+            valid_variables,
+            subject_rules,
+            block_overrides=block_overrides,
+        )
         all_issues.extend(issues)
 
     # Summary
