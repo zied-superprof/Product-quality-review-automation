@@ -37,6 +37,13 @@ RE_IF_CLOSE = re.compile(r'</TPL_IF_[A-Z0-9_]+>')
 RE_ELSE_OPEN = re.compile(r'<TPL_ELSE_[A-Z0-9_]+>')
 RE_ELSE_CLOSE = re.compile(r'</TPL_ELSE_[A-Z0-9_]+>')
 
+# <TPL_LOOP_VAR>...</TPL_LOOP_VAR> — loop/group blocks
+RE_LOOP_OPEN = re.compile(r'<TPL_LOOP_[A-Z0-9_]+>')
+RE_LOOP_CLOSE = re.compile(r'</TPL_LOOP_[A-Z0-9_]+>')
+
+# Extract the variable name from a loop tag
+RE_LOOP_NAME = re.compile(r'<TPL_LOOP_([A-Z0-9_]+)>')
+
 # Extract the variable name from a conditional tag
 RE_IF_NAME = re.compile(r'<TPL_IF_([A-Z0-9_]+)>')
 RE_ELSE_NAME = re.compile(r'<TPL_ELSE_([A-Z0-9_]+)>')
@@ -50,6 +57,16 @@ RE_URL_CONNECTE = re.compile(r'URL_QUI_CONNECTE')
 
 # HTML tags
 RE_HTML_TAGS = re.compile(r'</?(?:b|i|u|mark|li|sup|a|A)\b[^>]*>', re.IGNORECASE)
+
+# Subject-variable variants (for MINUS_SMART / FIRST_MAJUS_SMART rule enforcement)
+# Order matters for regex alternation: longer/more specific names first so
+# e.g. "MINUS_SMART" matches before "MINUS".
+RE_SUBJECT_DE_MATIERE = re.compile(r'@TPL_MATIERE_DE_MATIERE@')
+RE_SUBJECT_FIRST_MAJUS_SMART = re.compile(r'@TPL_MATIERE_FIRST_MAJUS_SMART@')
+RE_SUBJECT_MINUS_SMART = re.compile(r'@TPL_MATIERE_MINUS_SMART@')
+RE_SUBJECT_FIRST_MAJUS = re.compile(r'@TPL_MATIERE_FIRST_MAJUS(?!_SMART)@')
+RE_SUBJECT_MINUS = re.compile(r'@TPL_MATIERE_MINUS(?!_SMART)@')
+RE_SUBJECT_NOM = re.compile(r'@TPL_MATIERE_NOM@')
 
 def is_emoji_char(char: str) -> bool:
     """Detect emoji using Unicode category data (auto-updates with Python version)."""
@@ -174,6 +191,34 @@ def extract_custom_tags(text: str) -> dict:
     opens = RE_CUSTOM_TAGS.findall(text)
     closes = RE_CUSTOM_CLOSE.findall(text)
     return {'opens': opens, 'closes': closes}
+
+
+def load_subject_variable_rules(config_dir: str) -> dict | None:
+    """Load ``subject_variable_usage_rules`` from label_patterns.json (or None if missing)."""
+    path = Path(config_dir) / 'label_patterns.json'
+    if not path.exists():
+        return None
+    try:
+        with open(path, encoding='utf-8') as f:
+            cfg = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f'WARN: could not load subject variable rules: {exc}', file=sys.stderr)
+        return None
+    return cfg.get('subject_variable_usage_rules')
+
+
+def load_block_scope_overrides(config_dir: str) -> dict | None:
+    """Load ``block_scope_overrides`` from label_patterns.json (or None if missing)."""
+    path = Path(config_dir) / 'label_patterns.json'
+    if not path.exists():
+        return None
+    try:
+        with open(path, encoding='utf-8') as f:
+            cfg = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f'WARN: could not load block scope overrides: {exc}', file=sys.stderr)
+        return None
+    return cfg.get('block_scope_overrides')
 
 
 def load_valid_variables(config_dir: str) -> dict[str, str] | None:
@@ -536,6 +581,292 @@ def check_length_anomaly(ref_entry: dict, entry: dict, lang_ratios: dict = None)
     return issues
 
 
+# ---------------------------------------------------------------------------
+# Country → language code mapping (for subject-variable variant checks)
+#
+# CSV country cells are written in French. The mapping below returns the
+# primary Superprof market language per country. Countries that have more
+# than one plausible Superprof locale (Suisse, Luxembourg, Canada, etc.) map
+# to None so the deterministic DE_MATIERE check stays conservative and
+# defers ambiguous cases to the AI reviewer.
+# ---------------------------------------------------------------------------
+
+COUNTRY_TO_LANG: dict[str, str | None] = {
+    # French — reference market
+    'France': 'fr',
+    'Wallonie': 'fr',
+    'Sénégal': 'fr',
+    'Cameroun': 'fr',
+    # English-primary markets
+    'Royaume-Uni': 'en',
+    'États-Unis': 'en',
+    'Australie': 'en',
+    'Nouvelle-Zélande': 'en',
+    'Irlande': 'en',
+    'Nigéria': 'en',
+    'Ghana': 'en',
+    'Kenya': 'en',
+    'Ouganda': 'en',
+    'Tanzanie': 'en',
+    'Pakistan': 'en',
+    'Philippines': 'en',
+    'Singapour': 'en',
+    'Mauritius': 'en',
+    'Jamaïque': 'en',
+    'Malte': 'en',
+    'Botswana': 'en',
+    'Namibie': 'en',
+    'Lesotho': 'en',
+    'Belize': 'en',
+    'Rwanda': 'en',
+    'Brunei': 'en',
+    # Spanish-primary markets
+    'Espagne': 'es',
+    'Mexique': 'es',
+    'Argentine': 'es',
+    'Chili': 'es',
+    'Colombie': 'es',
+    'Pérou': 'es',
+    'Uruguay': 'es',
+    'Paraguay': 'es',
+    'Bolivie': 'es',
+    'Équateur': 'es',
+    'Panama': 'es',
+    'Costa Rica': 'es',
+    'Guatemala': 'es',
+    'Honduras': 'es',
+    'El Salvador': 'es',
+    'Nicaragua': 'es',
+    'République Dominicaine': 'es',
+    'Puerto Rico': 'es',
+    # Portuguese
+    'Portugal': 'pt',
+    'Brésil': 'pt',
+    # Italian
+    'Italie': 'it',
+    # German-primary markets
+    'Allemagne': 'de',
+    'Autriche': 'de',
+    # Dutch
+    'Pays-Bas': 'nl',
+    'Flandre': 'nl',
+    # Nordic / Scandinavian
+    'Suède': 'sv',
+    'Norvège': 'no',
+    'Danemark': 'da',
+    'Finlande': 'fi',
+    'Islande': 'is',
+    # Slavic / Eastern European (declension — DE_MATIERE valid)
+    'Pologne': 'pl',
+    'Tchéquie': 'cs',
+    'Slovaquie': 'sk',
+    'Hongrie': 'hu',
+    'Roumanie': 'ro',
+    'Moldavie': 'ro',
+    'Bulgarie': 'bg',
+    'Croatie': 'hr',
+    'Serbie': 'sr',
+    'Slovénie': 'sl',
+    'Russie': 'ru',
+    'Ukraine': 'uk',
+    'Kazakhstan': 'ru',
+    'Lettonie': 'lv',
+    'Lituanie': 'lt',
+    'Estonie': 'et',
+    # Greek
+    'Grèce': 'el',
+    'Chypre': 'el',
+    # Turkish
+    'Turquie': 'tr',
+    # CJK
+    'Japon': 'ja',
+    'Corée du Sud': 'ko',
+    'Taïwan': 'zh-TW',
+    'Hong-Kong': 'zh-TW',
+    # Southeast Asia
+    'Thailand': 'th',
+    'Vietnam': 'vi',
+    'Indonésie': 'id',
+    # Middle East / Arabic-primary
+    'Bahreïn': 'ar',
+    'Qatar': 'ar',
+    'Oman': 'ar',
+    'Émirats Arabes Unis': 'ar',
+    # Hebrew
+    'Israël': 'he',
+    # Ambiguous / multi-lingual Superprof markets — defer to AI reviewer
+    'Canada': None,
+    'Suisse': None,
+    'Schweiz': None,
+    'Luxembourg': None,
+    'Maroc': None,
+    'Tunisie': None,
+    'Afrique du Sud': None,
+    'Inde': None,
+    'Malaisie': None,
+    'Bosnie-Herzégovine': None,
+    'Monténégro': None,
+    # Countries not (yet) covered by subject_variable_usage_rules
+    'Albanie': None,
+    'Cape Vert': None,
+    'Timor oriental': None,
+    'Mozambique': None,
+}
+
+
+# Trailing tags appended to country names in some CSV exports
+RE_COUNTRY_TAG = re.compile(r'\[(?:Groupement|Référence)\]\s*$')
+
+
+def normalize_country_name(country: str) -> str:
+    """
+    Strip [Groupement]/[Référence] suffixes and collapse doubled names
+    (e.g. 'Afrique du Sud Afrique du Sud' -> 'Afrique du Sud').
+    """
+    name = (country or '').strip()
+    # Strip repeating "[Tag]" suffixes
+    while True:
+        stripped = RE_COUNTRY_TAG.sub('', name).strip()
+        if stripped == name:
+            break
+        name = stripped
+    # Collapse a name that is literally repeated (separated by a space)
+    if name:
+        half = len(name) // 2
+        if len(name) % 2 == 1 and name[half] == ' ' and name[:half] == name[half + 1:]:
+            name = name[:half]
+    return name
+
+
+def get_language_code(country: str) -> str | None:
+    """
+    Return the primary Superprof market language for a country, or None
+    for ambiguous / unknown countries. Lookup is done on the normalized
+    country name.
+    """
+    return COUNTRY_TO_LANG.get(normalize_country_name(country))
+
+
+# ---------------------------------------------------------------------------
+# Subject-variable variant check (_SMART vs non-smart, DE_MATIERE validity,
+# title/body consistency).
+# ---------------------------------------------------------------------------
+
+def _detect_subject_variable(text: str) -> str | None:
+    """Return the subject variable variant name found in ``text`` (or None)."""
+    if RE_SUBJECT_DE_MATIERE.search(text):
+        return 'TPL_MATIERE_DE_MATIERE'
+    if RE_SUBJECT_FIRST_MAJUS_SMART.search(text):
+        return 'TPL_MATIERE_FIRST_MAJUS_SMART'
+    if RE_SUBJECT_MINUS_SMART.search(text):
+        return 'TPL_MATIERE_MINUS_SMART'
+    if RE_SUBJECT_FIRST_MAJUS.search(text):
+        return 'TPL_MATIERE_FIRST_MAJUS'
+    if RE_SUBJECT_MINUS.search(text):
+        return 'TPL_MATIERE_MINUS'
+    if RE_SUBJECT_NOM.search(text):
+        return 'TPL_MATIERE_NOM'
+    return None
+
+
+def check_subject_variable_variant(
+    ref_entry: dict,
+    entry: dict,
+    subject_rules: dict | None,
+) -> list[dict]:
+    """
+    Deterministic subject-variable checks aligned with
+    config/label_patterns.json > subject_variable_usage_rules.
+
+    Emits:
+      - subject_variable_non_smart (warning) for @TPL_MATIERE_MINUS@,
+        @TPL_MATIERE_FIRST_MAJUS@, @TPL_MATIERE_NOM@.
+      - subject_variable_mismatch (error) when title and body use different
+        subject variables.
+      - subject_variable_de_matiere_wrong_language (error) when
+        @TPL_MATIERE_DE_MATIERE@ appears in a language listed in
+        subject_variable_usage_rules.TPL_MATIERE_DE_MATIERE.do_not_use_for.
+    """
+    issues: list[dict] = []
+    titre = entry.get('titre', '') or ''
+    corps = entry.get('corps', '') or ''
+    combined = f'{titre}\n{corps}'
+
+    # 1. Non-smart variant warnings — universal (no language required).
+    non_smart_hits: list[str] = []
+    if RE_SUBJECT_MINUS.search(combined):
+        non_smart_hits.append('@TPL_MATIERE_MINUS@')
+    if RE_SUBJECT_FIRST_MAJUS.search(combined):
+        non_smart_hits.append('@TPL_MATIERE_FIRST_MAJUS@')
+    if RE_SUBJECT_NOM.search(combined):
+        non_smart_hits.append('@TPL_MATIERE_NOM@')
+    for var in non_smart_hits:
+        issues.append({
+            'check': 'subject_variable_non_smart',
+            'severity': 'warning',
+            'category': 'label',
+            'message': (
+                f'{var} used — prefer the _SMART variant '
+                '(@TPL_MATIERE_MINUS_SMART@ or @TPL_MATIERE_FIRST_MAJUS_SMART@) '
+                'so acronyms like ESOL stay uppercase.'
+            ),
+            'variable': var.strip('@'),
+        })
+
+    # 2. Title/body consistency — error on mismatch within the same cell.
+    title_var = _detect_subject_variable(titre)
+    body_var = _detect_subject_variable(corps)
+    if title_var and body_var and title_var != body_var:
+        issues.append({
+            'check': 'subject_variable_mismatch',
+            'severity': 'error',
+            'category': 'label',
+            'message': (
+                f'Title uses @{title_var}@ but body uses @{body_var}@ — '
+                'title and body must use the same subject variable.'
+            ),
+            'detail': {'title_var': title_var, 'body_var': body_var},
+        })
+
+    # 3. Variant used in a do_not_use_for language — error only when the
+    #    country resolves to an unambiguous language code.
+    if subject_rules:
+        lang = get_language_code(entry.get('country', ''))
+        if lang:
+            if RE_SUBJECT_DE_MATIERE.search(combined):
+                de_rule = subject_rules.get('TPL_MATIERE_DE_MATIERE', {})
+                if lang in set(de_rule.get('do_not_use_for', [])):
+                    issues.append({
+                        'check': 'subject_variable_de_matiere_wrong_language',
+                        'severity': 'error',
+                        'category': 'label',
+                        'message': (
+                            f'@TPL_MATIERE_DE_MATIERE@ is not valid for {lang} — '
+                            f'use @TPL_MATIERE_FIRST_MAJUS_SMART@ or '
+                            f'@TPL_MATIERE_MINUS_SMART@ instead.'
+                        ),
+                        'variable': 'TPL_MATIERE_DE_MATIERE',
+                        'detail': {'language': lang},
+                    })
+            if RE_SUBJECT_FIRST_MAJUS_SMART.search(combined):
+                fms_rule = subject_rules.get('TPL_MATIERE_FIRST_MAJUS_SMART', {})
+                if lang in set(fms_rule.get('do_not_use_for', [])):
+                    issues.append({
+                        'check': 'subject_variable_first_majus_smart_wrong_language',
+                        'severity': 'error',
+                        'category': 'label',
+                        'message': (
+                            f'@TPL_MATIERE_FIRST_MAJUS_SMART@ is not valid for '
+                            f'{lang} — subject names are written lowercase '
+                            f'mid-sentence. Use @TPL_MATIERE_MINUS_SMART@ instead.'
+                        ),
+                        'variable': 'TPL_MATIERE_FIRST_MAJUS_SMART',
+                        'detail': {'language': lang},
+                    })
+
+    return issues
+
+
 def check_html_balance(entry: dict) -> list[dict]:
     """Check that HTML tags are properly balanced in the translation."""
     issues = []
@@ -561,7 +892,12 @@ def check_html_balance(entry: dict) -> list[dict]:
 # Main Validation Pipeline
 # ---------------------------------------------------------------------------
 
-def validate_entry(ref_entry: dict, entry: dict, valid_variables: dict[str, str] | None = None) -> list[dict]:
+def validate_entry(
+    ref_entry: dict,
+    entry: dict,
+    valid_variables: dict[str, str] | None = None,
+    subject_rules: dict | None = None,
+) -> list[dict]:
     """Run all structural checks on a single country entry against the French reference."""
     all_issues = []
 
@@ -574,6 +910,7 @@ def validate_entry(ref_entry: dict, entry: dict, valid_variables: dict[str, str]
     all_issues.extend(check_empty_placeholder(ref_entry, entry))
     all_issues.extend(check_length_anomaly(ref_entry, entry))
     all_issues.extend(check_html_balance(entry))
+    all_issues.extend(check_subject_variable_variant(ref_entry, entry, subject_rules))
 
     # Tag each issue with the country
     for issue in all_issues:
@@ -588,6 +925,7 @@ def run_validation(filepath: str, config_dir: str = 'config') -> dict:
     if valid_variables is None:
         print("ABORT: Variables.csv not found in config/. Cannot validate variables.", file=sys.stderr)
         sys.exit(1)
+    subject_rules = load_subject_variable_rules(config_dir)
     entries = parse_per_notification_csv(filepath)
 
     if not entries:
@@ -622,7 +960,7 @@ def run_validation(filepath: str, config_dir: str = 'config') -> dict:
     for entry in other_entries:
         country = entry['country']
         countries_reviewed.append(country)
-        issues = validate_entry(ref_entry, entry, valid_variables)
+        issues = validate_entry(ref_entry, entry, valid_variables, subject_rules)
         all_issues.extend(issues)
 
     # Summary

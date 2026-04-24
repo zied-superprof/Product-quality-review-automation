@@ -84,8 +84,8 @@
         {"name": "TPL_MATIERE_ID", "notes": "Subject ID"},
         {"name": "TPL_MATIERE_MINUS", "notes": "Subject name lowercase"},
         {"name": "TPL_MATIERE_FIRST_MAJUS", "notes": "Subject name with first letter capitalized"},
-        {"name": "TPL_MATIERE_MINUS_SMART", "notes": "Subject name lowercase (smart)"},
-        {"name": "TPL_MATIERE_FIRST_MAJUS_SMART", "notes": "Subject name capitalized (smart)"}
+        {"name": "TPL_MATIERE_MINUS_SMART", "notes": "Subject name all lowercase — all-caps words (e.g. ESOL) left untouched"},
+        {"name": "TPL_MATIERE_FIRST_MAJUS_SMART", "notes": "Subject name first letter capitalized, rest lowercase — all-caps words (e.g. ESOL) left untouched"}
       ]
     },
     "article_contractions": {
@@ -183,20 +183,35 @@
     "_note": "Rules for which subject variable to use per language/market. These govern what is correct, not what is an error to flag.",
     "TPL_MATIERE_DE_MATIERE": {
       "description": "Article + subject name compound (e.g. 'd'histoire', 'de matemáticas'). Valid for any language that uses grammatical declension or article+noun constructions configured in the BO subject settings.",
-      "use_for": ["fr", "es", "pt", "it", "ar", "pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et"],
-      "do_not_use_for": ["en", "de", "nl", "sv", "no", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "th", "vi", "id", "ms", "he"],
-      "important": "NOT limited to French. Valid for any language where the BO configures an article+subject form. Only flag as an error if the language is in do_not_use_for OR if the variable appears in the wrong structural position (e.g. inside TPL_LOOP_ANNONCES instead of TPL_ANNONCE_AFFICHE_QUI_CONNECTE)."
+      "use_for": ["fr", "pt", "it", "ar", "pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et"],
+      "do_not_use_for": ["en", "es", "de", "nl", "sv", "no", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "th", "vi", "id", "ms", "he"],
+      "important": "NOT limited to French. Valid for any language where the BO configures an article+subject form. Only flag as an error if the language is in do_not_use_for OR if the variable appears in the wrong structural position (e.g. inside TPL_LOOP_ANNONCES instead of TPL_ANNONCE_AFFICHE_QUI_CONNECTE).",
+      "language_notes": {
+        "lt": "Lithuanian uses genitive case for @TPL_MATIERE_DE_MATIERE@ (e.g., before 'mokytojas'). The variable provides the genitive subject form from the BO. Do not flag — only the noun following it may need inflection."
+      }
     },
     "TPL_MATIERE_FIRST_MAJUS_SMART": {
-      "description": "Subject name with first letter capitalized, 'smart' variant handles edge cases. Use for languages where subject names begin with a capital letter and no article is needed.",
-      "use_for": ["en", "de", "nl", "sv", "no", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "id", "ms", "he"],
-      "note": "Preferred over @TPL_MATIERE_MINUS@ and @TPL_MATIERE_NOM@ for these languages."
+      "description": "First letter capitalized, all other letters lowercase — EXCEPT all-caps words (acronyms like ESOL, TEFL) are left untouched. The 'smart' variant detects these and skips the case transformation entirely (e.g. 'mathématiques' → 'Mathématiques', but 'ESOL' → 'ESOL', never 'Esol'). Use for languages where subject names are capitalized or appear at sentence start.",
+      "use_for": ["en", "de", "nl", "sv", "da", "fi", "tr", "ko", "ja", "zh", "zh-TW", "id", "ms", "he"],
+      "use_for_es": "Also correct for Spanish when the subject is at the start of a sentence or in a heading/title context.",
+      "note": "Preferred over @TPL_MATIERE_FIRST_MAJUS@ (non-smart) for any market.",
+      "do_not_use_for": ["no"],
+      "language_notes": {
+        "no": "Norwegian subject names are common nouns written lowercase mid-sentence. Use @TPL_MATIERE_MINUS_SMART@ instead — confirmed 2026-04-20."
+      }
     },
     "TPL_MATIERE_MINUS_SMART": {
-      "description": "Subject name fully lowercase, 'smart' variant. Use for languages where subject names are not capitalized mid-sentence.",
-      "use_for": ["pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et"],
-      "note": "Preferred over @TPL_MATIERE_MINUS@ and @TPL_MATIERE_NOM@ for these languages. Use when the language does NOT use an article compound (@TPL_MATIERE_DE_MATIERE@) or when the subject name is needed standalone in lowercase."
+      "description": "All letters lowercase, EXCEPT when the subject is an acronym or proper noun (e.g. 'ESOL' stays 'ESOL'). The 'smart' variant handles these edge cases correctly. Use for languages where subject names are not capitalized mid-sentence.",
+      "use_for": ["pl", "sk", "cs", "ro", "ru", "uk", "bg", "sr", "hr", "sl", "el", "hu", "lt", "lv", "et", "no"],
+      "use_for_es": "Default for Spanish (es, es_AR, etc.) mid-sentence — Spanish subject names are common nouns, written lowercase mid-sentence (e.g. 'profesor de matemáticas').",
+      "note": "Preferred over @TPL_MATIERE_MINUS@ and @TPL_MATIERE_NOM@ for these languages.",
+      "language_notes": {
+        "no": "Norwegian subject names are common nouns, written lowercase mid-sentence. Almost no subject should be capitalized at first letter — confirmed 2026-04-20."
+      }
     }
+  },
+  "block_scope_overrides": {
+    "_note": "Per-language grammatical exemptions for check_variable_block_placement. Keys are ISO language codes (e.g. 'ar', 'pl'). Each language maps variable names (without @ delimiters) to an object with an 'allowed_blocks' array listing block names where that variable is permitted even if the French reference uses a different block. Block names: 'body' for implicit body context, or the exact tag family like 'TPL_LOOP_ANNONCES', 'TPL_IF_LISTE_AVIS', 'TPL_ELSE_PROF_FEMININ' (no angle brackets, no TPL_IF_/TPL_LOOP_/TPL_ELSE_ prefix stripped — use the full tag family name without angle brackets). Empty at launch; populate only when a real grammatical exemption is confirmed."
   },
   "validation_rules": {
     "must_preserve_exactly": [
