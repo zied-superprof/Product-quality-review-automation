@@ -50,6 +50,11 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ **QUA-01**: CSV parser finds France reference row by content search, not assuming position 0 — Phase 9 (FIX-03)
 - ✓ **QUA-02**: Emoji detection uses `unicodedata.category()` instead of hardcoded ranges — Phase 9 (FIX-04)
 - ✓ **QUA-03**: Corrections log backed up before each write — Phase 9 (FIX-05)
+
+### Validated in Phase 11: Loop-Variable Check
+
+- ✓ **FIX-06**: Structural validator flags wrong-loop-variable errors deterministically via `check_variable_block_placement()` — compares multiset of innermost block contexts per variable between French reference and translation. Closes v1.2 audit IC-01 (AUDIT finding #8 skipped in Phase 9). Universal check — fires for every market, not Arabic-specific. Live-validated on 2 real CSVs producing 12 findings across 12 distinct non-Arabic languages — Phase 11
+
 - [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
 - [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
 - [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
@@ -67,6 +72,7 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - **Codebase**: ~1,001 lines Python across 3 scripts (`structural_validator.py` 695 lines, `generate_pdf.py` 162 lines, `test_summary_flag.py` 144 lines) + 707-line Claude skill definition.
 - **Shipped in v1.1**: Notion publishing live; HTML output removed; batch feedback routing; token optimization fully realized; all integration gaps closed.
 - **Phase 9 complete**: France row detection fixed (content-based), emoji detection future-proofed (unicodedata), corrections data cleaned (zh-TW codes, synced counts), backup-before-write added, README complete, stale files archived.
+- **Phase 11 complete**: Wrong-loop-variable detection now deterministic — `variable_block_mismatch` check catches any template variable whose innermost block context differs from the French reference across all markets. Optional `block_scope_overrides` key in `config/label_patterns.json` supports per-language grammatical exemptions (empty by default). Closes v1.2 audit IC-01.
 - **Known issues**: Step 1 health check references abbreviated tone_guidelines.json path (low severity).
 - **Test coverage**: 0%. All validation is manual + live run.
 - **Deferred**: Translation generation is the long-term v2 goal.
@@ -91,4 +97,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-16 after Phase 9 (Fixes) completion — all HND/QUA requirements validated*
+*Last updated: 2026-04-24 after Phase 11 (Loop-Variable Check) completion — FIX-06 validated, IC-01 closed*
