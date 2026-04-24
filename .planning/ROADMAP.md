@@ -110,7 +110,7 @@ Plans:
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
 | 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
-| 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete (gap closure IC-01) | 2026-04-24 |
+| 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete    | 2026-04-24 |
 | 12. zh-HK Language Code Resolution | v1.2 | 0/? | Not started (gap closure) | - |
 
 ---
@@ -145,7 +145,7 @@ Plans:
 - C: Orchestration + Notion task-follow-up column wiring
 - D: Slack completion notifier
 
-**Plans:** 0 plans
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] TBD (promote with `/gsd:review-backlog` when ready)
