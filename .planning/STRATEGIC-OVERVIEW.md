@@ -161,8 +161,26 @@ A single hard cut forces all exploration into a future phase, blocking learning 
 
 This is the concrete instance of the must-have / should-have pattern for the current Phase 1 → Phase 2 transition.
 
-> **PLACEHOLDER — TASK 2 FILLS THIS SECTION.**
-> Must-Have band and Should-Have band each get checkbox lists. Mix of quantitative + qualitative + audit-derived gates per D-08. Seed bullets from D-09.
+The criteria below govern the Phase 1 → Phase 2 transition (per the Two-Stage Gate Pattern above). Each band mixes quantitative, qualitative, and audit-derived gates (per D-08).
+
+### Must-Have Gates (Orange Light — unlocks Phase 2 spikes)
+
+- [ ] **Audit — zero open critical findings.** All `critical` items in [`.planning/AUDIT.md`](AUDIT.md) either resolved or explicitly downgraded with a recorded rationale.
+- [ ] **Audit — all v1.2 IC items closed.** [`.planning/v1.2-MILESTONE-AUDIT.md`](v1.2-MILESTONE-AUDIT.md) shows IC-01 ✓ (closed Phase 11) AND IC-02 closed (Phase 12).
+- [ ] **Maintainer onboarding — qualitative.** A new maintainer can run a full review and interpret the report using only `README.md` + `CLAUDE.md`, without asking Juan a clarifying question.
+- [ ] **Recurring-error category stability — qualitative.** No new recurring-error category surfaced in 2 consecutive review sessions. (A "category" is a pattern shared by ≥ 2 markets, distinct from those already documented in `CLAUDE.md`.)
+
+### Should-Have Gates (Green Light — unlocks Phase 2 proper)
+
+- [ ] All Must-Have gates above remain green.
+- [ ] **Token cost — quantitative.** Per-run token usage stays within ±20% of the v1.1 baseline (recorded in milestone notes at v1.1 archival).
+- [ ] **Tier-2 routing — quantitative.** Tier-2 (Haiku spot-check) covers ≥ 60% of markets per typical run. Measured over the last 3 runs.
+- [ ] **Notion publish quality — qualitative.** Reports published to Notion require zero manual cleanup before sharing.
+- [ ] **Phase 2 spike — process.** ≥ 1 Phase 2 spike (under `scripts/spikes/` per the Two-Stage Gate Pattern) has produced commit-worthy learnings recorded in its `LEARNINGS.md`.
+
+### How this section gets updated
+
+Tick boxes on this list at the end of each milestone via `/gsd:complete-milestone`. When all Must-Haves are green: open the orange-light state in `STATE.md` and start spikes. When all Should-Haves are green and ≥ 1 spike is commit-worthy: green-light, open Phase 2 proper.
 
 ---
 
