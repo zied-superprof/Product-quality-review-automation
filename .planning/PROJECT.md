@@ -55,6 +55,11 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ **QUA-02**: Emoji detection uses `unicodedata.category()` instead of hardcoded ranges — Phase 9 (FIX-04)
 - ✓ **QUA-03**: Corrections log backed up before each write — Phase 9 (FIX-05)
 
+### Validated in Phase 10: Strategic Overview
+
+- ✓ **STR-01**: `.planning/STRATEGIC-OVERVIEW.md` capstone document maps the 3-phase vision (Audit & Tune → AI Translation Generation → Backoffice Integration) with named scope boundaries, two-stage Orange/Green-Light gate pattern, and parseable routing rubric — Phase 10
+- ✓ **STR-02**: Phase 1 readiness checklist with Must-Have / Should-Have bands and 9 observable conditions blending quantitative (≤20% structural error rate, ≥60% AI rule precision), qualitative, and audit-derived (IC-01, IC-02) gates — Phase 10
+
 ### Validated in Phase 11: Loop-Variable Check
 
 - ✓ **FIX-06**: Structural validator flags wrong-loop-variable errors deterministically via `check_variable_block_placement()` — compares multiset of innermost block contexts per variable between French reference and translation. Closes v1.2 audit IC-01 (AUDIT finding #8 skipped in Phase 9). Universal check — fires for every market, not Arabic-specific. Live-validated on 2 real CSVs producing 12 findings across 12 distinct non-Arabic languages — Phase 11
@@ -77,6 +82,7 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - **Shipped in v1.1**: Notion publishing live; HTML output removed; batch feedback routing; token optimization fully realized; all integration gaps closed.
 - **Phase 9 complete**: France row detection fixed (content-based), emoji detection future-proofed (unicodedata), corrections data cleaned (zh-TW codes, synced counts), backup-before-write added, README complete, stale files archived.
 - **Phase 11 complete**: Wrong-loop-variable detection now deterministic — `variable_block_mismatch` check catches any template variable whose innermost block context differs from the French reference across all markets. Optional `block_scope_overrides` key in `config/label_patterns.json` supports per-language grammatical exemptions (empty by default). Closes v1.2 audit IC-01.
+- **Phase 10 complete**: Strategic overview document published — defines the 3-phase vision, two-stage Orange/Green-Light gate pattern as a reusable template, Phase 1 readiness checklist (STR-02), and a parseable routing rubric for future scope decisions.
 - **Known issues**: Step 1 health check references abbreviated tone_guidelines.json path (low severity).
 - **Test coverage**: 0%. All validation is manual + live run.
 - **Deferred**: Translation generation is the long-term v2 goal.
@@ -101,4 +107,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-24 after Phase 11 (Loop-Variable Check) completion — FIX-06 validated, IC-01 closed*
+*Last updated: 2026-04-28 after Phase 10 (Strategic Overview) completion — STR-01 + STR-02 validated, capstone document published*
