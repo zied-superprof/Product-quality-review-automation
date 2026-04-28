@@ -1,0 +1,76 @@
+{
+  "corrections": [
+    {
+      "language": "hu",
+      "notification_type": "relance-1",
+      "issue_category": "grammar",
+      "original": "Több tanárt látok",
+      "corrected": "Mutass még több tanárt",
+      "rule_extracted": "Hungarian CTA/button text must use imperative form. 'Több tanárt látok' (I see more teachers) is indicative and semantically wrong. Use 'Mutass még több tanárt' (Show me more teachers).",
+      "confidence": "high",
+      "date": "2026-04-10"
+    },
+    {
+      "language": "lt",
+      "notification_type": "relance-1",
+      "issue_category": "label",
+      "original": "@TPL_MATIERE_DE_MATIERE@ used before 'mokytojas' (teacher) in Lithuanian",
+      "corrected": "FALSE POSITIVE — @TPL_MATIERE_DE_MATIERE@ is valid in Lithuanian genitive constructions. The variable provides the genitive subject form. Only the noun 'mokytojas' may need inflection for grammatical agreement; do not flag the variable.",
+      "rule_extracted": "Lithuanian: @TPL_MATIERE_DE_MATIERE@ before 'mokytojas' is correct (genitive noun construction). Do not flag. The variable is already in the correct form; only the following noun may vary by case.",
+      "confidence": "high",
+      "date": "2026-04-10"
+    },
+    {
+      "language": "ja",
+      "notification_type": "relance-1",
+      "issue_category": "label",
+      "original": "@TPL_MATIERE_DE_MATIERE@ used in Japanese translation (French-style genitive, not configured for Japanese)",
+      "corrected": "@TPL_MATIERE_NOM@ (preferred for Japanese) or @TPL_MATIERE_FIRST_MAJUS_SMART@",
+      "rule_extracted": "Japanese: @TPL_MATIERE_DE_MATIERE@ is a French genitive construction and is not configured for Japanese. Replace with @TPL_MATIERE_NOM@ (preferred) or @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "confidence": "high",
+      "date": "2026-04-14"
+    },
+    {
+      "language": "zh-TW",
+      "notification_type": "relance-1",
+      "issue_category": "label",
+      "original": "@TPL_MATIERE_DE_MATIERE@ used in Traditional Chinese (Taiwan) translation",
+      "corrected": "@TPL_MATIERE_FIRST_MAJUS_SMART@",
+      "rule_extracted": "Traditional Chinese (Taiwan): @TPL_MATIERE_DE_MATIERE@ is a French genitive construction not configured for Chinese. Replace with @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "confidence": "high",
+      "date": "2026-04-14"
+    },
+    {
+      "language": "zh-HK",
+      "notification_type": "relance-1",
+      "issue_category": "label",
+      "original": "@TPL_MATIERE_DE_MATIERE@ used in Traditional Chinese (Hong Kong) translation",
+      "corrected": "@TPL_MATIERE_FIRST_MAJUS_SMART@",
+      "rule_extracted": "Traditional Chinese (Hong Kong): @TPL_MATIERE_DE_MATIERE@ is a French genitive construction not configured for Chinese. Replace with @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
+      "confidence": "high",
+      "date": "2026-04-14"
+    },
+    {
+      "language": "all",
+      "notification_type": "relance-1",
+      "issue_category": "format",
+      "original": "Hola @TPL_MEMBRE_ESPACE_PRENOM@ (extra space between greeting and variable)",
+      "corrected": "Hola@TPL_MEMBRE_ESPACE_PRENOM@ (no space — the variable name already includes a leading space: ESPACE = space)",
+      "rule_extracted": "Global: @TPL_MEMBRE_ESPACE_PRENOM@ already contains a leading space (ESPACE = space). Do not add a space before this variable. 'Hola @TPL_MEMBRE_ESPACE_PRENOM@' → 'Hola@TPL_MEMBRE_ESPACE_PRENOM@'. Applies to all markets using this variable.",
+      "confidence": "high",
+      "date": "2026-04-14"
+    }
+  ],
+  "_schema": {
+    "correction": {
+      "language": "ISO language code (string, single value — e.g. 'lt', 'ar', 'es_AR')",
+      "notification_type": "BO notification ID (e.g. 'reco-val-prof-bo', 'relance_3')",
+      "issue_category": "grammar | tone | label | cultural | emoji | encoding | format",
+      "original": "The flagged text or finding description before correction",
+      "corrected": "The corrected text or dismissal reason (for false-positive corrections per D-06)",
+      "rule_extracted": "Generalized rule for future reviews",
+      "confidence": "high | medium | low",
+      "date": "ISO 8601 date (YYYY-MM-DD)"
+    }
+  }
+}
