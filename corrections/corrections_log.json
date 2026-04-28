@@ -41,16 +41,6 @@
       "date": "2026-04-14"
     },
     {
-      "language": "zh-HK",
-      "notification_type": "relance-1",
-      "issue_category": "label",
-      "original": "@TPL_MATIERE_DE_MATIERE@ used in Traditional Chinese (Hong Kong) translation",
-      "corrected": "@TPL_MATIERE_FIRST_MAJUS_SMART@",
-      "rule_extracted": "Traditional Chinese (Hong Kong): @TPL_MATIERE_DE_MATIERE@ is a French genitive construction not configured for Chinese. Replace with @TPL_MATIERE_FIRST_MAJUS_SMART@. Flag as error.",
-      "confidence": "high",
-      "date": "2026-04-14"
-    },
-    {
       "language": "all",
       "notification_type": "relance-1",
       "issue_category": "format",
