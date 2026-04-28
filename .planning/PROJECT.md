@@ -18,7 +18,7 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 **Target features:**
 - Comprehensive project audit (code, workflow, scope)
-- Team handoff documentation (README, requirements.txt, PDF CLI)
+- Team handoff documentation (README)
 - Top quality improvements (France ref row search, Unicode emoji detection)
 - Strategic overview document: 3-phase vision with Phase 1 completion criteria
 
@@ -34,7 +34,7 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ Report generation: grouped Markdown reports with numbered findings, current text, and proposed fixes — v1.0
 - ✓ Token optimization: Step 4c silent accumulation + `--summary` flag wired into Step 2 call site — v1.1 (Phase 01 + Phase 07)
 - ✓ Reference document reliability: structural_validator.py hard-fails on missing Variables.csv; Step 1 health check confirms all 3 config files loaded; Step 4c formality logic explicitly references tone_guidelines.json — v1.1 (Phase 02)
-- ✓ Report format: `--format md|pdf` flag, notification-ID filenames, fixed section order — v1.1 (Phase 02)
+- ✓ Report format: notification-ID filenames, fixed section order — v1.1 (Phase 02)
 - ✓ Feedback loop structured: corrections_log.json 8-field schema, Step 7 writes structured records, rules_summary.json rebuilt after each session — v1.1 (Phase 03)
 - ✓ Top-3 rule surfacing: most relevant past rules per language injected at AI review time using relevance scoring — v1.1 (Phase 03)
 - ✓ Notion publishing: report automatically published to Notion on completion; HTML output removed; .md kept as local backup — v1.1 (Phase 05)
@@ -49,8 +49,8 @@ Every review run must produce a reliable, actionable report — fast enough and 
 ### Validated in Phase 9: Fixes
 
 - ✓ **HND-01**: README.md with prerequisites, setup, how to run, how to read reports, how to submit feedback — Phase 9 (FIX-01)
-- ✓ **HND-02**: requirements.txt for optional PDF dependencies (`markdown`, `weasyprint`) — Phase 9 (FIX-02)
-- ✓ **HND-03**: `generate_pdf.py` archived as dead code (Phase 8 audit confirmed it's never called) — Phase 9 (FIX-02)
+- ✓ ~~**HND-02**: requirements.txt for optional PDF dependencies (`markdown`, `weasyprint`) — Phase 9 (FIX-02)~~ — superseded: PDF support removed from project entirely
+- ✓ ~~**HND-03**: `generate_pdf.py` archived as dead code (Phase 8 audit confirmed it's never called) — Phase 9 (FIX-02)~~ — superseded: PDF support removed from project entirely
 - ✓ **QUA-01**: CSV parser finds France reference row by content search, not assuming position 0 — Phase 9 (FIX-03)
 - ✓ **QUA-02**: Emoji detection uses `unicodedata.category()` instead of hardcoded ranges — Phase 9 (FIX-04)
 - ✓ **QUA-03**: Corrections log backed up before each write — Phase 9 (FIX-05)
@@ -64,9 +64,9 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 - ✓ **FIX-06**: Structural validator flags wrong-loop-variable errors deterministically via `check_variable_block_placement()` — compares multiset of innermost block contexts per variable between French reference and translation. Closes v1.2 audit IC-01 (AUDIT finding #8 skipped in Phase 9). Universal check — fires for every market, not Arabic-specific. Live-validated on 2 real CSVs producing 12 findings across 12 distinct non-Arabic languages — Phase 11
 
-- [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
-- [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
-- [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
+### Validated in Phase 12: zh-HK Resolution
+
+- ✓ **IC-02 / FIX-06 / AUD-05**: Orphaned `zh-HK` correction rule merged into `zh-TW`. Both `corrections/corrections_log.json` (6→5 entries) and `corrections/rules_summary.json` (`total_rules` 6→5) cleaned; `scripts/_build_report.py` country-to-code map and prose strings aligned with canonical `structural_validator.py:684` (Hong-Kong → zh-TW). Backup-before-write triple recorded under `corrections/backups/20260428T152501Z_*`. Phase-wide grep confirms zero `zh-HK`/`zh_HK` references in active config, corrections, scripts, or skill — Phase 12
 
 ### Out of Scope
 
@@ -77,12 +77,13 @@ Every review run must produce a reliable, actionable report — fast enough and 
 
 ## Context
 
-- **Stack**: Python 3.14.3 stdlib-only for core validator; optional `markdown`/`weasyprint` for PDF (no requirements.txt yet). No external dependencies for main scripts.
-- **Codebase**: ~1,001 lines Python across 3 scripts (`structural_validator.py` 695 lines, `generate_pdf.py` 162 lines, `test_summary_flag.py` 144 lines) + 707-line Claude skill definition.
+- **Stack**: Python 3.14.3 stdlib-only. No external dependencies.
+- **Codebase**: Python scripts (`structural_validator.py`, `test_summary_flag.py`) + Claude skill definition. Line counts move with active development — see `.planning/codebase/STRUCTURE.md` for current snapshot.
 - **Shipped in v1.1**: Notion publishing live; HTML output removed; batch feedback routing; token optimization fully realized; all integration gaps closed.
 - **Phase 9 complete**: France row detection fixed (content-based), emoji detection future-proofed (unicodedata), corrections data cleaned (zh-TW codes, synced counts), backup-before-write added, README complete, stale files archived.
 - **Phase 11 complete**: Wrong-loop-variable detection now deterministic — `variable_block_mismatch` check catches any template variable whose innermost block context differs from the French reference across all markets. Optional `block_scope_overrides` key in `config/label_patterns.json` supports per-language grammatical exemptions (empty by default). Closes v1.2 audit IC-01.
 - **Phase 10 complete**: Strategic overview document published — defines the 3-phase vision, two-stage Orange/Green-Light gate pattern as a reusable template, Phase 1 readiness checklist (STR-02), and a parseable routing rubric for future scope decisions.
+- **Phase 12 complete**: Orphaned zh-HK correction rule merged into zh-TW across both corrections files; `scripts/_build_report.py` aligned with canonical Hong-Kong→zh-TW mapping. Closes v1.2 audit IC-02. Hong-Kong CSV rows now hit a real correction rule via the validator's existing alias.
 - **Known issues**: Step 1 health check references abbreviated tone_guidelines.json path (low severity).
 - **Test coverage**: 0%. All validation is manual + live run.
 - **Deferred**: Translation generation is the long-term v2 goal.
@@ -107,4 +108,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-28 after Phase 10 (Strategic Overview) completion — STR-01 + STR-02 validated, capstone document published*
+*Last updated: 2026-04-28 after Phase 12 (zh-HK Resolution) completion — IC-02 closed via merge of orphaned zh-HK rule into zh-TW*
