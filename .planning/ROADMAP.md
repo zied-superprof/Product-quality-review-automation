@@ -26,7 +26,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 
 - [x] **Phase 8: Project Audit** — Comprehensive audit of code, workflow, scope gaps, and contradictions with prioritized findings (completed 2026-04-16)
 - [x] **Phase 9: Fixes** — Implement deferred handoff items and highest-priority audit findings (completed 2026-04-16)
-- [ ] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria
+- [x] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria (completed 2026-04-28)
 - [x] **Phase 11: Loop-Variable Structural Check** — Close IC-01 / complete FIX-06 scope (gap closure from v1.2 audit) — completed 2026-04-24
 - [ ] **Phase 12: zh-HK Language Code Resolution** — Close IC-02 orphaned correction rule (gap closure from v1.2 audit)
 
@@ -70,7 +70,9 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Reviewer can open one document and read what each of the 3 phases delivers, with scope boundaries that make it clear what belongs where
   2. Reviewer can identify a checklist of observable conditions — not implementation tasks — that must all be true before work on Phase 2 (AI Translation Generation) begins
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [x] 10-01-PLAN.md — Scaffold STRATEGIC-OVERVIEW.md, fill Phase 1 STR-02 checklist, add routing rubric + PROJECT.md link
 
 ### Phase 11: Loop-Variable Structural Check
 **Goal**: The structural validator catches the wrong-loop-variable error (AUDIT finding [#8]) — the most commonly observed recurring error in CLAUDE.md — without depending on the AI review tier
@@ -109,7 +111,7 @@ Plans:
 | 7. Tech Debt Cleanup | v1.1 | 1/1 | Complete | 2026-04-14 |
 | 8. Project Audit | v1.2 | 2/2 | Complete   | 2026-04-16 |
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
-| 10. Strategic Overview | v1.2 | 0/1 | Not started | - |
+| 10. Strategic Overview | v1.2 | 1/1 | Complete   | 2026-04-28 |
 | 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete    | 2026-04-24 |
 | 12. zh-HK Language Code Resolution | v1.2 | 0/? | Not started (gap closure) | - |
 

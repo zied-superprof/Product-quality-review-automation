@@ -33,8 +33,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 
 ### Strategic Overview (STR)
 
-- [ ] **STR-01**: A strategic overview document maps the full 3-phase vision (Phase 1: Audit & Tune → Phase 2: AI Translation Generation → Phase 3: Backoffice Integration) with clear scope and deliverables per phase
-- [ ] **STR-02**: The document defines Phase 1 completion criteria — observable conditions that signal the system is tuned enough to move to Phase 2
+- [x] **STR-01**: A strategic overview document maps the full 3-phase vision (Phase 1: Audit & Tune → Phase 2: AI Translation Generation → Phase 3: Backoffice Integration) with clear scope and deliverables per phase
+- [x] **STR-02**: The document defines Phase 1 completion criteria — observable conditions that signal the system is tuned enough to move to Phase 2
 
 ---
 
@@ -80,8 +80,8 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 | FIX-04 | Phase 9 | Complete |
 | FIX-05 | Phase 9 | Complete |
 | FIX-06 | Phase 11 | Complete (2026-04-24 — IC-01 gap closed; variable_block_mismatch check live) |
-| STR-01 | Phase 10 | Pending |
-| STR-02 | Phase 10 | Pending |
+| STR-01 | Phase 10 | Complete |
+| STR-02 | Phase 10 | Complete |
 
 **Gap closure (no direct REQ mapping):**
 
