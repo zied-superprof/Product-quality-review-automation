@@ -92,12 +92,10 @@ Progress: [██████████] Phase 10 complete — STRATEGIC-OVERV
 - [09-01] extract_emojis() kept as public API for backward compatibility, delegates to new extract_emoji()
 - [09-02] Backup added to both 7b and 7b-batch write paths separately — skill is instruction text, each section must be self-contained
 - [09-02] zh_TW/zh_HK codes fixed to zh-TW/zh-HK in corrections_log.json and rules_summary.json for BCP-47 consistency
-- [09-03] generate_pdf.py not referenced by name in README — deprecated PDF workflow noted generically; name in requirements.txt comment only
-- [09-03] CLAUDE.md project structure updated: rules_summary.json, review_rules_compact.md, requirements.txt added; generate_pdf.py removed
 
 ## Decisions (Phase 08)
 
-- [08-01] generate_pdf.py confirmed dead code: hardcoded 2026-04-03 filename, no active caller, skill uses inline CSS copied from it
+
 - [08-01] zh language code inconsistency: corrections_log.json uses underscores (zh_TW) while all other config uses BCP-47 hyphens (zh-TW), causing silent lookup failures
 - [08-01] languages.json classified as unreferenced: zero references in active code, formality data conflicts with tone_guidelines.json for 12 languages
 - [08-02] Manual batch confirmation is intentional per D-15 — not flagged as a gap
