@@ -25,7 +25,7 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 ### Fixes (FIX)
 
 - [x] **FIX-01**: User can set up the project using a README that covers prerequisites, setup steps, how to run a review, how to read reports, and how to submit feedback
-- [x] **FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)
+- [x] ~~**FIX-02**: Optional PDF dependencies are documented in a requirements.txt; `generate_pdf.py` is archived to `scripts/archive/` as confirmed dead code (Phase 8 audit finding — never called in any workflow)~~ — superseded: PDF support removed from project entirely
 - [x] **FIX-03**: CSV parser locates the France reference row by searching for `fr`/`FR` content rather than assuming it is always at position 0
 - [x] **FIX-04**: Emoji detection uses maintained Unicode data (not hardcoded ranges) so new emoji are caught without code changes
 - [x] **FIX-05**: Corrections log is automatically backed up before each write operation so no accumulated rules are lost
@@ -85,15 +85,15 @@ All shipped. See `.planning/PROJECT.md` → Requirements → Validated for full 
 
 **Gap closure (no direct REQ mapping):**
 
-| Gap | Phase | Source |
-|-----|-------|--------|
-| IC-02 — zh-HK orphaned correction rule | Phase 12 | v1.2-MILESTONE-AUDIT.md |
+| Gap | Phase | Source | Status |
+|-----|-------|--------|--------|
+| IC-02 — zh-HK orphaned correction rule | Phase 12 | v1.2-MILESTONE-AUDIT.md | Complete (2026-04-28 — merged into zh-TW; corrections JSONs cleaned, _build_report.py aligned) |
 
 **Coverage:**
 - v1.2 requirements: 13 total
 - Mapped to phases: 13
 - Unmapped: 0
-- Satisfied: 11 (FIX-06 closed via Phase 11 — IC-01 gap closure)
+- Satisfied: 11 (FIX-06 closed via Phase 11 — IC-01 gap closure; IC-02 closed via Phase 12 — zh-HK merged into zh-TW)
 
 ---
 *Requirements defined: 2026-04-14*

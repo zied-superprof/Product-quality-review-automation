@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: — Audit, Fix & Strategic Overview
-status: unknown
-last_updated: "2026-04-28T09:23:59.338Z"
+status: phase_12_complete_ready_for_verification
+last_updated: "2026-04-28T15:28:55.745Z"
 progress:
   total_phases: 6
-  completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
+  completed_phases: 5
+  total_plans: 8
+  completed_plans: 8
 ---
 
 # Project State
@@ -18,7 +18,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Phase 10 — strategic-overview
+**Current focus:** Phase 12 — zh-hk-resolution
 
 ## Milestone
 
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-04-14)
 
 ## Current Position
 
-Phase: 11
-Plan: Not started
+Phase: 12 (zh-hk-resolution) — READY FOR VERIFICATION
+Plan: 1 of 1 complete
 
 ## Phase Progress
 
@@ -37,9 +37,9 @@ Plan: Not started
 | 9 | Fixes | 3/3 | Complete |
 | 10 | Strategic Overview | 1/1 | Complete |
 | 11 | Loop-Variable Structural Check | 1/1 | Complete |
-| 12 | zh-HK Language Code Resolution | 0/? | Not started (gap closure) |
+| 12 | zh-HK Language Code Resolution | 1/1 | Complete (ready for verification) |
 
-Progress: [██████████] Phase 10 complete — STRATEGIC-OVERVIEW.md shipped (STR-01 + STR-02)
+Progress: [██████████] Phase 12 complete — zh-HK orphan merged into zh-TW (IC-02 closed)
 
 ## Key Files
 
@@ -76,6 +76,14 @@ Progress: [██████████] Phase 10 complete — STRATEGIC-OVERV
 - [10-01] PROJECT.md gained a single `## Key Documents` section at top with one bullet linking to STRATEGIC-OVERVIEW.md (capstone discoverable from project hub)
 - [10-01] No hypothesized REQs (GEN-04, GEN-05, …) and no architecture sketches for Phase 2/3 — deferred to those phases' own discuss-phases (D-02a)
 
+## Decisions (Phase 12)
+
+- [12-01] Merge zh-HK under zh-TW (CONTEXT.md D-01) — orphaned rule deleted from corrections_log.json (6→5 entries) and rules_summary.json (6→5 rules; total_rules 6→5); consistent with `structural_validator.py:684` routing of Hong-Kong → zh-TW and with all four configs that already key Chinese rules to zh-TW only
+- [12-01] `scripts/_build_report.py` aligned to merge direction during execution (added to scope at planning checker review) — file was untracked but had silently diverged from `structural_validator.py:684` (`'Hong-Kong': 'zh-HK'` vs `'zh-TW'`); 1 LANG-dict entry + 2 prose strings updated; D-06 grep floor would have failed without alignment
+- [12-01] FIX-05 backup-before-write extended to script edits — backup triple `corrections/backups/20260428T152501Z_{corrections_log.json, rules_summary.json, _build_report.py}` predates all edits
+- [12-01] `total_rules` recomputed from post-edit list length, not decremented blindly — defensive against future edit drift
+- [12-01] Broader language-database review explicitly deferred (CONTEXT.md Deferred Ideas) — Phase 12 is a narrow gap closure; the `_build_report.py` drift discovered here strengthens the case for a future code-level guard (pre-commit check that fails when a language code appears in any source file without a matching config entry)
+
 ## Decisions (Phase 11)
 
 - [11-01] French reference is the sole source of truth for block placement; `block_scope_overrides` is only for per-language grammatical exemptions, not global variable allow-lists (D-01)
@@ -95,7 +103,6 @@ Progress: [██████████] Phase 10 complete — STRATEGIC-OVERV
 
 ## Decisions (Phase 08)
 
-
 - [08-01] zh language code inconsistency: corrections_log.json uses underscores (zh_TW) while all other config uses BCP-47 hyphens (zh-TW), causing silent lookup failures
 - [08-01] languages.json classified as unreferenced: zero references in active code, formality data conflicts with tone_guidelines.json for 12 languages
 - [08-02] Manual batch confirmation is intentional per D-15 — not flagged as a gap
@@ -104,10 +111,11 @@ Progress: [██████████] Phase 10 complete — STRATEGIC-OVERV
 
 ## Next Steps
 
-Phase 10 (Strategic Overview) complete — STR-01 + STR-02 satisfied. Remaining v1.2 work:
+Phase 12 (zh-HK Language Code Resolution) complete — IC-02 closed via merge. All v1.2 phases now have plans complete:
 
-- `/gsd:verify-phase 10` — verify Phase 10 deliverables (STRATEGIC-OVERVIEW.md, PROJECT.md link)
-- `/gsd:plan-phase 12` — zh-HK Language Code Resolution (last open v1.2 gap closure — IC-02)
+- `/gsd:verify-phase 12` — verify Phase 12 deliverables (zh-HK records deleted, _build_report.py aligned, SUMMARY recorded)
+- `/gsd:audit-milestone v1.2` — re-run milestone audit; expected outcome is clean close (IC-01 closed in Phase 11, IC-02 closed in Phase 12, IC-03 accepted as known/deferred)
+- `/gsd:complete-milestone v1.2` — once verifications pass, ship v1.2
 
 ---
 *Initialized: 2026-04-08*
@@ -115,3 +123,4 @@ Phase 10 (Strategic Overview) complete — STR-01 + STR-02 satisfied. Remaining 
 *v1.2 roadmap ready: 2026-04-14*
 *Last session: 2026-04-28 — Captured Phase 10 (Strategic Overview) context: two-stage gate transition pattern, must-have/should-have STR-02 criteria, routing rubric for new ideas, `/gsd:submit-idea` skill deferred to Phase 13*
 *Last session: 2026-04-28 — Completed 10-01-PLAN.md: STRATEGIC-OVERVIEW.md created end-to-end (242 lines, 11 H2 sections, 9 unchecked checkboxes), PROJECT.md gained Key Documents link, STR-01 + STR-02 marked complete in REQUIREMENTS.md*
+*Last session: 2026-04-28 — Completed 12-01-PLAN.md (zh-HK merged into zh-TW; IC-02 closed): deleted zh-HK record from corrections_log.json (6→5) and rules_summary.json (6→5; total_rules 6→5), aligned scripts/_build_report.py with structural_validator.py:684 (1 LANG-dict + 2 prose strings), backup triple at corrections/backups/20260428T152501Z_*, zero zh-HK references remain in active project surface*

@@ -28,7 +28,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 - [x] **Phase 9: Fixes** — Implement deferred handoff items and highest-priority audit findings (completed 2026-04-16)
 - [x] **Phase 10: Strategic Overview** — Capstone document mapping 3-phase vision and Phase 1 completion criteria (completed 2026-04-28)
 - [x] **Phase 11: Loop-Variable Structural Check** — Close IC-01 / complete FIX-06 scope (gap closure from v1.2 audit) — completed 2026-04-24
-- [ ] **Phase 12: zh-HK Language Code Resolution** — Close IC-02 orphaned correction rule (gap closure from v1.2 audit)
+- [x] **Phase 12: zh-HK Language Code Resolution** — Close IC-02 orphaned correction rule (gap closure from v1.2 audit) (completed 2026-04-28)
 
 ## Phase Details
 
@@ -53,7 +53,7 @@ Plans:
 **Requirements**: FIX-01, FIX-02, FIX-03, FIX-04, FIX-05, FIX-06
 **Success Criteria** (what must be TRUE):
   1. A new team member can follow the README from zero to running a review without asking Juan for help
-  2. generate_pdf.py is archived to scripts/archive/ as confirmed dead code, and optional PDF dependencies are documented in requirements.txt
+  2. ~~generate_pdf.py is archived to scripts/archive/ as confirmed dead code, and optional PDF dependencies are documented in requirements.txt~~ — superseded: PDF support fully removed
   3. Swapping the France row to any position in the CSV does not break the review run
   4. Adding a brand-new emoji to a translation is flagged without any code changes, using the current Unicode data
   5. After any write to the corrections log, a timestamped backup file exists in the corrections directory
@@ -96,7 +96,9 @@ Plans:
   1. The zh-HK rule in `corrections/corrections_log.json` + `corrections/rules_summary.json` is either consistently resolved across all four configs and the validator's country→code map, OR consolidated back into `zh-TW` with the orphaned entry removed
   2. A CSV run with a Hong Kong row exercises the intended correction path — no silent mapping divergence between the validator and the corrections store
   3. The chosen direction (split or merge) is recorded in Phase 12's summary so future readers understand why
-**Plans**: TBD — planning step must first decide split vs merge
+**Plans**: 1 plan
+Plans:
+- [x] 12-01-PLAN.md — Backup, delete orphaned zh-HK records from corrections_log.json + rules_summary.json (merge into zh-TW), record decision in 12-01-SUMMARY.md
 
 ## Progress
 
@@ -113,7 +115,7 @@ Plans:
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
 | 10. Strategic Overview | v1.2 | 1/1 | Complete    | 2026-04-28 |
 | 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete    | 2026-04-24 |
-| 12. zh-HK Language Code Resolution | v1.2 | 0/? | Not started (gap closure) | - |
+| 12. zh-HK Language Code Resolution | v1.2 | 1/1 | Complete   | 2026-04-28 |
 
 ---
 

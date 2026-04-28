@@ -186,6 +186,10 @@ None.
 - Recommended follow-up: `/gsd:verify-phase 12` to confirm SUMMARY against PLAN frontmatter, then `/gsd:audit-milestone v1.2` to re-check the milestone.
 - The deferred broader language-database review is a strong candidate for the next phase; the `_build_report.py` drift surfaced here makes the case for a mechanical code-level guard.
 
+## Self-Check: PASSED
+
+All 7 created/modified files verified on disk; all 3 task commits (`1e04a64`, `2fa7272`, `6793fef`) verified in git history.
+
 ---
 *Phase: 12-zh-hk-resolution*
 *Completed: 2026-04-28*
