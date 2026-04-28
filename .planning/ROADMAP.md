@@ -115,7 +115,7 @@ Plans:
 | 9. Fixes | v1.2 | 3/3 | Complete   | 2026-04-16 |
 | 10. Strategic Overview | v1.2 | 1/1 | Complete    | 2026-04-28 |
 | 11. Loop-Variable Structural Check | v1.2 | 1/1 | Complete    | 2026-04-24 |
-| 12. zh-HK Language Code Resolution | v1.2 | 1/1 | Complete   | 2026-04-28 |
+| 12. zh-HK Language Code Resolution | v1.2 | 1/1 | Complete    | 2026-04-28 |
 
 ---
 
