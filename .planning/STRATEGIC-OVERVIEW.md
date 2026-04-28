@@ -198,8 +198,24 @@ To be filled when Phase 3 enters its own readiness milestone — same pattern.
 
 ## Routing Rubric: Where Does This Idea Belong?
 
-> **PLACEHOLDER — TASK 3 FILLS THIS SECTION.**
-> Markdown table with columns `Signal | Destination | GSD primitive`. Rows from D-12. Stable structure — future `/gsd:submit-idea` skill consumes this table.
+Use this table to decide where a new idea goes. The future `/gsd:submit-idea` skill (Phase 13, deferred) reads this table to dispatch — keep the column structure stable (per D-13).
+
+| Signal | Destination | GSD primitive |
+|---|---|---|
+| Touches structural validator, AI review pipeline, Notion publishing, or corrections loop | Phase 1 (current milestone) | `/gsd:add-phase` if it warrants its own phase, else in-flight feedback on the active phase |
+| Touches translation generation or drafting workflow | Phase 2 (backlog until Phase 1 readiness) | `/gsd:add-backlog` |
+| Touches Superprof BO integration (URL-driven, Playwright, in-BO UI) | Phase 3 (backlog until Phase 2 readiness) | `/gsd:add-backlog` |
+| Bug or quick fix in already-shipped code | In-flight feedback on the current phase | comment in active phase's discuss/plan or `/gsd:insert-phase` if larger |
+| Idea that is too early — direction unclear | Seedbed | `/gsd:plant-seed` |
+| GSD workflow / process improvement (not project-specific) | `~/.claude/get-shit-done/` config — not a project phase | edit the GSD repo directly |
+
+### How to use this table
+
+1. Identify the strongest *signal* match in column 1.
+2. The *destination* tells you where the idea is recorded (current phase, a future phase as backlog, or outside the project).
+3. The *GSD primitive* is the command that performs the recording. If multiple primitives apply, pick the smallest one that fits.
+
+When in doubt: `/gsd:plant-seed` — seedbed entries are cheap and easy to promote later.
 
 ---
 

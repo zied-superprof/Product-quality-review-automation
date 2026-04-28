@@ -1,5 +1,9 @@
 # Translation Quality Review Automation
 
+## Key Documents
+
+- [Strategic Overview](STRATEGIC-OVERVIEW.md) — three-phase vision, two-stage gate pattern, Phase 1 readiness checklist (STR-02), routing rubric.
+
 ## What This Is
 
 An automated quality review tool for Superprof notification translations. French notifications are translated to 39+ languages by human translators; this tool validates those translations structurally (Python, stdlib-only) and linguistically (Claude AI), then auto-publishes correction reports to the team's Notion workspace. The feedback loop accepts batches of reviewer comments, routes each to the correct config file or corrections log, and applies confirmed changes in one pass.
