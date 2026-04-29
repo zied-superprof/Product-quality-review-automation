@@ -57,11 +57,21 @@ Every review run must produce a reliable, actionable report — fast enough and 
 - ✓ Notion publishing: report automatically published to Notion on completion; HTML output removed; .md kept as local backup — v1.1 (Phase 05)
 - ✓ Batch feedback routing: batch Language+Issue blocks parsed, routed to correct config file, conflicts flagged, user confirms, one-pass writes executed, change summary shown — v1.1 (Phase 06)
 
-### Active
+### Active (v1.3)
 
-- [ ] **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
-- [ ] **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
-- [ ] **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
+#### INGEST — Playwright BO extraction
+- [ ] **INGEST-01..07**: URL→CSV extraction, auto-naming, CSV-drop coexistence, persisted auth, hard-fail on missing data, expiry detection, gitignored credentials. See `.planning/REQUIREMENTS.md`.
+
+#### PARALLEL — Skill update for parallel reviews
+- [ ] **PARALLEL-01..07**: URL/path detection, parallel email+SMS execution, independent transactions, per-channel summary, error categorization, Step 7 removal, single-CSV backwards compat. See `.planning/REQUIREMENTS.md`.
+
+#### FEEDBACK — Standalone /submit-feedback skill
+- [ ] **FEEDBACK-01..10**: New skill, optional report binding, symmetric backups, consolidated conflict UX, append flow with two-way clarity check, pruning lifecycle (review one-by-one), Tier 1→2 promotion, Tier 2→3 advisory only. See `.planning/REQUIREMENTS.md`.
+
+### Deferred (v1.4+ — Translation Generation milestone)
+- **GEN-01**: Accumulated rules from `rules_summary.json` loaded as context for translation generation skill
+- **GEN-02**: `generate-translation` skill accepts French source text + target language, uses rules_summary.json + config files to produce first-draft translation
+- **GEN-03**: Generated translations validated against the same structural and reference document checks as human translations
 
 ### Validated in Phase 9: Fixes
 
