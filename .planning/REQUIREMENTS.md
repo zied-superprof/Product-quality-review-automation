@@ -70,41 +70,39 @@ Acknowledged but deferred:
 
 ## Traceability
 
-Updated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INGEST-01 | TBD | Pending |
-| INGEST-02 | TBD | Pending |
-| INGEST-03 | TBD | Pending |
-| INGEST-04 | TBD | Pending |
-| INGEST-05 | TBD | Pending |
-| INGEST-06 | TBD | Pending |
-| INGEST-07 | TBD | Pending |
-| PARALLEL-01 | TBD | Pending |
-| PARALLEL-02 | TBD | Pending |
-| PARALLEL-03 | TBD | Pending |
-| PARALLEL-04 | TBD | Pending |
-| PARALLEL-05 | TBD | Pending |
-| PARALLEL-06 | TBD | Pending |
-| PARALLEL-07 | TBD | Pending |
-| FEEDBACK-01 | TBD | Pending |
-| FEEDBACK-02 | TBD | Pending |
-| FEEDBACK-03 | TBD | Pending |
-| FEEDBACK-04 | TBD | Pending |
-| FEEDBACK-05 | TBD | Pending |
-| FEEDBACK-06 | TBD | Pending |
-| FEEDBACK-07 | TBD | Pending |
-| FEEDBACK-08 | TBD | Pending |
-| FEEDBACK-09 | TBD | Pending |
-| FEEDBACK-10 | TBD | Pending |
+| INGEST-01 | Phase 14 | Pending |
+| INGEST-02 | Phase 14 | Pending |
+| INGEST-03 | Phase 14 | Pending |
+| INGEST-04 | Phase 14 | Pending |
+| INGEST-05 | Phase 14 | Pending |
+| INGEST-06 | Phase 14 | Pending |
+| INGEST-07 | Phase 14 | Pending |
+| PARALLEL-01 | Phase 15 | Pending |
+| PARALLEL-02 | Phase 15 | Pending |
+| PARALLEL-03 | Phase 15 | Pending |
+| PARALLEL-04 | Phase 15 | Pending |
+| PARALLEL-05 | Phase 15 | Pending |
+| PARALLEL-06 | Phase 15 | Pending |
+| PARALLEL-07 | Phase 15 | Pending |
+| FEEDBACK-01 | Phase 13 | Pending |
+| FEEDBACK-02 | Phase 13 | Pending |
+| FEEDBACK-03 | Phase 13 | Pending |
+| FEEDBACK-04 | Phase 13 | Pending |
+| FEEDBACK-05 | Phase 13 | Pending |
+| FEEDBACK-06 | Phase 13 | Pending |
+| FEEDBACK-07 | Phase 13 | Pending |
+| FEEDBACK-08 | Phase 13 | Pending |
+| FEEDBACK-09 | Phase 13 | Pending |
+| FEEDBACK-10 | Phase 13 | Pending |
 
 **Coverage:**
 - v1.3 requirements: 24 total
-- Mapped to phases: 0 (roadmap pending)
-- Unmapped: 24 ⚠️
+- Mapped to phases: 24 (Phase 13: 10, Phase 14: 7, Phase 15: 7)
+- Unmapped: 0 ✓
 
 ---
 
 *Requirements defined: 2026-04-29*
-*Last updated: 2026-04-29 after milestone v1.3 plan approval*
+*Last updated: 2026-04-29 — traceability table filled after roadmap creation*
