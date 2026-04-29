@@ -12,15 +12,21 @@ An automated quality review tool for Superprof notification translations. French
 
 Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
 
-## Current Milestone: v1.2 Audit, Fix & Strategic Overview
+## Current State
+
+**Shipped:** v1.2 — Audit, Fix & Strategic Overview (2026-04-29)
+**Next milestone:** TBD — start with `/gsd:new-milestone`. Backlog 999.1 (URL-driven translation review via Playwright + Notion + Slack) is the leading v1.3 candidate.
+
+## Past Milestones
+
+<details>
+<summary>v1.2 Audit, Fix & Strategic Overview (shipped 2026-04-29)</summary>
 
 **Goal:** Audit the project for gaps and unused elements, implement the highest-priority fixes, and produce a strategic overview that maps the full 3-phase vision and defines when Phase 1 is "done enough" to move forward.
 
-**Target features:**
-- Comprehensive project audit (code, workflow, scope)
-- Team handoff documentation (README)
-- Top quality improvements (France ref row search, Unicode emoji detection)
-- Strategic overview document: 3-phase vision with Phase 1 completion criteria
+**Delivered:** 34-finding audit, France-row content search + Unicode emoji detection + corrections backup, README handoff, STRATEGIC-OVERVIEW.md capstone (3-phase scope + two-stage gate + Phase 1 readiness checklist + routing rubric), deterministic `variable_block_mismatch` structural check (closes IC-01), zh-HK merged into zh-TW (closes IC-02). See `MILESTONES.md` and `milestones/v1.2-*.md` for full details.
+
+</details>
 
 ## Requirements
 
@@ -108,4 +114,4 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
 ---
-*Last updated: 2026-04-28 after Phase 12 (zh-HK Resolution) completion — IC-02 closed via merge of orphaned zh-HK rule into zh-TW*
+*Last updated: 2026-04-29 after v1.2 milestone (Audit, Fix & Strategic Overview) shipped*
