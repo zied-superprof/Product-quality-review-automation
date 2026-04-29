@@ -15,7 +15,18 @@ Every review run must produce a reliable, actionable report — fast enough and 
 ## Current State
 
 **Shipped:** v1.2 — Audit, Fix & Strategic Overview (2026-04-29)
-**Next milestone:** TBD — start with `/gsd:new-milestone`. Backlog 999.1 (URL-driven translation review via Playwright + Notion + Slack) is the leading v1.3 candidate.
+**Active milestone:** v1.3 — End-to-End Review Automation (started 2026-04-29)
+
+## Current Milestone: v1.3 End-to-End Review Automation
+
+**Goal:** Automate the review pipeline from input (Superprof BO notification admin URL) to output (Notion Reports DB page + Slack completion notification), with the existing CSV-drop flow continuing to work in parallel during rollout.
+
+**Target features:**
+- Playwright extraction: URL → structured email/SMS translation grids
+- Auto-named CSV(s) in `samples/` keyed off the page information block
+- Notion publishing extended to populate the existing "task follow up" column with the translation name
+- Slack completion notifier posted to a group channel when the run finishes
+- Coexistence with the current CSV-drop flow throughout v1.3
 
 ## Past Milestones
 
@@ -113,5 +124,22 @@ Every review run must produce a reliable, actionable report — fast enough and 
 | Keep stdlib-only constraint for core validator | Simplifies team handoff; no pip install step for reviewer | ✓ Good |
 | `--type` flag removed from structural_validator.py call | Flag was planned but never implemented in argparse; caused argparse crash on every run | ✓ Good — fixed 2026-04-14 |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-04-29 after v1.2 milestone (Audit, Fix & Strategic Overview) shipped*
+*Last updated: 2026-04-29 after v1.3 milestone (End-to-End Review Automation) started*

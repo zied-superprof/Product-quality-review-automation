@@ -1,45 +1,35 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Audit, Fix & Strategic Overview
-status: shipped
-last_updated: "2026-04-29T07:30:04.847Z"
+milestone: v1.3
+milestone_name: End-to-End Review Automation
+status: defining_requirements
+last_updated: "2026-04-29T08:20:00.000Z"
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 8
-  completed_plans: 8
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-29 after v1.2 ship)
+See: .planning/PROJECT.md (updated 2026-04-29 after v1.3 start)
 
 **Core value:** Every review run must produce a reliable, actionable report — fast enough and cheap enough to run on every translation batch.
-**Current focus:** Planning next milestone (`/gsd:new-milestone`). Backlog 999.1 (URL-driven translation review) is the leading v1.3 candidate.
+**Current focus:** Defining v1.3 (End-to-End Review Automation) requirements.
 
 ## Milestone
 
-**v1.2 — Audit, Fix & Strategic Overview** — ✅ SHIPPED 2026-04-29
+**v1.3 — End-to-End Review Automation** — 🟢 STARTED 2026-04-29
 
 ## Current Position
 
-Phase: — (between milestones)
+Phase: Not started (defining requirements)
 Plan: —
-
-## Phase Progress (v1.2 — shipped)
-
-| Phase | Name | Plans | Status |
-|-------|------|-------|--------|
-| 8 | Project Audit | 2/2 | Complete |
-| 9 | Fixes | 3/3 | Complete |
-| 10 | Strategic Overview | 1/1 | Complete |
-| 11 | Loop-Variable Structural Check | 1/1 | Complete (closes IC-01) |
-| 12 | zh-HK Language Code Resolution | 1/1 | Complete (closes IC-02) |
-
-Progress: [██████████] All 5 v1.2 phases shipped — milestone archived to `.planning/milestones/v1.2-*.md`
+Status: Defining requirements
+Last activity: 2026-04-29 — Milestone v1.3 started
 
 ## Key Files
 
