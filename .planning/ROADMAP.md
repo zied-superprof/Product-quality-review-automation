@@ -61,10 +61,15 @@ Full details: [milestones/v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md)
   3. All four writable files (`corrections_log.json`, `rules_summary.json`, `label_patterns.json`, `tone_guidelines.json`) receive a timestamped backup in `corrections/backups/` before the first write of the session
   4. When multiple feedback items conflict with existing rules, all conflicts surface in one numbered list and the user resolves them in a single answer; selecting `append` triggers a sub-dialogue that requires both agent self-check and user clarity check before the write, and archives the original two rules
   5. After every session, the skill surfaces pruning candidates (stale / single-occurrence / low-confidence / superseded rules) one-by-one and promotion candidates (Tier 1 → Tier 2) one-by-one; nothing auto-archives; declined promotions are recorded so they do not re-surface until criteria change
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 13-01: TBD
+- [ ] 13-01-PLAN.md — Seed config/variables_guide.md from Variables.csv + label_patterns.json; register FEEDBACK-11
+- [ ] 13-02-PLAN.md — /submit-feedback core: arg parsing, notification_type extraction, backups, batch input parse, routing, conflict scan, replace/dismiss writes, rules_summary rebuild
+- [ ] 13-03-PLAN.md — Append sub-dialogue (FEEDBACK-05): adaptive questions, self-check, bilingual EN+FR merged-rule preview, archive originals
+- [ ] 13-04-PLAN.md — Pruning phase (FEEDBACK-06/07): stale/single-occ/low-conf/superseded scan with one-by-one keep/archive/edit/show menu
+- [ ] 13-05-PLAN.md — Tier 1→2 promotion phase (FEEDBACK-08/09): D-11 routing tree + per-file drafted writes + decline tracking via _promotion_offers.json
+- [ ] 13-06-PLAN.md — Tier 2→3 advisory (FEEDBACK-10) + Step 7 deletion from review-translations.md (FEEDBACK-12 + PARALLEL-06 move)
 
 ### Phase 14: BO Extraction
 **Goal**: Users can paste a Superprof BO notification admin URL and receive 1–2 correctly named CSVs in `samples/` ready for review, with one-time auth setup and clear error messages for expired sessions or missing data.
