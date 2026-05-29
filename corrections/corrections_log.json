@@ -49,6 +49,36 @@
       "rule_extracted": "Global: @TPL_MEMBRE_ESPACE_PRENOM@ already contains a leading space (ESPACE = space). Do not add a space before this variable. 'Hola @TPL_MEMBRE_ESPACE_PRENOM@' → 'Hola@TPL_MEMBRE_ESPACE_PRENOM@'. Applies to all markets using this variable.",
       "confidence": "high",
       "date": "2026-04-14"
+    },
+    {
+      "language": "sr_RS",
+      "notification_type": "MER_PROF_NOUVELLE_DEMANDE",
+      "issue_category": "label",
+      "original": "FALSE POSITIVE — [#6] variable_missing — Missing @TPL_PROF_PRENOM@ in greeting; body opens with 'Zdravo,' without teacher name.",
+      "corrected": "FALSE POSITIVE — Serbian has 7 noun declensions. The @TPL_PROF_PRENOM@ variable cannot be declined, so 'Zdravo,' without the name is the correct and intentional choice. Inserting the variable would produce a grammatically incorrect vocative form. Do not flag.",
+      "rule_extracted": "Serbian (sr_RS): Missing @TPL_PROF_PRENOM@ after 'Zdravo,' is NOT an error. South Slavic names have 7 declensions and the variable cannot be declined; a nameless greeting is correct. Do not flag variable_missing for @TPL_PROF_PRENOM@ in vocative/greeting position for this market.",
+      "confidence": "high",
+      "date": "2026-05-29"
+    },
+    {
+      "language": "bs_BA",
+      "notification_type": "MER_PROF_NOUVELLE_DEMANDE",
+      "issue_category": "label",
+      "original": "FALSE POSITIVE — [#7] variable_missing — Missing @TPL_PROF_PRENOM@ in greeting; body opens with 'Zdravo,' without teacher name.",
+      "corrected": "FALSE POSITIVE — Bosnian has 7 noun declensions. The @TPL_PROF_PRENOM@ variable cannot be declined, so 'Zdravo,' without the name is the correct and intentional choice. Inserting the variable would produce a grammatically incorrect vocative form. Do not flag.",
+      "rule_extracted": "Bosnian (bs_BA): Missing @TPL_PROF_PRENOM@ after 'Zdravo,' is NOT an error. South Slavic names have 7 declensions and the variable cannot be declined; a nameless greeting is correct. Do not flag variable_missing for @TPL_PROF_PRENOM@ in vocative/greeting position for this market.",
+      "confidence": "high",
+      "date": "2026-05-29"
+    },
+    {
+      "language": "sr_ME",
+      "notification_type": "MER_PROF_NOUVELLE_DEMANDE",
+      "issue_category": "label",
+      "original": "FALSE POSITIVE — [#8] variable_missing — Missing @TPL_PROF_PRENOM@ in greeting; body opens with 'Zdravo,' without teacher name.",
+      "corrected": "FALSE POSITIVE — Montenegrin has 7 noun declensions. The @TPL_PROF_PRENOM@ variable cannot be declined, so 'Zdravo,' without the name is the correct and intentional choice. Inserting the variable would produce a grammatically incorrect vocative form. Do not flag.",
+      "rule_extracted": "Montenegrin (sr_ME): Missing @TPL_PROF_PRENOM@ after 'Zdravo,' is NOT an error. South Slavic names have 7 declensions and the variable cannot be declined; a nameless greeting is correct. Do not flag variable_missing for @TPL_PROF_PRENOM@ in vocative/greeting position for this market.",
+      "confidence": "high",
+      "date": "2026-05-29"
     }
   ],
   "_schema": {

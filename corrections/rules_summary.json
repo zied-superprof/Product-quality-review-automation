@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-14",
-  "total_rules": 5,
+  "generated": "2026-05-29",
+  "total_rules": 6,
   "rules": [
     {
       "rule": "Hungarian CTA/button text must use imperative form. 'Több tanárt látok' (I see more teachers) is indicative and semantically wrong. Use 'Mutass még több tanárt' (Show me more teachers).",
@@ -46,6 +46,15 @@
       "confidence": "high",
       "first_seen": "2026-04-14",
       "last_seen": "2026-04-14"
+    },
+    {
+      "rule": "South Slavic markets (sr_RS, bs_BA, sr_ME): Missing @TPL_PROF_PRENOM@ after a greeting like 'Zdravo,' is NOT an error. These languages have 7 noun declensions; the name variable cannot be declined into the correct vocative form. A nameless greeting is intentional and linguistically correct. Do not flag variable_missing for @TPL_PROF_PRENOM@ in vocative/greeting position for sr_RS, bs_BA, or sr_ME.",
+      "language": "sr_RS, bs_BA, sr_ME",
+      "issue_category": "label",
+      "occurrence_count": 3,
+      "confidence": "high",
+      "first_seen": "2026-05-29",
+      "last_seen": "2026-05-29"
     }
   ]
 }
