@@ -370,8 +370,8 @@ Call `mcp__claude_ai_Notion__notion-create-pages` with **exactly** this paramete
 }
 ```
 
-- `parent.type` must be `"page_id"` — never `"workspace"` or any other value
-- `parent.page_id` is always `33dd6418695a8097998fcf373ed18bf5` (the "Reports/ planning" page in Notion)
+- `parent.type` must be `"database_id"` — never `"workspace"` or any other value
+- `parent.database_id` is always `342d6418695a80a0812ae027358aa544` (the "Reports database" in Notion)
 - `pages[0].properties.title` is the string from Step 6a
 - `pages[0].content` is the Notion-flavored Markdown string from Step 6b
 
